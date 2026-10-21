@@ -39,7 +39,7 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M0 Setup (done)
+Milestone: M1 Audio engine spike (not started). M0 Setup done in e0b3872.
 Last session: 2026-10-21. Vite 8 + React 19 + TS 6 (strict) + Vitest + ESLint/Prettier. `random.ts` and `pitch.ts` with 21 tests. UI shell copies the prototype layout; controls write to the Zustand store; other parts are placeholders.
 Next: 1) Start M1 audio spike (shared AudioContext, see AUDIO.md §4)  2) Port prototype behaviour as milestones need it
 Blockers: none
