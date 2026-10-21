@@ -8,7 +8,7 @@ The owner reads keyboard diagrams and note names easily and staff notation poorl
 Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects) · smplr 1.x (sampled instruments) · tonal 6 (spelling only) · @tonejs/midi (export) · Vitest
 
 ## Commands
-`npm run dev` · `npm test` · `npm run typecheck` · `npm run build`
+`npm run dev` · `npm test` · `npm run typecheck` · `npm run build` · `npm run lint` · `npm run format`
 
 ## Docs (read on demand, never all at once)
 - `docs/SPEC.md`: features, architecture, milestones. Read only the milestone you are working on.
@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M0 Setup (not started)
-Last session: none. Project created from the spec bundle.
-Next: 1) Scaffold Vite + React + TS per SPEC M0  2) Port prototype behaviour  3) Start M1 audio spike
+Milestone: M0 Setup (done)
+Last session: 2026-10-21. Vite 8 + React 19 + TS 6 (strict) + Vitest + ESLint/Prettier. `random.ts` and `pitch.ts` with 21 tests. UI shell copies the prototype layout; controls write to the Zustand store; other parts are placeholders.
+Next: 1) Start M1 audio spike (shared AudioContext, see AUDIO.md §4)  2) Port prototype behaviour as milestones need it
 Blockers: none
 <!-- status:end -->

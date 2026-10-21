@@ -1,0 +1,5 @@
+dist
+prototype
+docs
+*.md
+package-lock.json
