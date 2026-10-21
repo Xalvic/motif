@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+.env*
+# Large third-party datasets (download manually, see docs/THEORY.md §7)
+scripts/chordonomicon/data/
