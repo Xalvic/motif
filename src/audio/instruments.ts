@@ -42,6 +42,17 @@ export function instrumentId(spec: InstrumentSpec): string {
 }
 
 const entries = new Map<string, InstrumentEntry>();
+const listeners = new Set<() => void>();
+
+/** Called after any load progress or load end. Returns an unsubscribe function. */
+export function onLoadChange(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function notify(): void {
+  for (const listener of listeners) listener();
+}
 let loader: SampleLoader | undefined;
 
 function sharedLoader(ctx: BaseAudioContext): SampleLoader {
@@ -82,6 +93,7 @@ export function getInstrument(spec: InstrumentSpec, layer: Layer): InstrumentEnt
   const instance = create(spec, layer, (p) => {
     progress.loaded = p.loaded;
     progress.total = p.total;
+    notify();
   });
   const entry: InstrumentEntry = {
     id,
@@ -93,10 +105,12 @@ export function getInstrument(spec: InstrumentSpec, layer: Layer): InstrumentEnt
     ready: instance.ready.then(
       () => {
         entry.isReady = true;
+        notify();
       },
       (e: unknown) => {
         entry.failed = true;
         console.warn(`[audio] ${key} failed to load`, e);
+        notify();
       },
     ),
   };

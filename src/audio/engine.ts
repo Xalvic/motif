@@ -59,6 +59,10 @@ export function getEngine(): Engine {
 
   const ctx = new AudioContext({ latencyHint: 'interactive' });
   Tone.setContext(ctx);
+  // Draw drops callbacks more than 0.25 s late. When requestAnimationFrame is throttled (slow
+  // device, background pane) that freezes the playhead. Our draw callbacks only set the latest
+  // state, so a late one is harmless.
+  Tone.getDraw().expiration = 2;
 
   const limiter = new Tone.Limiter(-1).toDestination();
   const compressor = new Tone.Compressor({ threshold: -18, ratio: 3 }).connect(limiter);
