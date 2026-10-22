@@ -4,7 +4,11 @@
  */
 import * as Tone from 'tone';
 import { useStore, type GenreId } from '../state/store';
+import { createRng, type Rng } from '../theory/random';
+import { compBar, padBar } from './comping';
+import { drumBar } from './drums';
 import { LAYERS, setFx, startAudio, type Layer } from './engine';
+import { applySwing, humanize } from './feel';
 import { genreAudio } from './genres';
 import {
   fallbackSynth,
@@ -13,10 +17,14 @@ import {
   stopAll,
   type InstrumentEntry,
 } from './instruments';
-import { placeholderBar } from './placeholder';
+import { placeholderMelody, placeholderVoicing } from './placeholder';
+
+/** Humanize seed. Becomes the idea's seed once ideas exist (M3). */
+const SEED = 1;
 
 /** Bars since Play, not wrapped. */
 let bar = 0;
+let rng: Rng = createRng(SEED);
 let genre: GenreId | undefined;
 let active: Partial<Record<Layer, InstrumentEntry>> = {};
 
@@ -48,7 +56,16 @@ function onBar(time: number): void {
     genre = state.genre;
   }
 
-  for (const note of placeholderBar(bar, state)) {
+  const loopBar = bar % state.bars;
+  const voicing = placeholderVoicing(loopBar);
+  let notes = [...compBar(profile.comp, voicing), ...padBar(voicing)];
+  if (state.melody) notes.push(...placeholderMelody(loopBar));
+  if (state.drums && profile.drums) {
+    notes.push(...drumBar(profile.drums, { bar: loopBar, bars: state.bars, colour: state.colour }));
+  }
+  notes = humanize(applySwing(notes, profile.swing), rng, spb);
+
+  for (const note of notes) {
     const slot = profile.layers[note.layer];
     const entry = active[note.layer];
     if (!slot || !entry || (slot.spicyOnly && state.colour !== 2)) continue;
@@ -71,8 +88,7 @@ function onBar(time: number): void {
     }
   }
 
-  const shown = bar % state.bars;
-  Tone.getDraw().schedule(() => useStore.getState().setPlayback({ playhead: shown }), time);
+  Tone.getDraw().schedule(() => useStore.getState().setPlayback({ playhead: loopBar }), time);
   bar++;
 }
 
@@ -82,6 +98,7 @@ export async function startPlayback(): Promise<void> {
   const transport = Tone.getTransport();
   if (transport.state === 'started') return;
   bar = 0;
+  rng = createRng(SEED);
   genre = undefined;
   transport.cancel();
   transport.position = 0;
