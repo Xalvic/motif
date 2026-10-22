@@ -17,6 +17,7 @@ import {
   type LoadProgress,
   type Smplr,
 } from 'smplr';
+import type { DrumHit } from './drums';
 import { getEngine, type Layer } from './engine';
 
 export type InstrumentSpec =
@@ -37,13 +38,10 @@ export interface InstrumentEntry {
   progress: LoadProgress;
 }
 
-/** Generic drum hits used by the pattern code. */
-export type DrumHit = 'kick' | 'snare' | 'hihat';
-
 // Group names differ per machine (checked with getGroupNames() in smplr 1.1.0).
 const DRUM_GROUPS: Record<string, Record<DrumHit, string>> = {
-  'TR-808': { kick: 'kick', snare: 'snare', hihat: 'hihat-close' },
-  'LM-2': { kick: 'kick', snare: 'snare', hihat: 'hhclosed' },
+  'TR-808': { kick: 'kick', snare: 'snare', hihat: 'hihat-close', tom: 'mid-tom', crash: 'cymbal' },
+  'LM-2': { kick: 'kick', snare: 'snare', hihat: 'hhclosed', tom: 'tom', crash: 'crash' },
 };
 
 /** The sample name to play: drum hits map to the machine's group, pitches pass through. */
