@@ -22,6 +22,20 @@ import { placeholderMelody, placeholderVoicing } from './placeholder';
 /** Humanize seed. Becomes the idea's seed once ideas exist (M3). */
 const SEED = 1;
 
+export interface ProbeNote {
+  layer: Layer;
+  note: number | string;
+  /** Context time the note was handed to its instrument for. */
+  time: number;
+  /** false when the stand-in synth played it. */
+  sampled: boolean;
+}
+
+/** Dev-only measurement hook (timing.html). Not used by the app. */
+export const pumpProbe: {
+  onBar?: (info: { bar: number; time: number; spb: number; notes: ProbeNote[] }) => void;
+} = {};
+
 /** Bars since Play, not wrapped. */
 let bar = 0;
 let rng: Rng = createRng(SEED);
@@ -65,6 +79,7 @@ function onBar(time: number): void {
   }
   notes = humanize(applySwing(notes, profile.swing), rng, spb);
 
+  const probed: ProbeNote[] = [];
   for (const note of notes) {
     const slot = profile.layers[note.layer];
     const entry = active[note.layer];
@@ -78,6 +93,7 @@ function onBar(time: number): void {
         duration,
         velocity: note.velocity,
       });
+      probed.push({ layer: note.layer, note: note.note, time: start, sampled: true });
     } else if (typeof note.note === 'number') {
       fallbackSynth(note.layer).triggerAttackRelease(
         Tone.Frequency(note.note, 'midi').toFrequency(),
@@ -85,8 +101,10 @@ function onBar(time: number): void {
         start,
         note.velocity / 127,
       );
+      probed.push({ layer: note.layer, note: note.note, time: start, sampled: false });
     }
   }
+  pumpProbe.onBar?.({ bar, time, spb, notes: probed });
 
   Tone.getDraw().schedule(() => useStore.getState().setPlayback({ playhead: loopBar }), time);
   bar++;

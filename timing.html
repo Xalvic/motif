@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M1 timing test</title>
+    <style>
+      body {
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
+        background: #111;
+        color: #ddd;
+        margin: 16px;
+      }
+      button {
+        font: inherit;
+        margin: 0 8px 8px 0;
+        padding: 6px 12px;
+      }
+      pre {
+        background: #1b1b1b;
+        padding: 12px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>M1 timing test (full engine)</h1>
+    <p>
+      Params: <code>minutes</code> (10), <code>genres</code> (pop), <code>switchBars</code> (0 = no
+      switch), <code>bpm</code> (120), <code>colour</code> (1). Example:
+      <code>?genres=pop,lofi,metal,epic&amp;switchBars=8</code>
+    </p>
+    <button id="start">Start</button>
+    <button id="stop">Stop and report</button>
+    <pre id="log"></pre>
+    <script type="module" src="/src/audio/dev/timing-test.ts"></script>
+  </body>
+</html>
