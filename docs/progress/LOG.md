@@ -4,6 +4,16 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-22 · M1 engine, instruments, patterns, 10-min timing pass
+- Milestone: M1 Audio engine and instruments (done in Chrome; Firefox/Safari open)
+- Done: `src/audio/` engine.ts (shared ctx, 5 layer channels, reverb send, low-pass/chorus/crusher, compressor, -1 dB limiter), instruments.ts (cached registry, shared SampleLoader + Cache API, stand-in PolySynth), pump.ts (bar pump), genres.ts (8 genres, AUDIO §5), loading.ts; comping.ts, drums.ts, feel.ts (swing, humanize) with tests in `tests/audio/` (62 tests); Play/Stop/Space, Loop/Drums/Melody, playhead, load progress in Stage.tsx
+- Done: `/timing.html` harness (`src/audio/dev/timing-test.ts`, `pumpProbe` hook): 10 min, 4 genres switching every 8 bars: 300/300 bars, 0 late, no drift
+- Done: CREDITS.md drum sources: TR-808 = Michael Fischer 1994 "absolutely free"; LM-2 source unknown (placeholder)
+- Checked by ear: owner ran the full ear test, no issues reported
+- Decisions: in decisions.md (per-layer smplr instances + shared loader; FX by param ramps; fixed reverb decay; Draw expiration 2 s; swing = amount x grid / 2; LM-2 placeholders; 2.2 s warm piano load accepted)
+- Open: Firefox + Safari timing run; placeholder C-Am-F-G loop + melody until M3/M4; no vinyl crackle, timpani, Smolken arco, raga drone; LM-2 licence unknown
+- Next: 1) run `/timing.html?minutes=10&genres=pop,lofi,metal,epic&switchBars=8` in Firefox and Safari  2) start M2 theory core (SPEC M2)
+
 
 ## 2026-10-22 · M1 spike: shared AudioContext passes in Chrome
 - Milestone: M1 Audio engine spike and instruments (~25%: spike done, steps 2–4 open)

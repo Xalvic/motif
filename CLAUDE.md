@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M1 Audio engine and instruments (~25%: spike done, option A accepted). M0 done.
-Last session: 2026-10-22. M1 spike passed in Chrome (5 min, no drift); harness at `/spike.html`.
-Next: 1) `src/audio/engine.ts` (context, `Tone.start()` on gesture, channels, master bus)  2) `src/audio/instruments.ts` lazy registry  3) Bar pump + Play plays one sampled chord
-Blockers: none. Firefox/Safari and by-ear switch check still open.
+Milestone: M1 Audio engine and instruments (done in Chrome: all 4 done-when checks pass or accepted). M0 done.
+Last session: 2026-10-22. Engine, registry, bar pump, 8-genre map + FX, comping/drum patterns; 10-min timing pass at `/timing.html`; ear test OK.
+Next: 1) Firefox + Safari run of `/timing.html?minutes=10&genres=pop,lofi,metal,epic&switchBars=8`  2) Start M2 theory core (SPEC M2)
+Blockers: none.
 <!-- status:end -->
