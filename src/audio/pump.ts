@@ -6,7 +6,13 @@ import * as Tone from 'tone';
 import { useStore, type GenreId } from '../state/store';
 import { LAYERS, setFx, startAudio, type Layer } from './engine';
 import { genreAudio } from './genres';
-import { fallbackSynth, getInstrument, stopAll, type InstrumentEntry } from './instruments';
+import {
+  fallbackSynth,
+  getInstrument,
+  resolveNote,
+  stopAll,
+  type InstrumentEntry,
+} from './instruments';
 import { placeholderBar } from './placeholder';
 
 /** Bars since Play, not wrapped. */
@@ -49,7 +55,12 @@ function onBar(time: number): void {
     const start = time + note.beat * spb;
     const duration = note.beats * spb;
     if (entry.isReady) {
-      entry.instance.start({ note: note.note, time: start, duration, velocity: note.velocity });
+      entry.instance.start({
+        note: resolveNote(slot.spec, note.note),
+        time: start,
+        duration,
+        velocity: note.velocity,
+      });
     } else if (typeof note.note === 'number') {
       fallbackSynth(note.layer).triggerAttackRelease(
         Tone.Frequency(note.note, 'midi').toFrequency(),

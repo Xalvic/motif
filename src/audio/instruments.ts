@@ -37,6 +37,21 @@ export interface InstrumentEntry {
   progress: LoadProgress;
 }
 
+/** Generic drum hits used by the pattern code. */
+export type DrumHit = 'kick' | 'snare' | 'hihat';
+
+// Group names differ per machine (checked with getGroupNames() in smplr 1.1.0).
+const DRUM_GROUPS: Record<string, Record<DrumHit, string>> = {
+  'TR-808': { kick: 'kick', snare: 'snare', hihat: 'hihat-close' },
+  'LM-2': { kick: 'kick', snare: 'snare', hihat: 'hhclosed' },
+};
+
+/** The sample name to play: drum hits map to the machine's group, pitches pass through. */
+export function resolveNote(spec: InstrumentSpec, note: number | string): number | string {
+  if (spec.kind !== 'drums' || typeof note === 'number') return note;
+  return DRUM_GROUPS[spec.name]?.[note as DrumHit] ?? note;
+}
+
 export function instrumentId(spec: InstrumentSpec): string {
   return spec.kind === 'piano' ? 'piano' : `${spec.kind}:${spec.name}`;
 }
