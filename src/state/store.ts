@@ -22,10 +22,22 @@ export interface Settings {
   /** 0 = Plain, 1 = Some, 2 = Spicy. */
   colour: 0 | 1 | 2;
   bpm: number;
+  loop: boolean;
+  drums: boolean;
+  melody: boolean;
 }
 
-interface AppState extends Settings {
+export interface Playback {
+  playing: boolean;
+  /** Bar index 0..bars-1 that is sounding now, or null when stopped. */
+  playhead: number | null;
+  /** Samples loaded for the current genre, or null when nothing is loading. */
+  loading: { loaded: number; total: number } | null;
+}
+
+interface AppState extends Settings, Playback {
   setSettings: (changes: Partial<Settings>) => void;
+  setPlayback: (changes: Partial<Playback>) => void;
 }
 
 export const useStore = create<AppState>()((set) => ({
@@ -34,5 +46,12 @@ export const useStore = create<AppState>()((set) => ({
   bars: 4,
   colour: 1,
   bpm: 70,
+  loop: true,
+  drums: false,
+  melody: false,
+  playing: false,
+  playhead: null,
+  loading: null,
   setSettings: (changes) => set(changes),
+  setPlayback: (changes) => set(changes),
 }));
