@@ -178,7 +178,8 @@ Keep `CREDITS.md` current. Known so far:
 | MusyngKite soundfont (via smplr Soundfont) | CC BY-SA 3.0 | GM instruments |
 | FluidR3_GM soundfont | CC BY 3.0 | lighter GM fallback |
 | Versilian Community Sample Library (Mallet, Versilian) | CC0 | vibraphone etc. |
-| smplr drum machines | Per machine, "various sources" | verify each before relying on it |
+| smplr TR-808 (Michael Fischer, 1994) | "Absolutely free" (author's TR808.TXT), no formal licence | pop and lo-fi drums |
+| smplr LM-2 | Unknown source; repo says "public domain", no LICENSE file | placeholder kit only; replace before any public release |
 | Mellotron (archive.org) | unclear | do not use until verified |
 | Chordonomicon (data, M6) | CC BY-NC 4.0 | transition tables; keeps the app non-commercial |
 
