@@ -5,6 +5,15 @@ When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries
 
 <!-- entries:start -->
 
+## 2026-10-22 · M1 spike: shared AudioContext passes in Chrome
+- Milestone: M1 Audio engine spike and instruments (~25%: spike done, steps 2–4 open)
+- Done: added tone 15.1.22 + smplr 1.1.0; dev-only `spike.html` + `src/audio/spike/m1-spike.ts` (AudioWorklet tap measures onset lag per beat; params `ctx=A|B`, `minutes`, `pump=beat|bar`) (1b63d84)
+- Done: 5 min / 600 beats, bar pump: lag constant (Tone 6–7 frames, smplr 24–34), 0 late, 0 missed; reverb via GainNode → Tone.Channel works; 2 instrument switches, 0 doubled notes
+- Checked by ear: nothing. Only measured with the worklet tap.
+- Decisions: option A (own AudioContext → Tone.setContext → smplr); GainNode bridge; switch = `old.stop({ time: barTime })`; bar pump may hand smplr times 1 bar ahead (all in decisions.md)
+- Open: Firefox + Safari not checked; by-ear click check on switch; first 5-min run stopped at 18 bars (not reproduced, likely hidden app pane); 3 CP80 samples 404 upstream (AUDIO.md §5)
+- Next: 1) `src/audio/engine.ts` (context, Tone.start on gesture, channels, master bus)  2) `src/audio/instruments.ts` lazy registry  3) bar pump + Play button plays one sampled chord
+
 ## 2026-10-22 · M0 setup done
 - Milestone: M0 Setup (done, e0b3872)
 - Done: Vite 8 + React 19 + TS 6 strict + Vitest 5 + ESLint 10/Prettier + Zustand; scripts dev/build/test/typecheck/lint/format

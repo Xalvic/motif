@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M1 Audio engine spike and instruments (not started). M0 done.
-Last session: 2026-10-22. M0 scaffold, `random.ts` + `pitch.ts` (21 tests), UI shell with prototype layout.
-Next: 1) Spike shared AudioContext for Tone + smplr (AUDIO.md §4)  2) `src/audio/engine.ts` with `Tone.start()` on gesture  3) Play one sampled chord
-Blockers: none
+Milestone: M1 Audio engine and instruments (~25%: spike done, option A accepted). M0 done.
+Last session: 2026-10-22. M1 spike passed in Chrome (5 min, no drift); harness at `/spike.html`.
+Next: 1) `src/audio/engine.ts` (context, `Tone.start()` on gesture, channels, master bus)  2) `src/audio/instruments.ts` lazy registry  3) Bar pump + Play plays one sampled chord
+Blockers: none. Firefox/Safari and by-ear switch check still open.
 <!-- status:end -->
