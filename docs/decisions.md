@@ -3,8 +3,12 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-22 · Shared AudioContext, option A: own `new AudioContext({ latencyHint: "interactive" })` → `Tone.setContext(ctx)` → same `ctx` to smplr · M1 spike, 5 min / 600 beats: onset lag constant (Tone click 6–7 frames, smplr 24–34 frames, set by the sample attack), 0 late events. Option B also worked, but gives smplr a standardized-audio-context wrapper, not a native context · accepted for Chrome; Firefox and Safari not checked
+- 2026-10-22 · Route smplr via `destination: nativeGainNode` + `Tone.connect(gain, channel)` · Tone reverb return: 0 at send 0, 0.016 peak at send 1 · accepted
+- 2026-10-22 · Genre switch = `old.stop({ time: barTime })` in the bar pump; new instrument plays from that bar · 2 switches: 0 doubled notes, no extra sample jump at the switch downbeat · accepted, by-ear check pending
+- 2026-10-22 · Bar pump may give smplr note times up to one bar ahead · smplr queues events past its 200 ms lookahead and sends them from its own `setInterval`; 0 late in 5 min, ~2 min of it with the page hidden · accepted; watch for late notes in long background play
 - 2026-10-21 · Pin TypeScript ~6.0, not 7 · typescript-eslint 8.72 supports only < 6.1 · accepted, revisit when typescript-eslint supports 7
-- 2026-10-21 · Shared AudioContext between Tone.js and smplr · avoids two clocks · **pending spike (M1)**, see AUDIO.md §4
+- 2026-10-21 · Shared AudioContext between Tone.js and smplr · avoids two clocks · accepted 2026-10-22 (option A), see AUDIO.md §4
 - 2026-10-21 · Tone.js for clock/effects, smplr for samples · best-maintained options; Howler has no musical clock · accepted
 - 2026-10-21 · Own roman-numeral parser; tonal for spelling only · tonal's `fromRomanNumerals` ignores lowercase = minor · accepted
 - 2026-10-21 · Own voicer; tonal `VoicingDictionary` only for rootless 7th-family chords · tonal dictionaries lack sus/add9/power/9 · accepted

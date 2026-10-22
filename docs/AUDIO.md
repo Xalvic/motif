@@ -86,6 +86,8 @@ Spike (keep it under half a day; record the result in `docs/decisions.md`):
 3. Route: pass a native `GainNode` as smplr's `destination` and connect it into a `Tone.Channel` with `Tone.connect`. Confirm Tone reverb applies.
 4. Genre switch while playing: no clicks or doubled notes.
 
+**Result (2026-10-22, Chrome):** steps 1–4 pass with option A. Details in `docs/decisions.md`. Harness: `/spike.html` (dev only, `src/audio/spike/m1-spike.ts`), params `ctx=A|B`, `minutes`, `pump=beat|bar`. It measures onset lag per beat with an AudioWorklet tap. Firefox and Safari are not checked yet.
+
 Fallback if the bridge fails: keep Tone for transport and Draw, but route smplr straight to the context destination and use smplr's own `Reverb` (Dattorro) plus native nodes for filters. If timing integration itself fails, use smplr's `Sequencer`/`Scheduler` as the clock and drop Tone to effects only.
 
 ---
@@ -108,6 +110,8 @@ smplr names below were checked against smplr 1.1.0 (`getSoundfontNames()`, `getE
 Soundfont kit: `MusyngKite` (default, better, heavier) or `FluidR3_GM` (lighter). Use MusyngKite on desktop, FluidR3_GM on slow connections if loading is a problem.
 
 Honest quality note: the piano and electric pianos are genuinely good; GM soundfont strings, brass and guitars are serviceable, not cinematic. Upgrade path (backlog): Versilian Community Sample Library instruments via smplr `Versilian` (partially supported), or a curated CC0 orchestral set such as VSCO 2 Community Edition through smplr `Sampler` (verify its licence first).
+
+Known sample gaps (2026-10-22): `ElectricPiano` `CP80` has 3 of 81 samples that return 404 on smpldsnds.github.io (`057-A3-F`, `065-F4-PP`, `080-G#5-MP`). Prefer `WurlitzerEP200`, or check CP80 by ear before use.
 
 Guitar strum: stagger chord notes 10–25 ms (down-strums low→high, up-strums high→low, lower velocity on up-strums).
 

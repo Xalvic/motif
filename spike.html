@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M1 audio spike</title>
+    <style>
+      body {
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
+        background: #111;
+        color: #ddd;
+        margin: 16px;
+      }
+      button {
+        font: inherit;
+        margin: 0 8px 8px 0;
+        padding: 6px 12px;
+      }
+      pre {
+        background: #1b1b1b;
+        padding: 12px;
+        white-space: pre-wrap;
+      }
+      a {
+        color: #8cf;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>M1 audio spike</h1>
+    <p>
+      Context: <a href="?ctx=A">A (own AudioContext → Tone.setContext)</a> ·
+      <a href="?ctx=B">B (smplr on Tone rawContext)</a>. Params: <code>minutes</code>,
+      <code>pump=beat|bar</code>.
+    </p>
+    <button id="start">Start loop</button>
+    <button id="switch">Switch instrument at next bar</button>
+    <button id="reverb">Reverb test (while stopped)</button>
+    <button id="stop">Stop and report</button>
+    <pre id="log"></pre>
+    <script type="module" src="/src/audio/spike/m1-spike.ts"></script>
+  </body>
+</html>
