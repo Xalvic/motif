@@ -3,6 +3,9 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-22 · `comping.ts`, `drums.ts`, `feel.ts` are pure (no Tone) and tested in `tests/audio/`; SPEC layout's `fx.ts` and `schedule.ts` live in `engine.ts` and `pump.ts` · patterns are logic, not audio, so they get unit tests like `src/theory` · accepted
+- 2026-10-22 · Swing delay = amount × grid / 2 (AUDIO.md §3.2), not Tone's grid / 3 · lo-fi 0.3 on 16ths = ~28 ms at 80 BPM; the prototype swung 8ths by 1/6 beat, much heavier · accepted, by-ear check pending
+- 2026-10-22 · Soft, tabla and bodhrán grids play on LM-2 until real samples exist · keeps the Drums toggle working in cinematic, Malayalam and Irish; classical has no drums · accepted, placeholder
 - 2026-10-22 · Same instrument on two layers = two smplr instances that share one `SampleLoader` (Cache API storage) · each layer keeps its own channel; the loader caches by URL, so piano on 3 layers is 226 cache entries, not 678 · accepted
 - 2026-10-22 · Genre FX graph built once (low-pass → chorus → crusher on the bus, one reverb); a genre change ramps parameters at the bar time (50 ms) · nothing to rebuild or dispose, no clicks from reconnecting · accepted
 - 2026-10-22 · Reverb decay fixed at 2.8 s; genres set the send level only · changing `decay` regenerates the impulse and can cut a ringing tail · accepted, revisit if metal/classical rooms sound wrong
