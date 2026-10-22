@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-22 · Full engine passes the M1 10-minute timing check in Chrome · `/timing.html?minutes=10&genres=pop,lofi,metal,epic&switchBars=8` at 120 BPM: 300/300 bars, 0 late, min margin 41 ms, bar starts exact (0 frames), 0 stand-in notes; onset lag constant over 10 min (Tone click 1–3 frames, smplr probe 15 frames every bar, TR-808 kick 7–9); page hidden for 9.5 of the 10 min · accepted for Chrome; LM-2 kick spread 27–119 frames is the detector (ringing kick raises the threshold), first-10 vs last-10 mean 79 vs 76, no drift
 - 2026-10-22 · `comping.ts`, `drums.ts`, `feel.ts` are pure (no Tone) and tested in `tests/audio/`; SPEC layout's `fx.ts` and `schedule.ts` live in `engine.ts` and `pump.ts` · patterns are logic, not audio, so they get unit tests like `src/theory` · accepted
 - 2026-10-22 · Swing delay = amount × grid / 2 (AUDIO.md §3.2), not Tone's grid / 3 · lo-fi 0.3 on 16ths = ~28 ms at 80 BPM; the prototype swung 8ths by 1/6 beat, much heavier · accepted, by-ear check pending
 - 2026-10-22 · Soft, tabla and bodhrán grids play on LM-2 until real samples exist · keeps the Drums toggle working in cinematic, Malayalam and Irish; classical has no drums · accepted, placeholder
