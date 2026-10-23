@@ -3,6 +3,11 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-23 · Rootless voicings use our own rule (drop root, then 5th; keep the 3rd), not tonal's `VoicingDictionary.lefthand` · the dictionary adds 9ths and 13ths that are not in the chord (m7 → 3 5 7 9), which breaks the THEORY §8 rule "voicing notes ⊆ chord notes"; filtered to chord tones it gives the same shapes as our rule · accepted
+- 2026-10-23 · `°7` = fully diminished (dim7, 0 3 6 9); `ø7` = half-diminished (m7♭5). The prototype's lofi `ii°7` meant half-diminished and is ported as `iiø7` · standard notation · accepted
+- 2026-10-23 · Inversions are chosen on the tokens (`chooseInversions` sets the bass figure), not inside the voicer · the card then shows G/B, and the voicer stays deterministic with no rng · accepted
+- 2026-10-23 · Voicer centre 64 (E4) for close and drone, from the prototype; low-interval limits are a hard filter, not a +6 cost · with 66 the voicer preferred 4-note doubled triads; a filter makes the §8 invariant hold for every seed · accepted
+- 2026-10-23 · Spelling: the root follows the token (♭VI in C = A♭), chord notes follow the letter root, then C♭ F♭ E♯ B♯ and double accidentals become the plain key name (E♭ minor ♭VI = B E♭ G♭) · the owner reads keys, not staff · accepted
 - 2026-10-23 · Firefox and Safari timing runs deferred; M1 is done on Chrome alone · personal-use app, the owner uses Chrome almost always · accepted by the owner; run `/timing.html?minutes=10&genres=pop,lofi,metal,epic&switchBars=8` there later if needed
 - 2026-10-22 · First-sound budget on a warm cache: Play → first sound 162 ms (3 runs, AudioWorklet frame count, plus ~40 ms output latency); piano ready 2.1–2.2 s after page start (226 samples from Cache API) · a Play in the first ~2 s gets the stand-in synth for the first bar, then the piano · accepted by the owner 2026-10-22: the stand-in synth covers the gap; staged load (one velocity layer first) is the fix if needed later
 - 2026-10-22 · M1 ear test done by the owner, no issues reported · covers patterns, genre switch, FX, Spicy pads, tempo change, humanize · accepted

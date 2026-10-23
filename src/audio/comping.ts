@@ -2,13 +2,10 @@
  * Comping patterns (AUDIO.md §6.1): one bar of a voicing → note events in beats.
  * Pure: no Tone, no audio context, so it is unit-tested like src/theory.
  */
+import type { Voicing } from '../theory/voicing';
 import type { Layer } from './engine';
 
-/** MIDI numbers. Matches the Voicing type planned for src/theory/voicing.ts. */
-export interface Voicing {
-  bass: number;
-  upper: number[];
-}
+export type { Voicing };
 
 export interface BarNote {
   layer: Layer;
