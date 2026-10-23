@@ -31,7 +31,7 @@ export function usesFlats(tonic: number, family: Family): boolean {
 }
 
 /** Display form: "Eb3" -> "E♭3", "F#" -> "F♯". The first letter can be "B", so skip it. */
-function pretty(name: string): string {
+export function pretty(name: string): string {
   return name[0] + name.slice(1).replace('b', '♭').replace('#', '♯');
 }
 
