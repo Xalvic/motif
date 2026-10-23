@@ -166,12 +166,13 @@ Goal: chords that sound good on a piano and are easy to read on the keyboard.
 - **Ranges** (MIDI): LH bass 36–52 (C2–E3), RH upper 55–79 (G3–G5). Profiles can shift them (metal bass lower, lofi upper slightly lower).
 - **Candidate generation**: every inversion of the chord's upper pitch classes, stacked from three lower bounds (52, 55, 58), plus profile-style variants.
 - **Cost** (minimise):
-  - total voice movement from the previous voicing (sort both, pair by index; pad the smaller set);
+  - total voice movement from the previous voicing (sort both, pair by index; pad the smaller set with its top note);
   - top-voice leap above 5 semitones: +2 per semitone (the top note reads as an implied melody);
   - span wider than 14 semitones in close styles: +4;
-  - low-interval limit: a 3rd whose lower note is below C3 (48), or a 2nd below G3 (55): +6;
+  - low-interval limit: a 3rd whose lower note is below C3 (48), or a 2nd below G3 (55): a hard filter (bass included), not a cost; only if no candidate passes are they all scored;
   - doubled 3rd in a 4-note triad voicing: +2;
-  - distance of the voicing's centre from the profile's centre: +0.3 per semitone (stops drift).
+  - distance of the voicing's centre (mean of upper notes) from the profile's centre: +0.3 per semitone (stops drift). Defaults per style are `STYLE_DEFAULTS` in `voicing.ts` (close: 64 = E4, the prototype's).
+- **Power-chord tokens** (`i5`) are voiced root–5th–octave or 5th–octave in every style.
 - **Styles** (`profile.voicing`):
   - `close`: 3–4 notes within an octave and a bit (pop, classical).
   - `spread`: LH root + 5th or octave; RH colour tones on top (cinematic).
