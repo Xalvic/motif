@@ -74,7 +74,7 @@ describe('chordPcs and bassPc', () => {
 });
 
 describe('chordSymbol', () => {
-  it.each([
+  it.each<[string, Key, string]>([
     ['vi7', C, 'Am7'],
     ['IV/3', C, 'F/A'],
     ['bVImaj7', C, 'A♭maj7'],
