@@ -4,6 +4,15 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-23 · M2 theory core done, app runs on it
+- Milestone: M2 Theory core (done: §8 roman/spelling/voicing invariants pass, owner ear test OK). M1 closed on Chrome only (Firefox/Safari deferred).
+- Done: `src/theory/` roman.ts, keys.ts (10 scales, 17 ragas, melakarta check), chords.ts (spelling, symbols, chooseKeySpelling), functions.ts, voicing.ts (5 styles, chooseInversions), analysis.ts, genres.ts; progression/legacy.ts + melody/legacy.ts (prototype port, seeded); data/legacy-genres.json + prompts.json (validated at load). 291 tests.
+- Done: app wiring: state/idea.ts + store actions; cards with lock/swap, keyboard follows chord, PianoRoll.tsx, scale/raga, prompt, song map, Copy for FL Studio, G key, Toast; pump plays the idea; audio/audition.ts; placeholder.ts removed
+- Checked by ear: owner ran the 8-step checklist (play genres, new chords mid-play, card and key auditions, locks, key change mid-play, copy): all good
+- Decisions: rootless = own rule; °7 = dim7, lofi ii°7 → iiø7; inversions on tokens; voicer centre 64 + hard low-interval filter; plain spelling (no C♭/E♯); family from tonic chord; auditions outside the pump; G♭/F♯ and E♭/D♯ spelled per idea (all in decisions.md)
+- Open: saved ideas (M5); function badges/idiom name (M3); one Wurlitzer sample `ab6mp.ogg` fails to decode; build warns chunk > 500 kB; timing harness untested since the pump change (pane was hidden)
+- Next: 1) start M3 (SPEC M3, THEORY §3, §6): genre profile JSON schema + validator  2) idioms + Markov transitions  3) scorer and lock-aware regeneration
+
 ## 2026-10-22 · M1 engine, instruments, patterns, 10-min timing pass
 - Milestone: M1 Audio engine and instruments (done in Chrome; Firefox/Safari open)
 - Done: `src/audio/` engine.ts (shared ctx, 5 layer channels, reverb send, low-pass/chorus/crusher, compressor, -1 dB limiter), instruments.ts (cached registry, shared SampleLoader + Cache API, stand-in PolySynth), pump.ts (bar pump), genres.ts (8 genres, AUDIO §5), loading.ts; comping.ts, drums.ts, feel.ts (swing, humanize) with tests in `tests/audio/` (62 tests); Play/Stop/Space, Loop/Drums/Melody, playhead, load progress in Stage.tsx

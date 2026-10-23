@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M1 Audio engine and instruments (done in Chrome: all 4 done-when checks pass or accepted). M0 done.
-Last session: 2026-10-22. Engine, registry, bar pump, 8-genre map + FX, comping/drum patterns; 10-min timing pass at `/timing.html`; ear test OK.
-Next: Start M2 theory core (SPEC M2). Firefox/Safari timing runs deferred (Chrome-only use, see decisions.md).
+Milestone: M2 Theory core done (§8 invariants pass, ear test OK). M0, M1 done (M1 on Chrome only).
+Last session: 2026-10-23. Theory core + legacy generator port; app runs end to end; per-idea G♭/F♯ spelling.
+Next: 1) M3: genre profile JSON + validator (THEORY §6)  2) idioms + Markov (THEORY §3)  3) scorer + lock-aware regen
 Blockers: none.
 <!-- status:end -->
