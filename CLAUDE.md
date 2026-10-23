@@ -41,6 +41,6 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 <!-- status:start -->
 Milestone: M1 Audio engine and instruments (done in Chrome: all 4 done-when checks pass or accepted). M0 done.
 Last session: 2026-10-22. Engine, registry, bar pump, 8-genre map + FX, comping/drum patterns; 10-min timing pass at `/timing.html`; ear test OK.
-Next: 1) Firefox + Safari run of `/timing.html?minutes=10&genres=pop,lofi,metal,epic&switchBars=8`  2) Start M2 theory core (SPEC M2)
+Next: Start M2 theory core (SPEC M2). Firefox/Safari timing runs deferred (Chrome-only use, see decisions.md).
 Blockers: none.
 <!-- status:end -->

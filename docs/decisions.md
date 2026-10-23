@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-23 · Firefox and Safari timing runs deferred; M1 is done on Chrome alone · personal-use app, the owner uses Chrome almost always · accepted by the owner; run `/timing.html?minutes=10&genres=pop,lofi,metal,epic&switchBars=8` there later if needed
 - 2026-10-22 · First-sound budget on a warm cache: Play → first sound 162 ms (3 runs, AudioWorklet frame count, plus ~40 ms output latency); piano ready 2.1–2.2 s after page start (226 samples from Cache API) · a Play in the first ~2 s gets the stand-in synth for the first bar, then the piano · accepted by the owner 2026-10-22: the stand-in synth covers the gap; staged load (one velocity layer first) is the fix if needed later
 - 2026-10-22 · M1 ear test done by the owner, no issues reported · covers patterns, genre switch, FX, Spicy pads, tempo change, humanize · accepted
 - 2026-10-22 · Full engine passes the M1 10-minute timing check in Chrome · `/timing.html?minutes=10&genres=pop,lofi,metal,epic&switchBars=8` at 120 BPM: 300/300 bars, 0 late, min margin 41 ms, bar starts exact (0 frames), 0 stand-in notes; onset lag constant over 10 min (Tone click 1–3 frames, smplr probe 15 frames every bar, TR-808 kick 7–9); page hidden for 9.5 of the 10 min · accepted for Chrome; LM-2 kick spread 27–119 frames is the detector (ringing kick raises the threshold), first-10 vs last-10 mean 79 vs 76, no drift
