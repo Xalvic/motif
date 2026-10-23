@@ -126,8 +126,14 @@ function colourize(token: ChordToken, genre: LegacyGenre, p: number, rng: Rng): 
   return token;
 }
 
-export const familyOf = (tokens: readonly ChordToken[]): Family =>
-  tokens[0]?.upper ? 'major' : 'minor';
+/**
+ * Major or minor: the case of the tonic chord (I or i) when the progression has one, else of
+ * the first chord. The prototype used only the first chord, so "vi IV I V" read as minor.
+ */
+export function familyOf(tokens: readonly ChordToken[]): Family {
+  const tonic = tokens.find((t) => t.degree === 0 && t.accidental === 0) ?? tokens[0];
+  return tonic?.upper ? 'major' : 'minor';
+}
 
 export function generateLegacy(
   request: LegacyRequest,
@@ -154,7 +160,7 @@ export function generateLegacy(
   let texts: string[];
   if (template.startsWith('D:')) {
     texts = template.slice(2).split(' ');
-    const family = parseRoman(texts[0]!).upper ? 'major' : 'minor';
+    const family = familyOf(texts.map(parseRoman));
     const second = [...texts];
     second[3] = pick(
       rng,
@@ -171,7 +177,7 @@ export function generateLegacy(
   }
 
   const p = colourChance(genre, request.colour);
-  const family = parseRoman(texts[0]!).upper ? 'major' : 'minor';
+  const family = familyOf(texts.map(parseRoman));
   let tokens = texts.map((t) => colourize(parseRoman(t), genre, p, rng));
   // Spicy: one chord (never the first) swapped for a pool chord, 65% of the time.
   if (request.colour === 2 && rng() < 0.65) {

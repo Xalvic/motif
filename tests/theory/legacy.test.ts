@@ -5,6 +5,7 @@ import { scaleById } from '../../src/theory/keys';
 import { legacyMelody, melodyReference } from '../../src/theory/melody/legacy';
 import { pitchClass } from '../../src/theory/pitch';
 import {
+  familyOf,
   generateLegacy,
   LEGACY_GENRES,
   pickPrompt,
@@ -121,6 +122,17 @@ describe('legacy generator invariants', () => {
       );
       for (const t of idea.tokens) expect(t.ext).toBe('5');
     }
+  });
+});
+
+describe('familyOf', () => {
+  it('reads the tonic chord, not just the first chord', () => {
+    const family = (romans: string) => familyOf(romans.split(' ').map(parseRoman));
+    expect(family('vi IV I V')).toBe('major');
+    expect(family('ii7 V7 Imaj7 vi7')).toBe('major');
+    expect(family('i bVI bIII bVII')).toBe('minor');
+    expect(family('IVmaj7 iii7 vi7 V7')).toBe('major'); // no tonic chord: the first chord
+    expect(family('vi ii iii IV')).toBe('minor');
   });
 });
 
