@@ -42,11 +42,15 @@ Function drives the grammar, the scorer and the UI badge.
 
 | Function | Major key | Minor key |
 |---|---|---|
-| **T** tonic | I, vi, iii | i, bIII, bVI (as deceptive target) |
-| **PD** pre-dominant | ii, IV, ii7, iv*, bVI*, bII* (Neapolitan) | ii°, iv, bVI, bII |
-| **D** dominant | V, V7, vii°, bVII* (backdoor) | V (harmonic minor), v, vii°, bVII |
+| **T** tonic | I, vi, iii, i* | i, bIII, I (Picardy), bVI (as deceptive target) |
+| **PD** pre-dominant | ii, IV, ii7, iv*, ii°*, bVI*, bII* (Neapolitan) | ii°, iv, bVI, bII, IV and ii (Dorian) |
+| **D** dominant | V, V7, vii°, v*, bVII* (backdoor) | V (harmonic minor), v, vii°, bVII |
 
-`*` = borrowed (modal mixture). Chromatic mediants (III, VI, bIII, bVI in major; ♯iii etc.) are tagged `other` and allowed only where a profile permits.
+`*` = borrowed (modal mixture). Chromatic mediants (III, VI, bIII in major; ♯iii etc.) and anything else not in the table are tagged `other` and allowed only where a profile permits.
+
+`functions.ts` reads the table by root and triad quality; extensions and inversions do not change the function (V7/3 is D). Sus and power chords use their numeral case. bVI directly after a D chord is T (deceptive target) in both families; elsewhere it is PD.
+
+**Borrowed** = the triad has a note outside the key's own scale (major: Ionian; minor: Aeolian, plus V and vii° from harmonic minor). Extensions do not count (bVIImaj7 in minor is not borrowed). Chromatic mediants are borrowed too, so they count against the colour budget.
 
 Grammar: phrases cycle **T → (PD) → D → T**. Retrogression D → PD (e.g. V → IV) is penalised only where a profile says so (classical yes; rock, pop and metal no).
 
