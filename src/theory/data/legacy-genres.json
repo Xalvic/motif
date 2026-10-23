@@ -1,0 +1,264 @@
+{
+  "cinematic": {
+    "label": "Cinematic piano",
+    "bpm": [60, 78],
+    "drums": false,
+    "colourBias": 0.15,
+    "colours": {
+      "maj": ["add9", "sus2", "maj7"],
+      "min": ["add9", "7"],
+      "dom": ["sus4"]
+    },
+    "power": false,
+    "voicing": "close",
+    "templates": [
+      "i bVI bIII bVII",
+      "vi IV I V",
+      "I V vi IV",
+      "i iv bVI bVII",
+      "I iii vi IV",
+      "i bVI iv bVII",
+      "IV I V vi",
+      "i bIII bVII iv",
+      "I V vi iii IV I IV V"
+    ],
+    "pool": {
+      "major": ["I", "ii", "iii", "IV", "V", "vi", "iv", "bVI"],
+      "minor": ["i", "iv", "v", "bVI", "bIII", "bVII", "V", "ii°"]
+    },
+    "structure": [
+      "Intro 4",
+      "Theme 8",
+      "Theme + octaves 8",
+      "Bridge 8",
+      "Theme, softer 8",
+      "Outro 4"
+    ],
+    "prompt": "Play only the top note of each chord in your right hand, then grow those notes into a melody."
+  },
+  "epic": {
+    "label": "Epic orchestral",
+    "bpm": [84, 112],
+    "drums": true,
+    "colourBias": 0.05,
+    "colours": {
+      "maj": ["sus2", "sus4", "add9"],
+      "min": ["add9"],
+      "dom": ["sus4"]
+    },
+    "power": false,
+    "voicing": "close",
+    "templates": [
+      "i bVI bVII i",
+      "i bVI bIII bVII",
+      "i bVII bVI bVII",
+      "i iv bVI V",
+      "I bVI bVII I",
+      "i bIII bVII iv",
+      "i bVI iv V",
+      "i bVI bIII bVII i bVI bVII V"
+    ],
+    "pool": {
+      "major": ["I", "IV", "V", "vi", "bVI", "bVII", "bIII", "iv"],
+      "minor": ["i", "iv", "bVI", "bIII", "bVII", "V", "bII", "v"]
+    },
+    "structure": [
+      "Low pulse intro 8",
+      "Build 8",
+      "Full theme 16",
+      "Breakdown 8",
+      "Final theme, key up 16"
+    ],
+    "prompt": "Write a 4-note heroic motif that jumps up a 5th, then repeat it louder."
+  },
+  "lofi": {
+    "label": "Lo-fi / hip hop",
+    "bpm": [72, 90],
+    "drums": true,
+    "colourBias": 0.55,
+    "colours": {
+      "maj": ["maj7", "maj9", "6"],
+      "min": ["7", "9"],
+      "dom": ["7", "9"]
+    },
+    "power": false,
+    "voicing": "close",
+    "templates": [
+      "ii7 V7 Imaj7 vi7",
+      "IVmaj7 iii7 vi7 V7",
+      "i7 iv7 bVImaj7 V7",
+      "Imaj7 vi7 ii7 V7",
+      "IVmaj7 V7 iii7 vi7",
+      "vi9 IVmaj7 Imaj7 V6",
+      "i9 iv9 bVIImaj7 bIIImaj7",
+      "ii9 V9 Imaj9 vi7"
+    ],
+    "pool": {
+      "major": ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "iv7", "bVIImaj7"],
+      "minor": ["i7", "iv7", "v7", "bVImaj7", "bIIImaj7", "bVII7", "iiø7", "V7"]
+    },
+    "structure": ["Intro 4", "Loop A 16", "Loop B, drums out 8", "Loop A 16", "Fade 4"],
+    "prompt": "Loop just bars 1–2 and hum or rap a hook over it for one minute."
+  },
+  "classical": {
+    "label": "Classical",
+    "bpm": [72, 100],
+    "drums": false,
+    "colourBias": 0,
+    "colours": {
+      "maj": [],
+      "min": ["7"],
+      "dom": ["7"]
+    },
+    "power": false,
+    "voicing": "close",
+    "templates": [
+      "I IV V I",
+      "I vi ii V",
+      "i iv V i",
+      "I ii V7 I",
+      "i bVI iv V",
+      "I IV ii V7",
+      "I V vi iii IV I IV V",
+      "i iv bVII bIII bVI ii° V i"
+    ],
+    "pool": {
+      "major": ["I", "ii", "iii", "IV", "V", "vi", "V7", "ii7"],
+      "minor": ["i", "ii°", "bIII", "iv", "V", "bVI", "bVII", "V7"]
+    },
+    "structure": ["A 8", "A repeat 8", "B 8", "A return 8"],
+    "prompt": "Write a melody you could sing, then add a bass line that moves the opposite way."
+  },
+  "malayalam": {
+    "label": "Malayalam melody",
+    "bpm": [70, 96],
+    "drums": false,
+    "colourBias": 0.1,
+    "colours": {
+      "maj": ["add9", "sus4"],
+      "min": ["7"],
+      "dom": ["7", "sus4"]
+    },
+    "power": false,
+    "voicing": "close",
+    "templates": [
+      "i bVII bVI V",
+      "i iv bVII bIII",
+      "I IV I V",
+      "i bVI bVII i",
+      "I iii IV I",
+      "i iv i V",
+      "I vi IV V",
+      "i bIII iv V"
+    ],
+    "pool": {
+      "major": ["I", "ii", "iii", "IV", "V", "vi", "bVII"],
+      "minor": ["i", "iv", "v", "bVI", "bIII", "bVII", "V", "IV"]
+    },
+    "structure": ["Prelude 4", "Pallavi 8", "Interlude 4", "Charanam 16", "Pallavi 8"],
+    "prompt": "Slide into your first long note from the note just below it, like a small gamaka."
+  },
+  "irish": {
+    "label": "Irish folk",
+    "bpm": [100, 126],
+    "drums": true,
+    "colourBias": 0.05,
+    "colours": {
+      "maj": ["sus4", "sus2"],
+      "min": ["7"],
+      "dom": ["sus4"]
+    },
+    "power": false,
+    "voicing": "close",
+    "templates": [
+      "I bVII IV I",
+      "i bVII i bVII",
+      "I IV I V",
+      "i IV i bVII",
+      "I V IV I",
+      "i bVII bVI bVII",
+      "I bVII I V",
+      "vi IV I V"
+    ],
+    "pool": {
+      "major": ["I", "ii", "IV", "V", "vi", "bVII"],
+      "minor": ["i", "IV", "v", "bIII", "bVII", "iv", "bVI"]
+    },
+    "structure": ["A part 8", "A part 8", "B part 8", "B part 8", "Play it all 3 times"],
+    "prompt": "Turn it into a jig: count 1-2-3 4-5-6 and write a melody in that bounce."
+  },
+  "metal": {
+    "label": "Metal",
+    "bpm": [120, 168],
+    "drums": true,
+    "colourBias": 0,
+    "colours": {
+      "maj": [],
+      "min": [],
+      "dom": []
+    },
+    "power": true,
+    "voicing": "power",
+    "templates": [
+      "i bVI bVII i",
+      "i bII i bVII",
+      "i bVI bIII bVII",
+      "i iv bVI V",
+      "i bVII bVI bV",
+      "i i bVI bVII",
+      "i bII bVI bVII",
+      "i bIII iv bII"
+    ],
+    "pool": {
+      "major": ["i", "bII", "bIII", "iv", "bV", "bVI", "bVII"],
+      "minor": ["i", "bII", "bIII", "iv", "v", "bV", "bVI", "bVII"]
+    },
+    "structure": [
+      "Intro riff 8",
+      "Verse 16",
+      "Pre-chorus 8",
+      "Chorus 16",
+      "Breakdown 8",
+      "Solo 16",
+      "Chorus 16"
+    ],
+    "prompt": "Write a riff on the low string that uses the ♭2 note at least twice."
+  },
+  "pop": {
+    "label": "Pop",
+    "bpm": [92, 118],
+    "drums": true,
+    "colourBias": 0.05,
+    "colours": {
+      "maj": ["add9", "sus2", "sus4"],
+      "min": ["7"],
+      "dom": ["sus4"]
+    },
+    "power": false,
+    "voicing": "close",
+    "templates": [
+      "I V vi IV",
+      "vi IV I V",
+      "I vi IV V",
+      "IV I V vi",
+      "I IV vi V",
+      "I iii IV V",
+      "vi IV V I"
+    ],
+    "pool": {
+      "major": ["I", "ii", "iii", "IV", "V", "vi", "bVII"],
+      "minor": ["i", "iv", "bVI", "bIII", "bVII", "v"]
+    },
+    "structure": [
+      "Intro 4",
+      "Verse 8",
+      "Pre 4",
+      "Chorus 8",
+      "Verse 8",
+      "Chorus 8",
+      "Bridge 8",
+      "Chorus 8"
+    ],
+    "prompt": "Write a 4-word chorus hook and fit those words onto bar 1."
+  }
+}
