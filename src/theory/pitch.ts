@@ -1,6 +1,7 @@
 import { Key, Note } from 'tonal';
 
-export type Mode = 'major' | 'minor';
+/** Major or minor: what the key signature and the function table look at. */
+export type Family = 'major' | 'minor';
 
 const SHARP_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const FLAT_NAMES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
@@ -20,9 +21,9 @@ export function isBlackKey(midi: number): boolean {
  * and keep the one with fewer accidentals. On a tie (G♭/F♯ major, E♭/D♯ minor)
  * we keep flats, like the prototype. alteration < 0 means flats.
  */
-export function usesFlats(tonic: number, mode: Mode): boolean {
+export function usesFlats(tonic: number, family: Family): boolean {
   const pc = pitchClass(tonic);
-  const signature = mode === 'major' ? Key.majorKey : Key.minorKey;
+  const signature = family === 'major' ? Key.majorKey : Key.minorKey;
   const flatKey = signature(FLAT_NAMES[pc]!).alteration;
   const sharpKey = signature(SHARP_NAMES[pc]!).alteration;
   const alteration = Math.abs(flatKey) <= Math.abs(sharpKey) ? flatKey : sharpKey;
