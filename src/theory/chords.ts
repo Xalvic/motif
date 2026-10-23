@@ -4,7 +4,7 @@
  */
 import { Note } from 'tonal';
 import { familyOf, MAJOR_STEPS, type Key } from './keys';
-import { pitchClass, pitchClassName, pretty, usesFlats } from './pitch';
+import { pitchClass, pitchClassName, pretty, usesFlats, type Family } from './pitch';
 import { hasSeventh, type ChordToken } from './roman';
 
 /** Root pitch class of the token in this key. */
@@ -109,16 +109,32 @@ function toneInterval(semitones: number, token: ChordToken): string {
 
 const ASCII = (name: string) => name.replace('♭', 'b').replace('♯', '#');
 
+/** C♭ F♭ E♯ B♯ and double accidentals: hard to find on the keys. */
+function awkward(name: string): boolean {
+  const note = Note.get(name);
+  return Math.abs(note.alt) > 1 || ['Cb', 'Fb', 'E#', 'B#'].includes(note.pc);
+}
+
 /**
- * Keeps the keyboard player's view simple: no double accidentals, no C♭ F♭ E♯ B♯.
- * Those fall back to the plain black/white key name (flats or sharps as asked).
+ * Keeps the keyboard player's view simple: awkward names fall back to the plain
+ * black/white key name (flats or sharps as asked).
  */
 function plain(name: string, flats: boolean): string {
-  const note = Note.get(name);
-  if (Math.abs(note.alt) > 1 || ['Cb', 'Fb', 'E#', 'B#'].includes(note.pc)) {
-    return ASCII(pitchClassName(note.chroma, flats));
-  }
-  return note.pc;
+  if (awkward(name)) return ASCII(pitchClassName(Note.chroma(name)!, flats));
+  return Note.get(name).pc;
+}
+
+/** The key's spelling: the idea's choice if it made one, else the key signature. */
+function keyUsesFlats(key: Key): boolean {
+  return key.flats ?? usesFlats(key.tonic, familyOf(key.mode));
+}
+
+/** Letter-correct root, and a speller for the chord tones above it (before plain()). */
+function letters(token: ChordToken, tonic: number, keyFlats: boolean) {
+  const tonicName = ASCII(pitchClassName(tonic, keyFlats));
+  const root = Note.transpose(tonicName, degreeInterval(token));
+  const tone = (semitones: number) => Note.transpose(root, toneInterval(semitones, token));
+  return { root, tone };
 }
 
 export interface Spelling {
@@ -136,15 +152,13 @@ export interface Spelling {
  * Each note is made plain after spelling: C♭ E♭ G♭ shows as B E♭ G♭, not B D♯ F♯.
  */
 export function spellChord(token: ChordToken, key: Key): Spelling {
-  const keyFlats = usesFlats(key.tonic, familyOf(key.mode));
-  const tonicName = ASCII(pitchClassName(key.tonic, keyFlats));
-  const letterRoot = Note.transpose(tonicName, degreeInterval(token));
+  const keyFlats = keyUsesFlats(key);
+  const { root: letterRoot, tone } = letters(token, key.tonic, keyFlats);
   const rootAlt = Note.get(letterRoot).alt;
   const flats = rootAlt < 0 ? true : rootAlt > 0 ? false : keyFlats;
   const root = plain(letterRoot, flats);
 
-  const spell = (semitones: number) =>
-    plain(Note.transpose(letterRoot, toneInterval(semitones, token)), flats);
+  const spell = (semitones: number) => plain(tone(semitones), flats);
   const names: Record<number, string> = {};
   for (const i of chordIntervals(token))
     names[pitchClass(Note.chroma(root)! + i)] = pretty(spell(i));
@@ -152,6 +166,37 @@ export function spellChord(token: ChordToken, key: Key): Spelling {
   names[pitchClass(Note.chroma(root)! + bassInterval(token))] = bassName;
 
   return { names, root: pretty(root), bass: bassName, flats };
+}
+
+/**
+ * Awkward names (C♭ F♭ E♯ B♯, double accidentals) this spelling of the key would need for
+ * these chords. An awkward root counts twice: it changes the letter of the chord symbol.
+ */
+function awkwardness(tokens: readonly ChordToken[], tonic: number, keyFlats: boolean): number {
+  let count = 0;
+  for (const token of tokens) {
+    const { root, tone } = letters(token, tonic, keyFlats);
+    if (awkward(root)) count += 2;
+    for (const i of chordIntervals(token).slice(1)) if (awkward(tone(i))) count++;
+    if (token.bass && awkward(tone(bassInterval(token)))) count++;
+  }
+  return count;
+}
+
+/**
+ * Flats or sharps for this idea. Only G♭/F♯ major and E♭/D♯ minor are open: both spellings
+ * have six accidentals, so the one that reads better for these chords wins (fewer awkward
+ * names). A tie keeps flats, like the prototype. Every other key uses its key signature.
+ */
+export function chooseKeySpelling(
+  tokens: readonly ChordToken[],
+  tonic: number,
+  family: Family,
+): boolean {
+  const signature = usesFlats(tonic, family);
+  const tie = pitchClass(tonic) === (family === 'major' ? 6 : 3);
+  if (!tie) return signature;
+  return awkwardness(tokens, tonic, true) <= awkwardness(tokens, tonic, false);
 }
 
 /** Note name with octave, spelled like the chord: 68 → "A♭4" in an A♭ chord. Middle C is C4. */

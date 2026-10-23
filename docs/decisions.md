@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-23 · G♭/F♯ major and E♭/D♯ minor are spelled per idea: the spelling with fewer awkward names (C♭ F♭ E♯ B♯, double accidentals; root counts twice) wins, a tie keeps flats · both keys have six accidentals and practice has no fixed rule; for keyboard players the chord letters should read easily (pop I–V–vi–IV in G♭ needed a C♭ chord, shown as B; F♯ gives F♯ C♯ D♯m B). E♭ minor stays when its V would need C𝄪 · accepted (owner asked Claude to research and decide)
 - 2026-10-23 · Legacy port reads major/minor from the tonic chord (I or i), else the first chord · the prototype used the first chord only, so pop "vi IV I V" and lo-fi "ii7 V7 Imaj7 vi7" showed as minor keys with a minor scale · accepted, a deliberate change from the prototype
 - 2026-10-23 · Card auditions play outside the transport at `Tone.now()` (AUDIO §3.2 exception), only while stopped · SPEC §4 asks for them; no timers involved · accepted
 - 2026-10-23 · Rootless voicings use our own rule (drop root, then 5th; keep the 3rd), not tonal's `VoicingDictionary.lefthand` · the dictionary adds 9ths and 13ths that are not in the chord (m7 → 3 5 7 9), which breaks the THEORY §8 rule "voicing notes ⊆ chord notes"; filtered to chord tones it gives the same shapes as our rule · accepted

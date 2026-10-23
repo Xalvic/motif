@@ -329,7 +329,7 @@ Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours 
 **Roman / chords**
 - `parse(format(t)) == t` for every token in every profile and idiom.
 - Lowercase numerals always produce a minor third; `°` a diminished fifth.
-- Spelling uses flats in flat keys and sharps in sharp keys.
+- Spelling uses flats in flat keys and sharps in sharp keys. A key uses the signature with fewer accidentals. The two ties, G♭/F♯ major and E♭/D♯ minor (six each), are decided per idea by `chooseKeySpelling`: spell the chords both ways, count awkward names (C♭ F♭ E♯ B♯, double accidentals; an awkward root counts twice), keep the lower count; equal counts keep flats. Pop I–V–vi–IV becomes F♯ C♯ D♯m B, not G♭ D♭ E♭m C♭.
 
 **Progression**
 - Length equals `bars`. Locked chords are byte-identical before and after.

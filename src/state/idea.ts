@@ -3,11 +3,11 @@
  * src/theory; the store keeps the current one.
  */
 import { bestFitScale } from '../theory/analysis';
-import { chordPcs, chordSymbol, noteName, spellChord } from '../theory/chords';
+import { chooseKeySpelling, chordPcs, chordSymbol, noteName, spellChord } from '../theory/chords';
 import type { GenreId } from '../theory/genres';
 import type { Key, Scale } from '../theory/keys';
 import { legacyMelody, melodyReference, type NoteEvent } from '../theory/melody/legacy';
-import { pitchClassName, usesFlats, type Family } from '../theory/pitch';
+import { pitchClassName, type Family } from '../theory/pitch';
 import {
   generateLegacy,
   LEGACY_GENRES,
@@ -24,6 +24,8 @@ export interface Idea {
   seed: number;
   tonic: number;
   family: Family;
+  /** Note spelling for this idea (chooseKeySpelling): only G♭/F♯ and E♭/D♯ can differ. */
+  flats: boolean;
   tokens: ChordToken[];
   locks: boolean[];
   voicings: Voicing[];
@@ -42,9 +44,12 @@ export interface IdeaSettings {
 /** 32-bit seed. Outside src/theory, so Math.random is fine here. */
 export const newSeed = () => Math.floor(Math.random() * 2 ** 32);
 
-export const keyOf = (idea: Pick<Idea, 'tonic' | 'family'>): Key => ({
+type Spelled = Pick<Idea, 'tonic' | 'family' | 'flats'>;
+
+export const keyOf = (idea: Spelled): Key => ({
   tonic: idea.tonic,
   mode: idea.family,
+  flats: idea.flats,
 });
 
 function voice(genre: GenreId, tonic: number, family: Family, tokens: ChordToken[]): Voicing[] {
@@ -74,6 +79,7 @@ export function generateIdea(
     seed,
     tonic,
     family,
+    flats: chooseKeySpelling(tokens, tonic, family),
     tokens,
     locks: locked ? [...locked.locks] : tokens.map(() => false),
     voicings: voice(settings.genre, tonic, family, tokens),
@@ -93,6 +99,7 @@ export function rerollChord(idea: Idea, settings: IdeaSettings, index: number, s
   return {
     ...idea,
     tokens,
+    flats: chooseKeySpelling(tokens, idea.tonic, idea.family),
     scale,
     voicings: voice(settings.genre, idea.tonic, idea.family, tokens),
     melody: melodyFor(tokens, idea.tonic, scale, rng),
@@ -113,6 +120,7 @@ export function transpose(idea: Idea, genre: GenreId, tonic: number): Idea {
   return {
     ...idea,
     tonic,
+    flats: chooseKeySpelling(idea.tokens, tonic, idea.family),
     voicings: voice(genre, tonic, idea.family, idea.tokens),
     melody: idea.melody.map((n) => ({ ...n, midi: n.midi + shift })),
   };
@@ -147,20 +155,18 @@ export function chordView(idea: Idea, index: number): ChordView {
 }
 
 /** Key name like "A minor", spelled by the key signature. */
-export function keyName(idea: Pick<Idea, 'tonic' | 'family'>): string {
-  return `${pitchClassName(idea.tonic, usesFlats(idea.tonic, idea.family))} ${idea.family}`;
+export function keyName(idea: Spelled): string {
+  return `${pitchClassName(idea.tonic, idea.flats)} ${idea.family}`;
 }
 
 /** Note name with octave, spelled by the key signature (melody, scale). */
-export function keyNoteName(idea: Pick<Idea, 'tonic' | 'family'>, midi: number): string {
-  const flats = usesFlats(idea.tonic, idea.family);
-  return pitchClassName(midi, flats) + (Math.floor(midi / 12) - 1);
+export function keyNoteName(idea: Spelled, midi: number): string {
+  return pitchClassName(midi, idea.flats) + (Math.floor(midi / 12) - 1);
 }
 
 /** Scale note names from the tonic, for example ["A", "B", "C", …]. */
 export function scaleNotes(idea: Idea): string[] {
-  const flats = usesFlats(idea.tonic, idea.family);
-  return idea.scale.steps.map((step) => pitchClassName(idea.tonic + step, flats));
+  return idea.scale.steps.map((step) => pitchClassName(idea.tonic + step, idea.flats));
 }
 
 /** Melody notes that start in a bar. */

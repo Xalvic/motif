@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   bassPc,
+  chooseKeySpelling,
   chordIntervals,
   chordPcs,
   chordSymbol,
@@ -159,5 +160,43 @@ describe('noteName', () => {
   it('names notes outside the chord by the chord preference', () => {
     expect(noteName(61, spellChord(parseRoman('bVI'), C))).toBe('D♭4');
     expect(noteName(61, spellChord(parseRoman('V'), Am))).toBe('C♯4');
+  });
+});
+
+describe('chooseKeySpelling', () => {
+  const choose = (romans: string, tonic: number, family: 'major' | 'minor') =>
+    chooseKeySpelling(romans.split(' ').map(parseRoman), tonic, family) ? 'flats' : 'sharps';
+  const symbols = (romans: string, key: Key) =>
+    romans
+      .split(' ')
+      .map((r) => chordSymbol(parseRoman(r), key))
+      .join(' ');
+
+  it('keeps the key signature in every key without a tie', () => {
+    expect(choose('I V vi IV', 1, 'major')).toBe('flats'); // D♭, not C♯
+    expect(choose('I V vi IV', 11, 'major')).toBe('sharps'); // B, not C♭
+    expect(choose('i bVI bIII bVII', 8, 'minor')).toBe('sharps'); // G♯ minor, not A♭ minor
+  });
+
+  // Tie keys: six flats or six sharps. The spelling that reads better wins.
+  it('spells G♭/F♯ major pop as F♯: IV is B, not C♭', () => {
+    expect(choose('I V vi IV', 6, 'major')).toBe('sharps');
+    expect(symbols('I V vi IV', { tonic: 6, mode: 'major', flats: false })).toBe('F♯ C♯ D♯m B');
+  });
+
+  it('spells E♭/D♯ minor i–♭VI–♭III–♭VII as D♯ minor: ♭VI is B, not C♭', () => {
+    expect(choose('i bVI bIII bVII', 3, 'minor')).toBe('sharps');
+    expect(symbols('i bVI bIII bVII', { tonic: 3, mode: 'minor', flats: false })).toBe(
+      'D♯m B F♯ C♯',
+    );
+  });
+
+  it('keeps E♭ minor when the harmonic-minor V would need double sharps', () => {
+    expect(choose('i iv V i', 3, 'minor')).toBe('flats');
+    expect(symbols('i iv V i', { tonic: 3, mode: 'minor', flats: true })).toBe('E♭m A♭m B♭ E♭m');
+  });
+
+  it('keeps flats on a tie', () => {
+    expect(choose('ii7 V7 Imaj7 vi7', 6, 'major')).toBe('flats');
   });
 });

@@ -10,6 +10,8 @@ export interface Key {
   /** Pitch class 0–11 (C = 0). */
   tonic: number;
   mode: Mode;
+  /** Spelling override (chooseKeySpelling). Unset = the key signature with fewer accidentals. */
+  flats?: boolean;
 }
 
 /** Major third above the tonic → major family. */
