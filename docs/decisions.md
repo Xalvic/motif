@@ -3,6 +3,8 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-23 · Legacy port reads major/minor from the tonic chord (I or i), else the first chord · the prototype used the first chord only, so pop "vi IV I V" and lo-fi "ii7 V7 Imaj7 vi7" showed as minor keys with a minor scale · accepted, a deliberate change from the prototype
+- 2026-10-23 · Card auditions play outside the transport at `Tone.now()` (AUDIO §3.2 exception), only while stopped · SPEC §4 asks for them; no timers involved · accepted
 - 2026-10-23 · Rootless voicings use our own rule (drop root, then 5th; keep the 3rd), not tonal's `VoicingDictionary.lefthand` · the dictionary adds 9ths and 13ths that are not in the chord (m7 → 3 5 7 9), which breaks the THEORY §8 rule "voicing notes ⊆ chord notes"; filtered to chord tones it gives the same shapes as our rule · accepted
 - 2026-10-23 · `°7` = fully diminished (dim7, 0 3 6 9); `ø7` = half-diminished (m7♭5). The prototype's lofi `ii°7` meant half-diminished and is ported as `iiø7` · standard notation · accepted
 - 2026-10-23 · Inversions are chosen on the tokens (`chooseInversions` sets the bass figure), not inside the voicer · the card then shows G/B, and the voicer stays deterministic with no rng · accepted

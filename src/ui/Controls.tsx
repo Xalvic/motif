@@ -36,7 +36,18 @@ function Segmented<T>({ options, value, onChange }: SegmentedProps<T>) {
 }
 
 export function Controls() {
-  const { genre, key, bars, colour, bpm, setSettings } = useStore();
+  const {
+    genre,
+    key,
+    bars,
+    colour,
+    bpm,
+    chooseGenre,
+    chooseKey,
+    chooseBars,
+    chooseColour,
+    chooseBpm,
+  } = useStore();
 
   return (
     <section className="controls" aria-label="Settings">
@@ -46,7 +57,7 @@ export function Controls() {
             key={g.id}
             className="chip"
             aria-pressed={g.id === genre}
-            onClick={() => setSettings({ genre: g.id })}
+            onClick={() => chooseGenre(g.id)}
           >
             {g.label}
           </button>
@@ -62,7 +73,7 @@ export function Controls() {
             id="keySel"
             value={key}
             onChange={(e) =>
-              setSettings({ key: e.target.value === 'random' ? 'random' : Number(e.target.value) })
+              chooseKey(e.target.value === 'random' ? 'random' : Number(e.target.value))
             }
           >
             <option value="random">Random</option>
@@ -76,20 +87,12 @@ export function Controls() {
 
         <div className="opt">
           <span className="label">Length</span>
-          <Segmented
-            options={LENGTH_OPTIONS}
-            value={bars}
-            onChange={(value) => setSettings({ bars: value })}
-          />
+          <Segmented options={LENGTH_OPTIONS} value={bars} onChange={chooseBars} />
         </div>
 
         <div className="opt">
           <span className="label">Colour</span>
-          <Segmented
-            options={COLOUR_OPTIONS}
-            value={colour}
-            onChange={(value) => setSettings({ colour: value })}
-          />
+          <Segmented options={COLOUR_OPTIONS} value={colour} onChange={chooseColour} />
         </div>
 
         <div className="opt">
@@ -104,7 +107,7 @@ export function Controls() {
               max={180}
               step={1}
               value={bpm}
-              onChange={(e) => setSettings({ bpm: Number(e.target.value) })}
+              onChange={(e) => chooseBpm(Number(e.target.value))}
             />
             <output htmlFor="bpm">{bpm} BPM</output>
           </div>

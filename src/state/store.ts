@@ -1,18 +1,20 @@
 import { create } from 'zustand';
+import { GENRE_IDS, type GenreId } from '../theory/genres';
+import { LEGACY_GENRES } from '../theory/progression/legacy';
+import {
+  generateIdea,
+  newMelody,
+  newPrompt,
+  newSeed,
+  rerollChord,
+  revoice,
+  transpose,
+  type Idea,
+} from './idea';
 
-// Genre ids and labels from the prototype. The genre JSON profiles replace this list later.
-export const GENRES = [
-  { id: 'cinematic', label: 'Cinematic piano' },
-  { id: 'epic', label: 'Epic orchestral' },
-  { id: 'lofi', label: 'Lo-fi / hip hop' },
-  { id: 'classical', label: 'Classical' },
-  { id: 'malayalam', label: 'Malayalam melody' },
-  { id: 'irish', label: 'Irish folk' },
-  { id: 'metal', label: 'Metal' },
-  { id: 'pop', label: 'Pop' },
-] as const;
+export type { GenreId };
 
-export type GenreId = (typeof GENRES)[number]['id'];
+export const GENRES = GENRE_IDS.map((id) => ({ id, label: LEGACY_GENRES[id].label }));
 
 export interface Settings {
   genre: GenreId;
@@ -35,23 +37,105 @@ export interface Playback {
   loading: { loaded: number; total: number } | null;
 }
 
-interface AppState extends Settings, Playback {
-  setSettings: (changes: Partial<Settings>) => void;
-  setPlayback: (changes: Partial<Playback>) => void;
+interface IdeaState {
+  idea: Idea;
+  /** Card shown on the keyboard when nothing plays. */
+  selected: number;
+  /** The user moved the tempo slider: new ideas keep the tempo. */
+  bpmTouched: boolean;
+  toast: string | null;
 }
 
-export const useStore = create<AppState>()((set) => ({
+interface Actions {
+  /** Raw setter: no new idea (toggles, and the timing harness). */
+  setSettings: (changes: Partial<Settings>) => void;
+  setPlayback: (changes: Partial<Playback>) => void;
+  generate: () => void;
+  chooseGenre: (genre: GenreId) => void;
+  chooseBars: (bars: 4 | 8) => void;
+  chooseColour: (colour: 0 | 1 | 2) => void;
+  chooseKey: (key: number | 'random') => void;
+  chooseBpm: (bpm: number) => void;
+  reroll: (index: number) => void;
+  toggleLock: (index: number) => void;
+  select: (index: number) => void;
+  newMelody: () => void;
+  newPrompt: () => void;
+  showToast: (message: string) => void;
+}
+
+type AppState = Settings & Playback & IdeaState & Actions;
+
+const START: Settings = {
   genre: 'cinematic',
   key: 'random',
   bars: 4,
   colour: 1,
   bpm: 70,
   loop: true,
-  drums: false,
+  drums: LEGACY_GENRES.cinematic.drums,
   melody: false,
-  playing: false,
-  playhead: null,
-  loading: null,
-  setSettings: (changes) => set(changes),
-  setPlayback: (changes) => set(changes),
-}));
+};
+
+const first = generateIdea(START, newSeed());
+let toastTimer: ReturnType<typeof setTimeout> | undefined;
+
+export const useStore = create<AppState>()((set, get) => {
+  /** A new idea from the current settings; locked chords stay. */
+  function regenerate(changes: Partial<Settings> = {}, keepLocks = true): void {
+    const state = { ...get(), ...changes };
+    const { idea, bpm } = generateIdea(state, newSeed(), keepLocks ? state.idea : undefined);
+    set({ ...changes, idea, selected: 0, bpm: state.bpmTouched ? state.bpm : bpm });
+  }
+
+  return {
+    ...START,
+    bpm: first.bpm,
+    playing: false,
+    playhead: null,
+    loading: null,
+    idea: first.idea,
+    selected: 0,
+    bpmTouched: false,
+    toast: null,
+
+    setSettings: (changes) => {
+      set(changes);
+      // The voicing style belongs to the genre (metal = power chords).
+      if (changes.genre) set({ idea: revoice(get().idea, changes.genre) });
+    },
+    setPlayback: (changes) => set(changes),
+    generate: () => regenerate(),
+    chooseGenre: (genre) => {
+      set({ bpmTouched: false });
+      regenerate({ genre, drums: LEGACY_GENRES[genre].drums }, false);
+    },
+    chooseBars: (bars) => regenerate({ bars }, false),
+    chooseColour: (colour) => regenerate({ colour }),
+    chooseKey: (key) => {
+      if (key === 'random') set({ key });
+      else set({ key, idea: transpose(get().idea, get().genre, key) });
+    },
+    chooseBpm: (bpm) => set({ bpm, bpmTouched: true }),
+    reroll: (index) => {
+      const state = get();
+      set({ idea: rerollChord(state.idea, state, index, newSeed()), selected: index });
+    },
+    toggleLock: (index) => {
+      const locks = [...get().idea.locks];
+      locks[index] = !locks[index];
+      set({ idea: { ...get().idea, locks } });
+    },
+    select: (index) => set({ selected: index }),
+    newMelody: () => {
+      set({ idea: newMelody(get().idea, newSeed()) });
+      if (!get().playing) set({ melody: true });
+    },
+    newPrompt: () => set({ idea: newPrompt(get().idea, get().genre, newSeed()) }),
+    showToast: (message) => {
+      clearTimeout(toastTimer);
+      set({ toast: message });
+      toastTimer = setTimeout(() => set({ toast: null }), 1800);
+    },
+  };
+});

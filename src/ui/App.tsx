@@ -3,6 +3,7 @@ import { Header } from './Header';
 import { LowerPanels } from './LowerPanels';
 import { SavedIdeas } from './SavedIdeas';
 import { Stage } from './Stage';
+import { Toast } from './Toast';
 
 export function App() {
   return (
@@ -12,6 +13,7 @@ export function App() {
       <Stage />
       <LowerPanels />
       <SavedIdeas />
+      <Toast />
     </div>
   );
 }

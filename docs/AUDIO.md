@@ -60,6 +60,8 @@ Use one `transport.scheduleRepeat(onBar, "1m")`. In `onBar(time)`:
 
 Loop: the pump counts bars modulo `idea.bars`; when `loop` is off, stop after the last bar.
 
+**Auditions** (`audition.ts`) are the one exception: a card click plays its chord, a key press plays its note, at `Tone.now() + 30 ms`, and only while the transport is stopped (SPEC §4). No timers; while playing, the pump owns all sound.
+
 **Swing**: Tone's `transport.swing` only shifts events Tone itself schedules on the grid. We compute note times ourselves, so apply swing in `comping.ts`/`drums.ts`: delay off-beat 16ths (or 8ths) by `swing × gridLength / 2`. Lo-fi default 0.3 on 16ths.
 
 **Tempo**: `transport.bpm.rampTo(bpm, 0.1)`; the pump reads seconds-per-beat at each bar.

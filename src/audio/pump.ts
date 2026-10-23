@@ -5,7 +5,8 @@
 import * as Tone from 'tone';
 import { useStore, type GenreId } from '../state/store';
 import { createRng, type Rng } from '../theory/random';
-import { compBar, padBar } from './comping';
+import { melodyInBar } from '../state/idea';
+import { compBar, padBar, type BarNote } from './comping';
 import { drumBar } from './drums';
 import { LAYERS, setFx, startAudio, type Layer } from './engine';
 import { applySwing, humanize } from './feel';
@@ -17,10 +18,6 @@ import {
   stopAll,
   type InstrumentEntry,
 } from './instruments';
-import { placeholderMelody, placeholderVoicing } from './placeholder';
-
-/** Humanize seed. Becomes the idea's seed once ideas exist (M3). */
-const SEED = 1;
 
 export interface ProbeNote {
   layer: Layer;
@@ -38,14 +35,15 @@ export const pumpProbe: {
 
 /** Bars since Play, not wrapped. */
 let bar = 0;
-let rng: Rng = createRng(SEED);
+let rng: Rng = createRng(1);
 let genre: GenreId | undefined;
 let active: Partial<Record<Layer, InstrumentEntry>> = {};
 
 function onBar(time: number): void {
   const state = useStore.getState();
 
-  if (!state.loop && bar >= state.bars) {
+  const bars = state.idea.tokens.length;
+  if (!state.loop && bar >= bars) {
     Tone.getDraw().schedule(stopPlayback, time);
     return;
   }
@@ -70,12 +68,13 @@ function onBar(time: number): void {
     genre = state.genre;
   }
 
-  const loopBar = bar % state.bars;
-  const voicing = placeholderVoicing(loopBar);
+  // Edits (new chords, a reroll) reach the next bar: the pump reads the idea every bar.
+  const loopBar = bar % bars;
+  const voicing = state.idea.voicings[loopBar]!;
   let notes = [...compBar(profile.comp, voicing), ...padBar(voicing)];
-  if (state.melody) notes.push(...placeholderMelody(loopBar));
+  if (state.melody) notes.push(...melodyNotes(loopBar));
   if (state.drums && profile.drums) {
-    notes.push(...drumBar(profile.drums, { bar: loopBar, bars: state.bars, colour: state.colour }));
+    notes.push(...drumBar(profile.drums, { bar: loopBar, bars, colour: state.colour }));
   }
   notes = humanize(applySwing(notes, profile.swing), rng, spb);
 
@@ -110,13 +109,24 @@ function onBar(time: number): void {
   bar++;
 }
 
+function melodyNotes(loopBar: number): BarNote[] {
+  return melodyInBar(useStore.getState().idea, loopBar).map((n) => ({
+    layer: 'melody',
+    note: n.midi,
+    beat: n.start - loopBar * 4,
+    beats: n.dur,
+    velocity: n.vel,
+  }));
+}
+
 /** Call from a click or key handler (it starts the AudioContext). */
 export async function startPlayback(): Promise<void> {
   await startAudio();
   const transport = Tone.getTransport();
   if (transport.state === 'started') return;
   bar = 0;
-  rng = createRng(SEED);
+  // Humanize follows the idea's seed: the same idea always gets the same feel.
+  rng = createRng(useStore.getState().idea.seed);
   genre = undefined;
   transport.cancel();
   transport.position = 0;

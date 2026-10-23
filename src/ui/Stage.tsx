@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
+import { auditionChord } from '../audio/audition';
 import { startPlayback, stopPlayback } from '../audio/pump';
-import { useStore } from '../state/store';
+import { chordView, ideaText, keyName } from '../state/idea';
+import { GENRES, useStore } from '../state/store';
+import { pitchClass } from '../theory/pitch';
 import { Keyboard } from './Keyboard';
 
 function togglePlay(): void {
@@ -8,34 +11,99 @@ function togglePlay(): void {
   else void startPlayback();
 }
 
-// The generator (M3) fills the cards in. Until then Play loops a placeholder bar (audio/placeholder.ts).
+const svg = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 };
+const LockIcon = ({ locked }: { locked: boolean }) => (
+  <svg {...svg}>
+    <rect x="5" y="11" width="14" height="10" rx="2" />
+    <path d={locked ? 'M8 11V7a4 4 0 0 1 8 0v4' : 'M8 11V7a4 4 0 0 1 7.5-2'} />
+  </svg>
+);
+const SwapIcon = () => (
+  <svg {...svg}>
+    <path d="M20 11a8 8 0 1 0-2.3 5.7" />
+    <path d="M20 4v7h-7" />
+  </svg>
+);
+const CopyIcon = () => (
+  <svg {...svg}>
+    <rect x="9" y="9" width="12" height="12" rx="2" />
+    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+  </svg>
+);
+
+async function copyIdea(): Promise<void> {
+  const { idea, genre, bpm, showToast } = useStore.getState();
+  try {
+    await navigator.clipboard.writeText(ideaText(idea, genre, bpm));
+    showToast('Copied: chords, notes and melody');
+  } catch {
+    showToast('Copy is blocked in this browser.');
+  }
+}
+
 export function Stage() {
-  const { bars, playing, playhead, loading, loop, drums, melody, setSettings } = useStore();
+  const {
+    idea,
+    selected,
+    genre,
+    bpm,
+    playing,
+    playhead,
+    loading,
+    loop,
+    drums,
+    melody,
+    setSettings,
+    generate,
+    reroll,
+    toggleLock,
+    select,
+  } = useStore();
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const target = e.target as HTMLElement;
-      if (e.code !== 'Space' || target.closest('input, select, textarea, button')) return;
-      e.preventDefault();
-      togglePlay();
+      if (target.closest('input, select, textarea, button, [role=button]')) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.key === 'g' || e.key === 'G') {
+        useStore.getState().generate();
+      }
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  const views = idea.tokens.map((_, i) => chordView(idea, i));
+  // While playing the keyboard follows the sounding bar; stopped, it shows the selected card.
+  // A playhead from before a length change can point past the new idea for one bar.
+  const last = idea.tokens.length - 1;
+  const shown = playhead !== null && playhead <= last ? playhead : Math.min(selected, last);
+  const view = views[shown]!;
+  const voicing = idea.voicings[shown]!;
+  const scale = idea.scale.steps.map((step) => pitchClass(idea.tonic + step));
+  const label = GENRES.find((g) => g.id === genre)!.label;
+
+  function chooseCard(i: number) {
+    select(i);
+    void auditionChord(idea.voicings[i]!);
+  }
+
   return (
     <section className="stage" aria-label="Progression">
       <div className="stage-head">
         <div>
-          <div className="keyname">No idea yet</div>
+          <div className="keyname">{keyName(idea)}</div>
           <div className="meta">
             {loading
               ? `Loading sounds ${loading.loaded}/${loading.total}…`
-              : 'The chord generator arrives in a later milestone.'}
+              : `${bpm} BPM · ${idea.tokens.length} bars · ${label}`}
           </div>
         </div>
         <div className="transport">
-          <button className="btn primary" disabled>
+          <button className="btn primary" onClick={generate}>
             New chords
           </button>
           <button className="btn play" onClick={togglePlay}>
@@ -66,20 +134,71 @@ export function Stage() {
       </div>
 
       <div className="cards">
-        {Array.from({ length: bars }, (_, i) => (
-          <div key={i} className={i === playhead ? 'card now' : 'card'}>
-            <div className="card-top">
-              <span className="bar">BAR {i + 1}</span>
+        {views.map((v, i) => {
+          const locked = idea.locks[i]!;
+          const classes = [
+            'card',
+            i === selected && 'sel',
+            i === playhead && 'now',
+            locked && 'locked',
+          ]
+            .filter(Boolean)
+            .join(' ');
+          return (
+            <div
+              key={i}
+              className={classes}
+              tabIndex={0}
+              role="button"
+              aria-label={`Bar ${i + 1}: ${v.symbol}`}
+              onClick={() => chooseCard(i)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && e.target === e.currentTarget) chooseCard(i);
+              }}
+            >
+              <div className="card-top">
+                <span className="bar">BAR {i + 1}</span>
+                <span className="ic">
+                  <button
+                    aria-pressed={locked}
+                    aria-label="Lock chord"
+                    title={locked ? 'Unlock' : 'Keep this chord'}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleLock(i);
+                    }}
+                  >
+                    <LockIcon locked={locked} />
+                  </button>
+                  <button
+                    aria-label="Swap chord"
+                    title="Swap this chord"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      reroll(i);
+                      const next = useStore.getState().idea.voicings[i]!;
+                      void auditionChord(next);
+                    }}
+                  >
+                    <SwapIcon />
+                  </button>
+                </span>
+              </div>
+              <div className="cname">{v.symbol}</div>
+              <div className="roman">{v.roman}</div>
+              <div className="notes">{v.notes.join(' ')}</div>
             </div>
-            <div className="cname">–</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="kbd-block">
-        <Keyboard />
+        <Keyboard voicing={voicing} name={view.name} scale={scale} />
         <div className="kbd-cap">
-          <div>Chord notes show here.</div>
+          <div>
+            <b>{view.symbol}</b> · left hand <b>{view.name(voicing.bass)}</b> · right hand{' '}
+            <b>{voicing.upper.map(view.name).join(' ')}</b>
+          </div>
           <div className="legend">
             <span>
               <i className="sw" style={{ background: 'var(--bass)' }} />
@@ -89,15 +208,29 @@ export function Stage() {
               <i className="sw" style={{ background: 'var(--accent)' }} />
               Right hand
             </span>
+            <span>
+              <i
+                className="sw"
+                style={{
+                  background: 'var(--accent)',
+                  opacity: 0.55,
+                  borderRadius: '50%',
+                  width: 8,
+                  height: 8,
+                }}
+              />
+              Melody-safe notes
+            </span>
           </div>
         </div>
       </div>
 
       <div className="transport">
-        <button className="btn" disabled>
+        <button className="btn" onClick={() => void copyIdea()}>
+          <CopyIcon />
           Copy for FL Studio
         </button>
-        <button className="btn" disabled>
+        <button className="btn" disabled title="Saved ideas arrive with M5">
           Save idea
         </button>
       </div>
