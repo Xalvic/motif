@@ -105,7 +105,10 @@ Before shipping, verify each row against a second reference and keep the table u
 1. **Resolve mode and key.**
 2. **Make 24 candidates.** For each:
    - With probability `profile.idiomRate` (0.3–0.6), take a weighted idiom and fit it to the length (4 bars as written; 2-chord vamps repeat; for 8 bars use idiom + variation, or idiom + a second compatible idiom).
-   - Otherwise walk the transition table: start from `profile.start` (mostly tonic); use second-order transitions where the table has them, else first-order. Temperature by colour: Plain 0.7 (safer), Some 1.0, Spicy 1.3.
+     - Eligible: listed in the profile, written for the mode, `minColour` ≤ colour, and not longer than the idea (8-chord idioms only in 8-bar ideas). No eligible idiom → walk.
+     - One pass in bars: 2 chords → A B A B, 3 → A B C C, 4 and 8 as written. A vamp repeats to 8 bars.
+     - 8 bars from a 4-bar pass: 50% a second compatible idiom (another eligible 4-bar idiom that does not start on the chord the first ends on), else a variation: bars 5–6 repeat bars 1–2, bars 7–8 are walked on from there (up to 4 tries for a second half that differs).
+   - Otherwise walk the transition table: start from `profile.start` (mostly tonic; a mode with no row starts on its tonic triad); use second-order transitions where the table has them, else first-order. Lookups use the plain triad (`V7/3` reads as `V`). Temperature by colour: Plain 0.7 (safer), Some 1.0, Spicy 1.3, applied as weight^(1/T).
    - Fill cadence slots from `profile.cadences`: last bar always; bar 4 of an 8-bar idea gets a half cadence or a weak ending.
 3. **Colour** (§3.5): extensions by function, then borrowing.
 4. **Score** each candidate (§3.4).
@@ -270,7 +273,7 @@ Rules the validator checks:
 
 **Idioms** (`data/idioms.json`): `{ "id", "name", "chords", "modes", "minColour"? }`. `chords` has 2 tokens (a vamp that repeats), 3 (the last chord is held two bars), 4 or 8. `modes` lists the modes it is written for. `minColour` 2 = Spicy only. Ids are unique; idioms are shared between genres.
 
-Transition tables can start sparse: any missing state falls back to the function grammar (`T → PD|D`, `PD → D|T`, `D → T`) restricted to the mode's diatonic chords plus `borrowPool`.
+Transition tables can start sparse: any missing state falls back to the function grammar (`T → PD|D`, `PD → D|T`, `D → T`, `other → T`) restricted to the mode's diatonic chords plus `borrowPool`. Diatonic triads weigh 1, `borrowPool` chords `borrowRate × [0.3, 1, 1.8][colour]`; the current chord and chords tagged `other` are left out. Diatonic triads are built on each scale degree; shapes that are not major, minor, diminished or augmented (double harmonic's V and vii) are left out.
 
 ### 6.2 Seed content per genre
 

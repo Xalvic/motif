@@ -3,6 +3,9 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-26 · 8-chord idioms (Pachelbel, minor circle of fifths) are used in 8-bar ideas only · cutting them to 4 bars leaves a weak ending (`I V vi iii`) · accepted
+- 2026-10-26 · 8-bar idiom variation keeps bars 1–2 and walks bars 3–4 of the second half; a "compatible" second idiom must not start on the chord the first ends on · simple, reuses the walk; avoids the −3 repeated-chord penalty at the join · accepted, by-ear check in the M3 listening pass
+- 2026-10-26 · Grammar fallback weights: diatonic triads 1, `borrowPool` `borrowRate × [0.3, 1, 1.8][colour]` (the §3.5 scale) · borrowing stays rare at Plain; the colour budget and scorer still apply · accepted
 - 2026-10-26 · Genre profiles hold theory only; comping, drum patterns, swing, instruments and FX stay in `src/audio/genres.ts` · one source of truth for each; `src/theory` must not import audio types · accepted
 - 2026-10-26 · New modes `phrygianDominant` and `doubleHarmonic` (both major family: major third) · metal's Phrygian dominant weight and Malayalam's Mayamalavagowla need a mode; the scales already existed · accepted
 - 2026-10-26 · Malayalam gives raga weights, not mode weights; each raga's melakarta scale sets the mode (janya → parent: Mohanam → Mixolydian, Hindolam → minor, Sivaranjani → Dorian) · one source of truth; the generator can show the raga · accepted
