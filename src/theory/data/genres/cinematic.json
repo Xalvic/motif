@@ -1,0 +1,181 @@
+{
+  "id": "cinematic",
+  "label": "Cinematic piano",
+  "modes": {
+    "minor": 0.55,
+    "major": 0.35,
+    "lydian": 0.1
+  },
+  "tempo": [60, 80],
+  "meters": ["4/4"],
+  "idiomRate": 0.45,
+  "idioms": [
+    {
+      "id": "epic-aeolian",
+      "weight": 3
+    },
+    {
+      "id": "andalusian",
+      "weight": 2
+    },
+    {
+      "id": "axis-minor-start",
+      "weight": 2
+    },
+    {
+      "id": "minor-plagal-lift",
+      "weight": 2
+    },
+    {
+      "id": "chromatic-mediant",
+      "weight": 1
+    },
+    {
+      "id": "chromatic-mediant-iii",
+      "weight": 1
+    },
+    {
+      "id": "lydian-float",
+      "weight": 1
+    }
+  ],
+  "start": {
+    "minor": {
+      "i": 0.85,
+      "bVI": 0.15
+    },
+    "major": {
+      "I": 0.8,
+      "vi": 0.2
+    },
+    "lydian": {
+      "I": 1
+    }
+  },
+  "transitions": {
+    "minor": {
+      "i": {
+        "bVI": 0.3,
+        "iv": 0.2,
+        "bVII": 0.2,
+        "bIII": 0.15,
+        "v": 0.15
+      },
+      "bVI": {
+        "bVII": 0.35,
+        "bIII": 0.3,
+        "iv": 0.2,
+        "i": 0.15
+      },
+      "bIII": {
+        "bVII": 0.4,
+        "bVI": 0.3,
+        "iv": 0.3
+      },
+      "bVII": {
+        "i": 0.5,
+        "bVI": 0.3,
+        "bIII": 0.2
+      },
+      "iv": {
+        "bVI": 0.3,
+        "i": 0.3,
+        "bVII": 0.2,
+        "v": 0.2
+      },
+      "v": {
+        "bVI": 0.4,
+        "i": 0.4,
+        "iv": 0.2
+      }
+    },
+    "major": {
+      "I": {
+        "IV": 0.3,
+        "V": 0.25,
+        "vi": 0.25,
+        "iii": 0.2
+      },
+      "ii": {
+        "V": 0.6,
+        "IV": 0.2,
+        "vi": 0.2
+      },
+      "iii": {
+        "vi": 0.5,
+        "IV": 0.5
+      },
+      "IV": {
+        "I": 0.4,
+        "V": 0.35,
+        "vi": 0.15,
+        "ii": 0.1
+      },
+      "V": {
+        "vi": 0.45,
+        "I": 0.35,
+        "IV": 0.2
+      },
+      "vi": {
+        "IV": 0.5,
+        "ii": 0.2,
+        "iii": 0.15,
+        "V": 0.15
+      }
+    },
+    "lydian": {
+      "I": {
+        "II": 0.6,
+        "vi": 0.2,
+        "V": 0.2
+      },
+      "II": {
+        "I": 0.7,
+        "vi": 0.3
+      }
+    }
+  },
+  "cadences": {
+    "end": ["aeolian", "plagal-minor", "authentic"],
+    "mid": ["half", "weak"]
+  },
+  "colours": {
+    "T": ["add9", "maj7"],
+    "PD": ["add9", "sus2"],
+    "D": ["sus4"]
+  },
+  "colourBias": 0.15,
+  "borrowPool": {
+    "major": ["iv", "bVI", "bVII", "III"],
+    "minor": ["IV", "bII"]
+  },
+  "borrowRate": 0.25,
+  "secondaryDominants": false,
+  "scorer": {
+    "functionStrictness": 0.3,
+    "fifthMotion": 0.5,
+    "stepBass": 1,
+    "allowVamp": false,
+    "allowTritone": false
+  },
+  "voicing": {
+    "style": "spread",
+    "inversionRate": 0.2
+  },
+  "drums": false,
+  "melody": {
+    "vocab": "lyrical",
+    "range": [67, 86]
+  },
+  "structure": [
+    "Intro 4",
+    "Theme 8",
+    "Theme + octaves 8",
+    "Bridge 8",
+    "Theme, softer 8",
+    "Outro 4"
+  ],
+  "prompts": [
+    "Play only the top note of each chord in your right hand, then grow those notes into a melody."
+  ]
+}

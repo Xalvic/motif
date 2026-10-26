@@ -1,0 +1,151 @@
+{
+  "id": "metal",
+  "label": "Metal",
+  "modes": {
+    "minor": 0.5,
+    "phrygian": 0.3,
+    "phrygianDominant": 0.2
+  },
+  "tempo": [110, 180],
+  "meters": ["4/4"],
+  "idiomRate": 0.5,
+  "idioms": [
+    {
+      "id": "aeolian-return",
+      "weight": 3
+    },
+    {
+      "id": "phrygian-pivot",
+      "weight": 3
+    },
+    {
+      "id": "epic-aeolian",
+      "weight": 2
+    },
+    {
+      "id": "harmonic-minor-drive",
+      "weight": 2
+    },
+    {
+      "id": "tritone",
+      "weight": 1
+    },
+    {
+      "id": "phrygian-dominant-pivot",
+      "weight": 2
+    }
+  ],
+  "start": {
+    "minor": {
+      "i": 1
+    },
+    "phrygian": {
+      "i": 1
+    },
+    "phrygianDominant": {
+      "I": 1
+    }
+  },
+  "transitions": {
+    "minor": {
+      "i": {
+        "bVI": 0.35,
+        "bVII": 0.3,
+        "iv": 0.2,
+        "bIII": 0.15
+      },
+      "bVI": {
+        "bVII": 0.6,
+        "i": 0.2,
+        "bIII": 0.2
+      },
+      "bVII": {
+        "i": 0.7,
+        "bVI": 0.3
+      },
+      "iv": {
+        "bVI": 0.4,
+        "V": 0.3,
+        "i": 0.3
+      },
+      "bIII": {
+        "bVII": 0.6,
+        "iv": 0.4
+      },
+      "V": {
+        "i": 1
+      }
+    },
+    "phrygian": {
+      "i": {
+        "bII": 0.6,
+        "bVII": 0.25,
+        "bVI": 0.15
+      },
+      "bII": {
+        "i": 0.8,
+        "bVII": 0.2
+      },
+      "bVII": {
+        "i": 0.6,
+        "bII": 0.4
+      },
+      "bVI": {
+        "bII": 0.5,
+        "bVII": 0.5
+      }
+    },
+    "phrygianDominant": {
+      "I": {
+        "bII": 0.65,
+        "iv": 0.35
+      },
+      "bII": {
+        "I": 0.8,
+        "iv": 0.2
+      },
+      "iv": {
+        "I": 0.5,
+        "bII": 0.5
+      }
+    }
+  },
+  "cadences": {
+    "end": ["phrygian", "aeolian"],
+    "mid": ["weak"]
+  },
+  "colours": {},
+  "colourBias": 0,
+  "borrowPool": {
+    "minor": ["bII", "bV"],
+    "phrygian": ["bV"]
+  },
+  "borrowRate": 0.2,
+  "secondaryDominants": false,
+  "scorer": {
+    "functionStrictness": 0,
+    "fifthMotion": 0.3,
+    "stepBass": 1,
+    "allowVamp": true,
+    "allowTritone": true
+  },
+  "voicing": {
+    "style": "power",
+    "inversionRate": 0
+  },
+  "drums": true,
+  "melody": {
+    "vocab": "riff",
+    "range": [52, 76]
+  },
+  "structure": [
+    "Intro riff 8",
+    "Verse 16",
+    "Pre-chorus 8",
+    "Chorus 16",
+    "Breakdown 8",
+    "Solo 16",
+    "Chorus 16"
+  ],
+  "prompts": ["Write a riff on the low string that uses the ♭2 note at least twice."]
+}

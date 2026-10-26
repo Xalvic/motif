@@ -1,0 +1,168 @@
+{
+  "id": "lofi",
+  "label": "Lo-fi / hip hop",
+  "modes": {
+    "major": 0.45,
+    "minor": 0.4,
+    "dorian": 0.15
+  },
+  "tempo": [70, 90],
+  "meters": ["4/4"],
+  "idiomRate": 0.6,
+  "idioms": [
+    {
+      "id": "ii-v-i",
+      "weight": 3
+    },
+    {
+      "id": "turnaround",
+      "weight": 3
+    },
+    {
+      "id": "royal-road",
+      "weight": 2
+    },
+    {
+      "id": "royal-road-resolved",
+      "weight": 2
+    },
+    {
+      "id": "minor-sevenths",
+      "weight": 3
+    },
+    {
+      "id": "dorian-vamp",
+      "weight": 2
+    },
+    {
+      "id": "descending-sevenths",
+      "weight": 2
+    }
+  ],
+  "start": {
+    "major": {
+      "I": 0.6,
+      "IV": 0.25,
+      "ii": 0.15
+    },
+    "minor": {
+      "i": 0.8,
+      "iv": 0.2
+    },
+    "dorian": {
+      "i": 1
+    }
+  },
+  "transitions": {
+    "major": {
+      "I": {
+        "vi": 0.3,
+        "IV": 0.3,
+        "ii": 0.2,
+        "iii": 0.2
+      },
+      "ii": {
+        "V": 0.7,
+        "iii": 0.15,
+        "IV": 0.15
+      },
+      "iii": {
+        "vi": 0.6,
+        "IV": 0.4
+      },
+      "IV": {
+        "V": 0.35,
+        "iii": 0.3,
+        "I": 0.2,
+        "ii": 0.15
+      },
+      "V": {
+        "I": 0.5,
+        "vi": 0.3,
+        "iii": 0.2
+      },
+      "vi": {
+        "ii": 0.5,
+        "IV": 0.3,
+        "V": 0.2
+      }
+    },
+    "minor": {
+      "i": {
+        "iv": 0.4,
+        "bVI": 0.3,
+        "bVII": 0.15,
+        "bIII": 0.15
+      },
+      "iv": {
+        "bVII": 0.35,
+        "V": 0.25,
+        "i": 0.2,
+        "bVI": 0.2
+      },
+      "bVI": {
+        "V": 0.4,
+        "bVII": 0.3,
+        "iv": 0.3
+      },
+      "bVII": {
+        "bIII": 0.5,
+        "i": 0.5
+      },
+      "bIII": {
+        "bVI": 0.5,
+        "iv": 0.5
+      },
+      "V": {
+        "i": 0.8,
+        "bVI": 0.2
+      }
+    },
+    "dorian": {
+      "i": {
+        "IV": 0.6,
+        "bVII": 0.2,
+        "v": 0.2
+      },
+      "IV": {
+        "i": 0.8,
+        "bVII": 0.2
+      }
+    }
+  },
+  "cadences": {
+    "end": ["authentic", "plagal", "backdoor"],
+    "mid": ["half", "weak"]
+  },
+  "colours": {
+    "T": ["maj7", "9"],
+    "PD": ["7", "9"],
+    "D": ["7", "9"]
+  },
+  "colourBias": 0.3,
+  "sevenths": true,
+  "borrowPool": {
+    "major": ["iv7", "bVII7", "bII7"],
+    "minor": ["IV7", "bII7"]
+  },
+  "borrowRate": 0.3,
+  "secondaryDominants": false,
+  "scorer": {
+    "functionStrictness": 0.3,
+    "fifthMotion": 1,
+    "stepBass": 0.5,
+    "allowVamp": false,
+    "allowTritone": false
+  },
+  "voicing": {
+    "style": "rootless",
+    "inversionRate": 0.3
+  },
+  "drums": true,
+  "melody": {
+    "vocab": "lofi",
+    "range": [62, 81]
+  },
+  "structure": ["Intro 4", "Loop A 16", "Loop B, drums out 8", "Loop A 16", "Fade 4"],
+  "prompts": ["Loop just bars 1–2 and hum or rap a hook over it for one minute."]
+}

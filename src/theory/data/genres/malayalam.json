@@ -1,0 +1,177 @@
+{
+  "id": "malayalam",
+  "label": "Malayalam melody",
+  "ragas": {
+    "Dheerashankarabharanam": 0.2,
+    "Natabhairavi": 0.15,
+    "Keeravani": 0.15,
+    "Kharaharapriya": 0.15,
+    "Mohanam": 0.1,
+    "Mechakalyani": 0.1,
+    "Mayamalavagowla": 0.05,
+    "Hindolam": 0.05,
+    "Sivaranjani": 0.05
+  },
+  "tempo": [70, 100],
+  "meters": ["4/4", "6/8"],
+  "idiomRate": 0.4,
+  "idioms": [
+    {
+      "id": "andalusian",
+      "weight": 2
+    },
+    {
+      "id": "tonic-dominant",
+      "weight": 3
+    },
+    {
+      "id": "minor-return",
+      "weight": 2
+    }
+  ],
+  "start": {
+    "major": {
+      "I": 1
+    },
+    "minor": {
+      "i": 1
+    },
+    "harmonicMinor": {
+      "i": 1
+    },
+    "dorian": {
+      "i": 1
+    },
+    "mixolydian": {
+      "I": 1
+    },
+    "lydian": {
+      "I": 1
+    },
+    "doubleHarmonic": {
+      "I": 1
+    }
+  },
+  "transitions": {
+    "minor": {
+      "i": {
+        "iv": 0.3,
+        "bVII": 0.25,
+        "bIII": 0.25,
+        "bVI": 0.2
+      },
+      "bIII": {
+        "bVII": 0.4,
+        "iv": 0.3,
+        "bVI": 0.3
+      },
+      "iv": {
+        "i": 0.4,
+        "V": 0.3,
+        "bVII": 0.3
+      },
+      "bVII": {
+        "i": 0.4,
+        "bIII": 0.3,
+        "bVI": 0.3
+      },
+      "bVI": {
+        "bVII": 0.5,
+        "V": 0.3,
+        "iv": 0.2
+      },
+      "V": {
+        "i": 1
+      }
+    },
+    "harmonicMinor": {
+      "i": {
+        "iv": 0.5,
+        "V": 0.3,
+        "bVI": 0.2
+      },
+      "iv": {
+        "V": 0.5,
+        "i": 0.5
+      },
+      "V": {
+        "i": 0.8,
+        "bVI": 0.2
+      },
+      "bVI": {
+        "V": 0.6,
+        "iv": 0.4
+      }
+    },
+    "major": {
+      "I": {
+        "IV": 0.4,
+        "V": 0.3,
+        "vi": 0.15,
+        "ii": 0.15
+      },
+      "IV": {
+        "I": 0.5,
+        "V": 0.5
+      },
+      "V": {
+        "I": 0.7,
+        "vi": 0.3
+      },
+      "vi": {
+        "IV": 0.5,
+        "ii": 0.5
+      },
+      "ii": {
+        "V": 1
+      }
+    },
+    "doubleHarmonic": {
+      "I": {
+        "bII": 0.6,
+        "iv": 0.4
+      },
+      "bII": {
+        "I": 1
+      },
+      "iv": {
+        "I": 0.5,
+        "bII": 0.5
+      }
+    }
+  },
+  "cadences": {
+    "end": ["authentic", "plagal"],
+    "mid": ["half"]
+  },
+  "colours": {
+    "T": ["add9"],
+    "PD": ["add9", "sus2"],
+    "D": ["7", "sus4"]
+  },
+  "colourBias": 0.1,
+  "borrowPool": {
+    "major": ["bVII"],
+    "minor": ["IV"]
+  },
+  "borrowRate": 0.15,
+  "secondaryDominants": false,
+  "scorer": {
+    "functionStrictness": 0.4,
+    "fifthMotion": 0.5,
+    "stepBass": 1,
+    "allowVamp": false,
+    "allowTritone": false
+  },
+  "voicing": {
+    "style": "close",
+    "inversionRate": 0.2
+  },
+  "drums": false,
+  "melody": {
+    "vocab": "raga",
+    "range": [60, 84]
+  },
+  "structure": ["Prelude 4", "Pallavi 8", "Interlude 4", "Charanam 16", "Pallavi 8"],
+  "prompts": ["Slide into your first long note from the note just below it, like a small gamaka."]
+}

@@ -1,0 +1,144 @@
+[
+  { "id": "epic-aeolian", "name": "Epic Aeolian", "chords": "i bVI bIII bVII", "modes": ["minor"] },
+  {
+    "id": "andalusian",
+    "name": "Andalusian",
+    "chords": "i bVII bVI V",
+    "modes": ["minor", "harmonicMinor"]
+  },
+  { "id": "axis", "name": "Axis", "chords": "I V vi IV", "modes": ["major"] },
+  {
+    "id": "axis-minor-start",
+    "name": "Axis, minor start",
+    "chords": "vi IV I V",
+    "modes": ["major"]
+  },
+  {
+    "id": "minor-plagal-lift",
+    "name": "Minor plagal lift",
+    "chords": "I IV iv I",
+    "modes": ["major"]
+  },
+  {
+    "id": "chromatic-mediant",
+    "name": "Chromatic mediant",
+    "chords": "I bVI I",
+    "modes": ["major"],
+    "minColour": 2
+  },
+  {
+    "id": "chromatic-mediant-iii",
+    "name": "Chromatic mediant (III)",
+    "chords": "I III IV I",
+    "modes": ["major"],
+    "minColour": 2
+  },
+  { "id": "lydian-float", "name": "Lydian float", "chords": "I II", "modes": ["lydian"] },
+
+  {
+    "id": "aeolian-return",
+    "name": "Aeolian return",
+    "chords": "i bVI bVII i",
+    "modes": ["minor"]
+  },
+  { "id": "aeolian-sway", "name": "Aeolian sway", "chords": "i bVII bVI bVII", "modes": ["minor"] },
+  {
+    "id": "harmonic-minor-drive",
+    "name": "Harmonic minor drive",
+    "chords": "i iv bVI V",
+    "modes": ["minor", "harmonicMinor"]
+  },
+  { "id": "hero-rise", "name": "Hero rise", "chords": "I bVI bVII I", "modes": ["major"] },
+  {
+    "id": "picardy-finish",
+    "name": "Picardy finish",
+    "chords": "i iv V I",
+    "modes": ["minor", "harmonicMinor"]
+  },
+
+  { "id": "ii-v-i", "name": "ii–V–I", "chords": "ii7 V7 Imaj7 vi7", "modes": ["major"] },
+  { "id": "turnaround", "name": "Turnaround", "chords": "Imaj7 vi7 ii7 V7", "modes": ["major"] },
+  { "id": "royal-road", "name": "Royal road", "chords": "IVmaj7 V7 iii7 vi7", "modes": ["major"] },
+  {
+    "id": "royal-road-resolved",
+    "name": "Royal road, resolved",
+    "chords": "IVmaj7 V7 Imaj7",
+    "modes": ["major"]
+  },
+  {
+    "id": "minor-sevenths",
+    "name": "Minor sevenths",
+    "chords": "i7 iv7 bVImaj7 V7",
+    "modes": ["minor", "harmonicMinor"]
+  },
+  { "id": "dorian-vamp", "name": "Dorian vamp", "chords": "i7 IV7", "modes": ["dorian"] },
+  {
+    "id": "descending-sevenths",
+    "name": "Descending sevenths",
+    "chords": "IVmaj7 iii7 ii7 Imaj7",
+    "modes": ["major"]
+  },
+
+  { "id": "basic-cadence", "name": "I–IV–V–I", "chords": "I IV V I", "modes": ["major"] },
+  { "id": "fifties-ii", "name": "I–vi–ii–V", "chords": "I vi ii V", "modes": ["major"] },
+  { "id": "ii6-cadence", "name": "ii6 cadence", "chords": "I ii/3 V7 I", "modes": ["major"] },
+  { "id": "pachelbel", "name": "Pachelbel", "chords": "I V vi iii IV I IV V", "modes": ["major"] },
+  {
+    "id": "circle-of-fifths",
+    "name": "Circle of fifths",
+    "chords": "vi ii V I",
+    "modes": ["major"]
+  },
+  {
+    "id": "circle-of-fifths-minor",
+    "name": "Circle of fifths, minor",
+    "chords": "i iv bVII bIII bVI ii° V i",
+    "modes": ["minor", "harmonicMinor"]
+  },
+
+  {
+    "id": "tonic-dominant",
+    "name": "I–IV–I–V",
+    "chords": "I IV I V",
+    "modes": ["major", "mixolydian", "lydian"]
+  },
+  {
+    "id": "minor-return",
+    "name": "Minor return",
+    "chords": "i iv i V",
+    "modes": ["minor", "harmonicMinor"]
+  },
+
+  { "id": "dorian-swing", "name": "Dorian swing", "chords": "i bVII", "modes": ["dorian"] },
+  {
+    "id": "mixolydian-turn",
+    "name": "Mixolydian turn",
+    "chords": "I bVII I V",
+    "modes": ["major", "mixolydian"]
+  },
+  { "id": "aeolian-reel", "name": "Aeolian reel", "chords": "i bVII bVI bVII", "modes": ["minor"] },
+
+  {
+    "id": "phrygian-pivot",
+    "name": "Phrygian pivot",
+    "chords": "i bII i bVII",
+    "modes": ["phrygian"]
+  },
+  { "id": "tritone", "name": "Tritone", "chords": "i bV", "modes": ["minor", "phrygian"] },
+  {
+    "id": "phrygian-dominant-pivot",
+    "name": "Phrygian dominant pivot",
+    "chords": "I bII",
+    "modes": ["phrygianDominant"]
+  },
+
+  { "id": "fifties", "name": "50s", "chords": "I vi IV V", "modes": ["major"] },
+  { "id": "four-one-five-six", "name": "IV–I–V–vi", "chords": "IV I V vi", "modes": ["major"] },
+  { "id": "one-four-six-five", "name": "I–IV–vi–V", "chords": "I IV vi V", "modes": ["major"] },
+  {
+    "id": "mixolydian-rock",
+    "name": "Mixolydian rock",
+    "chords": "I bVII IV I",
+    "modes": ["major", "mixolydian"]
+  }
+]

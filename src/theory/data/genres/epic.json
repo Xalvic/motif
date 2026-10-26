@@ -1,0 +1,140 @@
+{
+  "id": "epic",
+  "label": "Epic orchestral",
+  "modes": {
+    "minor": 0.8,
+    "major": 0.2
+  },
+  "tempo": [84, 120],
+  "meters": ["4/4"],
+  "idiomRate": 0.5,
+  "idioms": [
+    {
+      "id": "aeolian-return",
+      "weight": 3
+    },
+    {
+      "id": "epic-aeolian",
+      "weight": 3
+    },
+    {
+      "id": "aeolian-sway",
+      "weight": 2
+    },
+    {
+      "id": "harmonic-minor-drive",
+      "weight": 2
+    },
+    {
+      "id": "hero-rise",
+      "weight": 2
+    },
+    {
+      "id": "picardy-finish",
+      "weight": 1
+    }
+  ],
+  "start": {
+    "minor": {
+      "i": 1
+    },
+    "major": {
+      "I": 1
+    }
+  },
+  "transitions": {
+    "minor": {
+      "i": {
+        "bVI": 0.4,
+        "bVII": 0.25,
+        "iv": 0.2,
+        "bIII": 0.15
+      },
+      "bVI": {
+        "bVII": 0.45,
+        "bIII": 0.25,
+        "iv": 0.15,
+        "V": 0.15
+      },
+      "bVII": {
+        "i": 0.5,
+        "bIII": 0.3,
+        "bVI": 0.2
+      },
+      "bIII": {
+        "bVII": 0.5,
+        "bVI": 0.25,
+        "iv": 0.25
+      },
+      "iv": {
+        "bVI": 0.3,
+        "V": 0.3,
+        "i": 0.2,
+        "bVII": 0.2
+      },
+      "V": {
+        "i": 0.7,
+        "bVI": 0.3
+      }
+    },
+    "major": {
+      "I": {
+        "vi": 0.4,
+        "IV": 0.35,
+        "V": 0.25
+      },
+      "IV": {
+        "V": 0.6,
+        "I": 0.4
+      },
+      "V": {
+        "I": 0.5,
+        "vi": 0.5
+      },
+      "vi": {
+        "IV": 0.6,
+        "V": 0.4
+      }
+    }
+  },
+  "cadences": {
+    "end": ["aeolian", "authentic"],
+    "mid": ["half", "weak"]
+  },
+  "colours": {
+    "T": ["sus2", "add9"],
+    "PD": ["sus2", "add9"],
+    "D": ["sus4"]
+  },
+  "colourBias": 0.05,
+  "borrowPool": {
+    "major": ["bVI", "bVII", "bIII", "iv"],
+    "minor": ["bII"]
+  },
+  "borrowRate": 0.3,
+  "secondaryDominants": false,
+  "scorer": {
+    "functionStrictness": 0.2,
+    "fifthMotion": 0.5,
+    "stepBass": 1,
+    "allowVamp": false,
+    "allowTritone": false
+  },
+  "voicing": {
+    "style": "spread",
+    "inversionRate": 0.1
+  },
+  "drums": true,
+  "melody": {
+    "vocab": "heroic",
+    "range": [55, 79]
+  },
+  "structure": [
+    "Low pulse intro 8",
+    "Build 8",
+    "Full theme 16",
+    "Breakdown 8",
+    "Final theme, key up 16"
+  ],
+  "prompts": ["Write a 4-note heroic motif that jumps up a 5th, then repeat it louder."]
+}

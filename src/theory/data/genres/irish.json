@@ -1,0 +1,157 @@
+{
+  "id": "irish",
+  "label": "Irish folk",
+  "modes": {
+    "major": 0.35,
+    "dorian": 0.3,
+    "mixolydian": 0.25,
+    "minor": 0.1
+  },
+  "tempo": [100, 130],
+  "meters": ["4/4", "6/8"],
+  "idiomRate": 0.45,
+  "idioms": [
+    {
+      "id": "dorian-swing",
+      "weight": 3
+    },
+    {
+      "id": "mixolydian-turn",
+      "weight": 2
+    },
+    {
+      "id": "tonic-dominant",
+      "weight": 2
+    },
+    {
+      "id": "aeolian-reel",
+      "weight": 1
+    }
+  ],
+  "start": {
+    "major": {
+      "I": 1
+    },
+    "dorian": {
+      "i": 1
+    },
+    "mixolydian": {
+      "I": 1
+    },
+    "minor": {
+      "i": 1
+    }
+  },
+  "transitions": {
+    "dorian": {
+      "i": {
+        "bVII": 0.6,
+        "IV": 0.25,
+        "v": 0.15
+      },
+      "bVII": {
+        "i": 0.7,
+        "IV": 0.3
+      },
+      "IV": {
+        "i": 0.7,
+        "bVII": 0.3
+      },
+      "v": {
+        "i": 1
+      }
+    },
+    "mixolydian": {
+      "I": {
+        "IV": 0.4,
+        "bVII": 0.35,
+        "ii": 0.25
+      },
+      "IV": {
+        "I": 0.6,
+        "bVII": 0.2,
+        "ii": 0.2
+      },
+      "ii": {
+        "I": 0.5,
+        "IV": 0.5
+      },
+      "bVII": {
+        "I": 0.7,
+        "IV": 0.3
+      }
+    },
+    "major": {
+      "I": {
+        "IV": 0.4,
+        "V": 0.4,
+        "vi": 0.2
+      },
+      "IV": {
+        "I": 0.5,
+        "V": 0.5
+      },
+      "V": {
+        "I": 0.8,
+        "vi": 0.2
+      },
+      "vi": {
+        "IV": 0.5,
+        "V": 0.5
+      }
+    },
+    "minor": {
+      "i": {
+        "bVII": 0.5,
+        "bVI": 0.3,
+        "iv": 0.2
+      },
+      "bVII": {
+        "i": 0.5,
+        "bVI": 0.5
+      },
+      "bVI": {
+        "bVII": 0.7,
+        "i": 0.3
+      },
+      "iv": {
+        "bVII": 0.5,
+        "i": 0.5
+      }
+    }
+  },
+  "cadences": {
+    "end": ["mixolydian", "authentic", "plagal"],
+    "mid": ["half", "weak"]
+  },
+  "colours": {
+    "T": ["sus2", "sus4"],
+    "PD": ["sus2"],
+    "D": ["sus4"]
+  },
+  "colourBias": 0.05,
+  "borrowPool": {
+    "major": ["bVII"],
+    "minor": ["IV"]
+  },
+  "borrowRate": 0.1,
+  "secondaryDominants": false,
+  "scorer": {
+    "functionStrictness": 0.1,
+    "fifthMotion": 0.5,
+    "stepBass": 0.5,
+    "allowVamp": true,
+    "allowTritone": false
+  },
+  "voicing": {
+    "style": "spread",
+    "inversionRate": 0
+  },
+  "drums": true,
+  "melody": {
+    "vocab": "jig",
+    "range": [62, 86]
+  },
+  "structure": ["A part 8", "A part 8", "B part 8", "B part 8", "Play it all 3 times"],
+  "prompts": ["Turn it into a jig: count 1-2-3 4-5-6 and write a melody in that bounce."]
+}

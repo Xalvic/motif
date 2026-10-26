@@ -3,6 +3,13 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-26 · Genre profiles hold theory only; comping, drum patterns, swing, instruments and FX stay in `src/audio/genres.ts` · one source of truth for each; `src/theory` must not import audio types · accepted
+- 2026-10-26 · New modes `phrygianDominant` and `doubleHarmonic` (both major family: major third) · metal's Phrygian dominant weight and Malayalam's Mayamalavagowla need a mode; the scales already existed · accepted
+- 2026-10-26 · Malayalam gives raga weights, not mode weights; each raga's melakarta scale sets the mode (janya → parent: Mohanam → Mixolydian, Hindolam → minor, Sivaranjani → Dorian) · one source of truth; the generator can show the raga · accepted
+- 2026-10-26 · Lo-fi modes major .45 / minor .4 / Dorian .15, not .5 / .5 · the Dorian vamp `i7 IV7` needs a Dorian mode · accepted, by-ear check in the M3 listening pass
+- 2026-10-26 · Transition and start tables use plain triads; `sevenths: true` gives lo-fi its 7th floor · tables stay small, colour adds extensions in one place · accepted
+- 2026-10-26 · Idioms live in one shared `data/idioms.json`; 3-chord idioms (`I bVI I`, `IVmaj7 V7 Imaj7`) are kept as THEORY writes them, last chord held two bars · Royal road and Epic Aeolian are shared; padding them would trip the repeated-chord penalty · accepted
+- 2026-10-26 · Classical `I ii6 V7 I` is written `I ii/3 V7 I` · in our grammar `6` is an added 6th; first inversion is `/3` · accepted
 - 2026-10-23 · G♭/F♯ major and E♭/D♯ minor are spelled per idea: the spelling with fewer awkward names (C♭ F♭ E♯ B♯, double accidentals; root counts twice) wins, a tie keeps flats · both keys have six accidentals and practice has no fixed rule; for keyboard players the chord letters should read easily (pop I–V–vi–IV in G♭ needed a C♭ chord, shown as B; F♯ gives F♯ C♯ D♯m B). E♭ minor stays when its V would need C𝄪 · accepted (owner asked Claude to research and decide)
 - 2026-10-23 · Legacy port reads major/minor from the tonic chord (I or i), else the first chord · the prototype used the first chord only, so pop "vi IV I V" and lo-fi "ii7 V7 Imaj7 vi7" showed as minor keys with a minor scale · accepted, a deliberate change from the prototype
 - 2026-10-23 · Card auditions play outside the transport at `Tone.now()` (AUDIO §3.2 exception), only while stopped · SPEC §4 asks for them; no timers involved · accepted

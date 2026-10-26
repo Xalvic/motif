@@ -3,8 +3,19 @@
  */
 import type { Family } from './pitch';
 
-export type Mode =
-  'major' | 'minor' | 'dorian' | 'mixolydian' | 'phrygian' | 'lydian' | 'harmonicMinor';
+export const MODES = [
+  'major',
+  'minor',
+  'dorian',
+  'mixolydian',
+  'phrygian',
+  'lydian',
+  'harmonicMinor',
+  'phrygianDominant',
+  'doubleHarmonic',
+] as const;
+
+export type Mode = (typeof MODES)[number];
 
 export interface Key {
   /** Pitch class 0–11 (C = 0). */
@@ -16,7 +27,7 @@ export interface Key {
 
 /** Major third above the tonic → major family. */
 export function familyOf(mode: Mode): Family {
-  return mode === 'major' || mode === 'mixolydian' || mode === 'lydian' ? 'major' : 'minor';
+  return scaleById(mode).family;
 }
 
 /** Roman numeral degrees count from these, in every mode (THEORY §2.1). */
@@ -163,4 +174,12 @@ export function ragaByName(name: string): Raga {
   const raga = RAGAS.find((r) => r.name === name);
   if (!raga) throw new Error(`Unknown raga "${name}"`);
   return raga;
+}
+
+/** The seven-note scale of a raga's melakarta: its own for a parent, the parent's for a janya. */
+export function ragaScale(raga: Raga): Scale {
+  const parent = RAGAS.find((r) => !r.janya && r.melakarta === raga.melakarta);
+  const scale = parent && SCALES.find((s) => s.raga === parent.name);
+  if (!scale) throw new Error(`No scale for raga "${raga.name}"`);
+  return scale;
 }

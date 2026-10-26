@@ -1,0 +1,156 @@
+{
+  "id": "pop",
+  "label": "Pop",
+  "modes": {
+    "major": 0.7,
+    "minor": 0.3
+  },
+  "tempo": [90, 125],
+  "meters": ["4/4"],
+  "idiomRate": 0.55,
+  "idioms": [
+    {
+      "id": "axis",
+      "weight": 3
+    },
+    {
+      "id": "axis-minor-start",
+      "weight": 2
+    },
+    {
+      "id": "fifties",
+      "weight": 2
+    },
+    {
+      "id": "four-one-five-six",
+      "weight": 2
+    },
+    {
+      "id": "one-four-six-five",
+      "weight": 2
+    },
+    {
+      "id": "royal-road",
+      "weight": 1
+    },
+    {
+      "id": "mixolydian-rock",
+      "weight": 1
+    }
+  ],
+  "start": {
+    "major": {
+      "I": 0.7,
+      "vi": 0.15,
+      "IV": 0.15
+    },
+    "minor": {
+      "i": 0.8,
+      "bVI": 0.2
+    }
+  },
+  "transitions": {
+    "major": {
+      "I": {
+        "V": 0.3,
+        "IV": 0.3,
+        "vi": 0.3,
+        "iii": 0.1
+      },
+      "V": {
+        "vi": 0.45,
+        "IV": 0.3,
+        "I": 0.25
+      },
+      "vi": {
+        "IV": 0.6,
+        "V": 0.2,
+        "ii": 0.2
+      },
+      "IV": {
+        "V": 0.4,
+        "I": 0.35,
+        "vi": 0.25
+      },
+      "ii": {
+        "V": 0.6,
+        "IV": 0.4
+      },
+      "iii": {
+        "IV": 0.5,
+        "vi": 0.5
+      }
+    },
+    "minor": {
+      "i": {
+        "bVI": 0.35,
+        "bVII": 0.3,
+        "iv": 0.2,
+        "bIII": 0.15
+      },
+      "bVI": {
+        "bVII": 0.5,
+        "bIII": 0.3,
+        "i": 0.2
+      },
+      "bVII": {
+        "i": 0.4,
+        "bIII": 0.4,
+        "bVI": 0.2
+      },
+      "bIII": {
+        "bVII": 0.5,
+        "bVI": 0.3,
+        "iv": 0.2
+      },
+      "iv": {
+        "bVII": 0.4,
+        "bVI": 0.3,
+        "i": 0.3
+      }
+    }
+  },
+  "cadences": {
+    "end": ["authentic", "plagal", "mixolydian"],
+    "mid": ["half", "weak"]
+  },
+  "colours": {
+    "T": ["add9", "sus2"],
+    "PD": ["add9", "sus2"],
+    "D": ["sus4"]
+  },
+  "colourBias": 0.05,
+  "borrowPool": {
+    "major": ["iv", "bVII"],
+    "minor": ["IV"]
+  },
+  "borrowRate": 0.2,
+  "secondaryDominants": false,
+  "scorer": {
+    "functionStrictness": 0,
+    "fifthMotion": 0.5,
+    "stepBass": 0.5,
+    "allowVamp": false,
+    "allowTritone": false
+  },
+  "voicing": {
+    "style": "close",
+    "inversionRate": 0.4
+  },
+  "drums": true,
+  "melody": {
+    "vocab": "pop",
+    "range": [60, 76]
+  },
+  "structure": [
+    "Intro 4",
+    "Verse 8",
+    "Pre 4",
+    "Chorus 8",
+    "Verse 8",
+    "Chorus 8",
+    "Bridge 8",
+    "Chorus 8"
+  ],
+  "prompts": ["Write a 4-word chorus hook and fit those words onto bar 1."]
+}

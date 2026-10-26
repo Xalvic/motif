@@ -1,0 +1,152 @@
+{
+  "id": "classical",
+  "label": "Classical",
+  "modes": {
+    "major": 0.6,
+    "minor": 0.4
+  },
+  "tempo": [72, 110],
+  "meters": ["4/4", "3/4"],
+  "idiomRate": 0.4,
+  "idioms": [
+    {
+      "id": "basic-cadence",
+      "weight": 3
+    },
+    {
+      "id": "fifties-ii",
+      "weight": 2
+    },
+    {
+      "id": "ii6-cadence",
+      "weight": 2
+    },
+    {
+      "id": "pachelbel",
+      "weight": 1
+    },
+    {
+      "id": "circle-of-fifths",
+      "weight": 2
+    },
+    {
+      "id": "circle-of-fifths-minor",
+      "weight": 1
+    },
+    {
+      "id": "picardy-finish",
+      "weight": 1
+    }
+  ],
+  "start": {
+    "major": {
+      "I": 1
+    },
+    "minor": {
+      "i": 1
+    }
+  },
+  "transitions": {
+    "major": {
+      "I": {
+        "IV": 0.3,
+        "V": 0.25,
+        "vi": 0.25,
+        "ii": 0.2
+      },
+      "ii": {
+        "V": 0.8,
+        "vii°": 0.2
+      },
+      "iii": {
+        "vi": 0.6,
+        "IV": 0.4
+      },
+      "IV": {
+        "V": 0.5,
+        "I": 0.25,
+        "ii": 0.25
+      },
+      "V": {
+        "I": 0.75,
+        "vi": 0.25
+      },
+      "vi": {
+        "ii": 0.5,
+        "IV": 0.4,
+        "V": 0.1
+      },
+      "vii°": {
+        "I": 1
+      }
+    },
+    "minor": {
+      "i": {
+        "iv": 0.35,
+        "V": 0.3,
+        "bVI": 0.2,
+        "ii°": 0.15
+      },
+      "ii°": {
+        "V": 1
+      },
+      "bIII": {
+        "bVI": 0.5,
+        "iv": 0.5
+      },
+      "iv": {
+        "V": 0.6,
+        "ii°": 0.2,
+        "i": 0.2
+      },
+      "V": {
+        "i": 0.8,
+        "bVI": 0.2
+      },
+      "bVI": {
+        "ii°": 0.4,
+        "V": 0.4,
+        "iv": 0.2
+      },
+      "bVII": {
+        "bIII": 1
+      },
+      "vii°": {
+        "i": 1
+      }
+    }
+  },
+  "cadences": {
+    "end": ["authentic"],
+    "mid": ["half"]
+  },
+  "colours": {
+    "PD": ["7"],
+    "D": ["7"]
+  },
+  "colourBias": 0,
+  "borrowPool": {
+    "major": ["iv", "bVI"],
+    "minor": ["IV"]
+  },
+  "borrowRate": 0.1,
+  "secondaryDominants": true,
+  "scorer": {
+    "functionStrictness": 1,
+    "fifthMotion": 1,
+    "stepBass": 0.5,
+    "allowVamp": false,
+    "allowTritone": false
+  },
+  "voicing": {
+    "style": "close",
+    "inversionRate": 0.4
+  },
+  "drums": false,
+  "melody": {
+    "vocab": "classical",
+    "range": [60, 84]
+  },
+  "structure": ["A 8", "A repeat 8", "B 8", "A return 8"],
+  "prompts": ["Write a melody you could sing, then add a bass line that moves the opposite way."]
+}

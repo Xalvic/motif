@@ -231,32 +231,44 @@ Each vocabulary is a list of one-bar cells in beats, weighted. Examples:
 
 ### 6.1 Schema
 
+One file per genre, checked at load by `profile.ts` (`validateProfile`). A bad file stops the app with every problem listed, each with its field path. Sound choices (comping pattern, drum kit and pattern, swing, instruments, FX) stay in `src/audio/genres.ts` (AUDIO.md §5, §6), not here.
+
 ```jsonc
 {
-  "id": "cinematic",
+  "id": "cinematic",                        // = file name
   "label": "Cinematic piano",
-  "modes": { "minor": 0.55, "major": 0.35, "lydian": 0.10 },
-  "tempo": [60, 80], "meters": ["4/4"], "swing": 0,
+  "modes": { "minor": 0.55, "major": 0.35, "lydian": 0.10 },   // or "ragas", not both
+  "tempo": [60, 80], "meters": ["4/4"],     // meters: 4/4, 3/4, 6/8
   "idiomRate": 0.45,
-  "idioms": [ { "id": "epic-aeolian", "weight": 3 } ],
+  "idioms": [ { "id": "epic-aeolian", "weight": 3 } ],         // ids from data/idioms.json
   "start": { "minor": { "i": 0.85, "bVI": 0.15 }, "major": { "I": 0.8, "vi": 0.2 } },
   "transitions": { "minor": { "i": { "bVI": 0.3, "iv": 0.2, "bVII": 0.2, "bIII": 0.15, "v": 0.15 } } },
   "cadences": { "end": ["aeolian", "plagal-minor", "authentic"], "mid": ["half", "weak"] },
   "colours": { "T": ["add9", "maj7"], "PD": ["add9", "sus2"], "D": ["sus4"] },
   "colourBias": 0.15,
-  "borrowPool": { "major": ["iv", "bVI", "bVII"], "minor": ["IV", "bII"] },
+  "borrowPool": { "major": ["iv", "bVI", "bVII", "III"], "minor": ["IV", "bII"] },
   "borrowRate": 0.25,
   "secondaryDominants": false,
   "scorer": { "functionStrictness": 0.3, "fifthMotion": 0.5, "stepBass": 1, "allowVamp": false, "allowTritone": false },
-  "voicing": { "style": "spread", "inversionRate": 0.2, "centre": 64 },
-  "comping": "arp8-pedal",
-  "drums": { "default": false, "pattern": "soft" },
-  "melody": { "vocab": "lyrical", "range": [67, 86], "instrument": "piano" },
-  "instruments": "see AUDIO.md §5",
+  "voicing": { "style": "spread", "inversionRate": 0.2 },     // optional "centre" (MIDI 48–79)
+  "drums": false,                           // Drums toggle default
+  "melody": { "vocab": "lyrical", "range": [67, 86] },        // vocab from §5.3; range ≥ 12 semitones
   "structure": ["Intro 4", "Theme 8", "Theme + octaves 8", "Bridge 8", "Theme, softer 8", "Outro 4"],
   "prompts": ["Play only the top note of each chord, then grow those notes into a melody."]
 }
 ```
+
+Rules the validator checks:
+- **Modes**: from `keys.ts` `MODES` (major, minor, dorian, mixolydian, phrygian, lydian, harmonicMinor, phrygianDominant, doubleHarmonic). A profile gives `modes` or `ragas` (raga name → weight). With `ragas`, each raga adds its weight to the mode of its melakarta scale (a janya raga uses its parent's): Malayalam.
+- **Mode-keyed tables** (`start`, `transitions`, `borrowPool`) use only the profile's own modes. Weights are above 0 and need not sum to 1.
+- **Transitions**: a key is one token (first order) or two tokens, `"previous current"` (second order). Write states as plain triads; colour (§3.5) and `sevenths` add the extensions.
+- **borrowPool**: every chord must be borrowed in its mode (§2.2), so the colour budget counts it.
+- **Idioms**: each id exists in `data/idioms.json` and fits at least one of the profile's modes.
+- **Cadences** from §3.3, plus `plagal-minor` (iv → I) and `weak` (a mid-phrase stop on a non-tonic chord that is not V).
+- `sevenths: true` (lo-fi): every chord carries a 7th at every colour level.
+- Unknown fields are errors.
+
+**Idioms** (`data/idioms.json`): `{ "id", "name", "chords", "modes", "minColour"? }`. `chords` has 2 tokens (a vamp that repeats), 3 (the last chord is held two bars), 4 or 8. `modes` lists the modes it is written for. `minColour` 2 = Spicy only. Ids are unique; idioms are shared between genres.
 
 Transition tables can start sparse: any missing state falls back to the function grammar (`T → PD|D`, `PD → D|T`, `D → T`) restricted to the mode's diatonic chords plus `borrowPool`.
 
@@ -272,7 +284,7 @@ Idioms are written in our roman grammar. Names appear in the UI.
 - `i bVI bVII i` · `i bVI bIII bVII` · `i bVII bVI bVII` · `i iv bVI V` · Hero rise `I bVI bVII I` · Picardy finish (minor progression ending on `I`)
 - Melody `heroic`: rising 4th/5th motifs, lead French horn.
 
-**Lo-fi / hip hop** · major .5 / minor .5 · 70–90 BPM · swing 0.25–0.35 on 16ths · rootless voicings · lazy comping with anticipations · boom-bap drums
+**Lo-fi / hip hop** · major .45 / minor .4 / Dorian .15 (for the Dorian vamp) · 70–90 BPM · swing 0.25–0.35 on 16ths · rootless voicings · lazy comping with anticipations · boom-bap drums
 - ii–V–I `ii7 V7 Imaj7 vi7` · Turnaround `Imaj7 vi7 ii7 V7` · Royal road `IVmaj7 V7 iii7 vi7` and resolved `IVmaj7 V7 Imaj7` · Minor `i7 iv7 bVImaj7 V7` · Dorian vamp `i7 IV7` · Descending sevenths `IVmaj7 iii7 ii7 Imaj7`
 - Colour floor is 7ths even at Plain. Spicy adds 9/11/13, tritone substitute `bII7` before I, backdoor `iv7 bVII7 I`.
 
