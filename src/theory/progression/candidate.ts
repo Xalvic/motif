@@ -9,7 +9,7 @@ import { randomInt, weighted, type Rng } from '../random';
 import { countBorrowed, fillCadence } from './cadence';
 import { borrow, borrowBudget, extend } from './colour';
 import { eligibleIdioms, fitIdiom } from './idioms';
-import { walk, type Bars, type WalkContext } from './walk';
+import { bridgeEntries, sample, TEMPERATURE, walk, type Bars, type WalkContext } from './walk';
 
 /** Uses the fixed tonic and mode when given, else samples them (mode from `profile.modes`). */
 export function resolveKey(
@@ -34,11 +34,11 @@ export interface Candidate extends RawCandidate {
   /** The chords before cadences and colour. */
   raw: string[];
   /**
-   * End cadence, and bar 4's cadence in an 8-bar idea when the profile has mid cadences and
-   * one fits the borrow allowance.
+   * End cadence (missing only when locks block every one), and bar 4's cadence in an 8-bar
+   * idea when the profile has mid cadences and one fits the borrow allowance.
    */
-  cadences: { end: Cadence; mid?: Cadence };
-  /** Most borrowed chords allowed: the colour budget, or the raw count when that is higher. */
+  cadences: { end?: Cadence; mid?: Cadence };
+  /** Most borrowed chords allowed: the colour budget, or the raw count (with locks) when higher. */
   allowance: number;
 }
 
@@ -55,37 +55,75 @@ export function rawCandidate(ctx: WalkContext, bars: Bars): RawCandidate {
   return { chords: walk(ctx, bars), source: 'walk', idioms: [] };
 }
 
+/** Locked chords by bar index; `undefined` = free. */
+export type Locked = readonly (string | undefined)[];
+
 /**
- * A full candidate: raw chords, then the cadence slots (bar 4 of 8, then the last bar), then
- * borrowing and extensions. Idioms and tables may bring their own borrowed chords; the later
- * steps never take the borrowed count past max(colour budget, raw count).
+ * Puts the locked chords in place (THEORY §3.6). Free bars before the first lock keep the raw
+ * chords; free bars after a lock are walked on from it. A free bar just before a lock is
+ * sampled with the bridge weight P(x | left) × P(lock | x), so it fits on both sides.
  */
-export function makeCandidate(ctx: WalkContext, bars: Bars): Candidate {
+export function placeLocks(ctx: WalkContext, chords: readonly string[], locked: Locked): string[] {
+  const isLocked = (i: number) => locked[i] !== undefined;
+  const firstLock = chords.findIndex((_, i) => isLocked(i));
+  if (firstLock < 0) return [...chords];
+
+  const temperature = TEMPERATURE[ctx.colour];
+  const result = [...chords];
+  for (let i = 0; i < result.length; i++) {
+    if (isLocked(i)) {
+      result[i] = locked[i]!;
+    } else if (isLocked(i + 1)) {
+      const entries = bridgeEntries(ctx, result[i - 1], result[i - 2], locked[i + 1]);
+      result[i] = sample(ctx.rng, entries, temperature);
+    } else if (i > firstLock) {
+      result[i] = sample(
+        ctx.rng,
+        bridgeEntries(ctx, result[i - 1], result[i - 2], undefined),
+        temperature,
+      );
+    }
+  }
+  return result;
+}
+
+/**
+ * A full candidate: raw chords, then the locks, then the cadence slots (bar 4 of 8, then the
+ * last bar), then borrowing and extensions. Idioms, tables and locks may bring their own
+ * borrowed chords; the later steps never take the borrowed count past max(colour budget, that
+ * count). Locked chords never change.
+ */
+export function makeCandidate(ctx: WalkContext, bars: Bars, locked: Locked = []): Candidate {
   const raw = rawCandidate(ctx, bars);
-  const allowance = Math.max(borrowBudget(ctx.colour, bars), countBorrowed(raw.chords, ctx.mode));
+  const fixed = new Set(raw.chords.flatMap((_, i) => (locked[i] === undefined ? [] : [i])));
+  let chords = placeLocks(ctx, raw.chords, locked);
+  const allowance = Math.max(borrowBudget(ctx.colour, bars), countBorrowed(chords, ctx.mode));
   const { cadences } = ctx.profile;
-  const protectedSlots = new Set<number>();
-  let chords = raw.chords;
+  const protectedSlots = new Set(fixed);
 
   let mid: Cadence | undefined;
   if (bars === 8 && cadences.mid.length > 0) {
     // Optional: when no mid cadence fits the borrow allowance, bar 4 stays as it is.
-    const fill = fillCadence(ctx, chords, cadences.mid, 3, allowance, true);
+    const fill = fillCadence(ctx, chords, cadences.mid, 3, allowance, { optional: true, fixed });
     if (fill) {
       ({ chords, cadence: mid } = fill);
       fill.slots.forEach((slot) => protectedSlots.add(slot));
     }
   }
-  const end = fillCadence(ctx, chords, cadences.end, bars - 1, allowance);
-  end.slots.forEach((slot) => protectedSlots.add(slot));
+  // Required, unless locks block every cadence.
+  const end = fillCadence(ctx, chords, cadences.end, bars - 1, allowance, { fixed });
+  if (end) {
+    chords = end.chords;
+    end.slots.forEach((slot) => protectedSlots.add(slot));
+  }
 
-  chords = borrow(ctx, end.chords, protectedSlots, allowance);
-  chords = extend(ctx, chords);
+  chords = borrow(ctx, chords, protectedSlots, allowance);
+  chords = extend(ctx, chords, fixed);
   return {
     ...raw,
     chords,
     raw: raw.chords,
-    cadences: mid === undefined ? { end: end.cadence } : { end: end.cadence, mid },
+    cadences: { ...(end && { end: end.cadence }), ...(mid && { mid }) },
     allowance,
   };
 }

@@ -137,14 +137,22 @@ export interface CadenceFill {
   slots: number[];
 }
 
+export interface FillOptions {
+  /** Bar 4 of 8: may stay as it is. The last bar is required. */
+  optional?: boolean;
+  /** Locked bars. A cadence may cover one only when it already has the cadence's chord. */
+  fixed?: ReadonlySet<number>;
+}
+
 /**
  * Makes the chords close on one of `cadences` at bar index `at`. An ending that already
  * matches is kept. Otherwise each usable cadence is weighted 1 / (1 + chords changed), so the
  * idea keeps as much of its idiom or walk as it can, × 0.2 when its first chord repeats the
- * chord before it (the scorer's repeat penalty would sink it anyway). Cadences that would push the borrowed
- * count past `allowance` are skipped. When every one would: an optional slot (bar 4 of 8)
- * returns null and stays as it is; a required one (the last bar) takes the cadence adding the
- * fewest borrowed chords. When none fits this mode at all, authentic is used.
+ * chord before it (the scorer's repeat penalty would sink it anyway). Cadences that would
+ * push the borrowed count past `allowance` are skipped. When every one would: an optional
+ * slot returns null and stays as it is; a required one takes the cadence adding the fewest
+ * borrowed chords. When none fits this mode at all, authentic is used. Locked bars never
+ * change; when they block every cadence the result is null.
  */
 export function fillCadence(
   ctx: WalkContext,
@@ -152,29 +160,24 @@ export function fillCadence(
   cadences: readonly Cadence[],
   at: number,
   allowance: number,
-): CadenceFill;
-export function fillCadence(
-  ctx: WalkContext,
-  chords: readonly string[],
-  cadences: readonly Cadence[],
-  at: number,
-  allowance: number,
-  optional: true,
-): CadenceFill | null;
-export function fillCadence(
-  ctx: WalkContext,
-  chords: readonly string[],
-  cadences: readonly Cadence[],
-  at: number,
-  allowance: number,
-  optional = false,
+  { optional = false, fixed = new Set<number>() }: FillOptions = {},
 ): CadenceFill | null {
-  const usable = cadences.filter(
-    (c) =>
-      (MIN_COLOUR[c] ?? 0) <= ctx.colour &&
-      (c === 'weak' || cadenceShape(c, ctx.mode) !== null) &&
-      cadenceSlots(c, at, ctx.mode)[0]! >= 1,
-  );
+  // A locked bar may sit inside a cadence only when it already has that cadence's chord.
+  const respectsLocks = (cadence: Cadence) => {
+    if (cadence === 'weak') return !fixed.has(at) || isWeakStop(chords, at, ctx.mode);
+    const shape = cadenceShape(cadence, ctx.mode)!;
+    const start = at - shape.length + 1;
+    return shape.every(
+      (chord, i) => !fixed.has(start + i) || triadOf(chords[start + i]!) === triadOf(chord),
+    );
+  };
+  const fits = (c: Cadence) =>
+    (c === 'weak' || cadenceShape(c, ctx.mode) !== null) &&
+    cadenceSlots(c, at, ctx.mode)[0]! >= 1 &&
+    respectsLocks(c);
+  const usable = cadences.filter((c) => (MIN_COLOUR[c] ?? 0) <= ctx.colour && fits(c));
+  const apply = (cadence: Cadence) =>
+    applyCadence(ctx, chords, cadence, at).map((c, i) => (fixed.has(i) ? chords[i]! : c));
   const fill = (cadence: Cadence, result: string[]) => ({
     chords: result,
     cadence,
@@ -184,11 +187,12 @@ export function fillCadence(
   const kept = usable.find((c) => closesOn(chords, c, at, ctx.mode));
   if (kept) return fill(kept, [...chords]);
   if (usable.length === 0) {
-    return optional ? null : fill('authentic', applyCadence(ctx, chords, 'authentic', at));
+    if (optional || !fits('authentic')) return null;
+    return fill('authentic', apply('authentic'));
   }
 
   const options = usable.map((cadence) => {
-    const result = applyCadence(ctx, chords, cadence, at);
+    const result = apply(cadence);
     const first = cadenceSlots(cadence, at, ctx.mode)[0]!;
     return {
       cadence,

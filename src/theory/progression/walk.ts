@@ -165,3 +165,40 @@ export function walk(ctx: WalkContext, length: number, from: readonly string[] =
   }
   return chords;
 }
+
+const normalise = (entries: readonly Entry[]): Entry[] => {
+  const total = entries.reduce((sum, [, w]) => sum + w, 0);
+  return total > 0 ? entries.map(([t, w]) => [t, w / total] as const) : [...entries];
+};
+
+/**
+ * Weights for one bar between `left` and `right` (THEORY §3.6): P(x | left) × P(right | x),
+ * so the chord fits on both sides. No `left` = the start row; no `right` = P(x | left) alone.
+ * Chords in `exclude` and chords equal to a neighbour are left out. When the product leaves
+ * nothing, the one-sided weights (with the same exclusions) are used, then all of them.
+ */
+export function bridgeEntries(
+  ctx: WalkContext,
+  left: string | undefined,
+  beforeLeft: string | undefined,
+  right: string | undefined,
+  exclude: readonly string[] = [],
+): Entry[] {
+  const base = normalise(
+    left === undefined ? startEntries(ctx.profile, ctx.mode) : nextEntries(ctx, left, beforeLeft),
+  );
+  const banned = new Set([...exclude, left, right].filter(Boolean).map((c) => triadOf(c!)));
+  const allowed = base.filter(([x]) => !banned.has(triadOf(x)));
+
+  if (right !== undefined) {
+    const target = triadOf(right);
+    const both = allowed
+      .map(([x, p]) => {
+        const after = normalise(nextEntries(ctx, x, left)).find(([t]) => triadOf(t) === target);
+        return [x, p * (after?.[1] ?? 0)] as const;
+      })
+      .filter(([, w]) => w > 0);
+    if (both.length > 0) return both;
+  }
+  return allowed.length > 0 ? allowed : base;
+}

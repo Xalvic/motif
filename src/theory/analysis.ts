@@ -1,6 +1,6 @@
 /**
  * Best-fit scale and raga cousin for a progression (THEORY §2.3).
- * Idiom detection joins in M3.
+ * Idiom detection lives in progression/generate.ts (detectIdiom).
  */
 import { chordPcs } from './chords';
 import { SCALES, type Scale } from './keys';

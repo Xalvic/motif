@@ -134,14 +134,20 @@ function withSeventh(token: string, fn: HarmonicFunction, family: Family): strin
 /**
  * Extensions by function: each chord without one takes a pick from `profile.colours[fn]` with
  * chance `colourBias + [0, 0.3, 0.6][colour]`. With `sevenths`, every chord then gets a 7th.
+ * Locked bars (`fixed`) stay exactly as they are.
  */
-export function extend(ctx: WalkContext, chords: readonly string[]): string[] {
+export function extend(
+  ctx: WalkContext,
+  chords: readonly string[],
+  fixed: ReadonlySet<number> = new Set(),
+): string[] {
   const { profile, mode, colour, rng } = ctx;
   const family = familyOf(mode);
   const chance = profile.colourBias + EXTENSION_CHANCE[colour];
   const functions = fns(chords, family);
 
   const result = chords.map((chord, i) => {
+    if (fixed.has(i)) return chord;
     const fn = functions[i]!;
     const choices = fn === 'other' ? undefined : profile.colours[fn];
     if (!choices || choices.length === 0 || rng() >= chance) return chord;
@@ -151,5 +157,7 @@ export function extend(ctx: WalkContext, chords: readonly string[]): string[] {
     return coloured;
   });
   if (!profile.sevenths) return result;
-  return result.map((chord, i) => withSeventh(chord, functions[i]!, family));
+  return result.map((chord, i) =>
+    fixed.has(i) ? chord : withSeventh(chord, functions[i]!, family),
+  );
 }

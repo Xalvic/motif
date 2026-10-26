@@ -54,7 +54,7 @@ describe('cadence slots', () => {
   const pop = GENRES.pop;
 
   it('keeps an ending that already closes on an allowed cadence', () => {
-    const fill = fillCadence(ctx(pop, 'major'), split('I vi ii IV I'), ['plagal'], 4, 0);
+    const fill = fillCadence(ctx(pop, 'major'), split('I vi ii IV I'), ['plagal'], 4, 0)!;
     expect(fill.chords).toEqual(split('I vi ii IV I'));
     expect(fill.cadence).toBe('plagal');
     expect(fill.slots).toEqual([3, 4]);
@@ -69,7 +69,7 @@ describe('cadence slots', () => {
         pop.cadences.end,
         3,
         1,
-      );
+      )!;
       counts[fill.cadence] = (counts[fill.cadence] ?? 0) + 1;
       expect(closesOn(fill.chords, fill.cadence, 3, 'major')).toBe(true);
     }
@@ -86,7 +86,7 @@ describe('cadence slots', () => {
         pop.cadences.end,
         3,
         0,
-      );
+      )!;
       expect(fill.cadence).not.toBe('mixolydian');
       expect(countBorrowed(fill.chords, 'major')).toBe(0);
     }
@@ -102,7 +102,7 @@ describe('cadence slots', () => {
         profile.cadences.end,
         3,
         2,
-      );
+      )!;
       expect(some.cadence).toBe('authentic'); // nothing usable: the fallback
       const spicy = fillCadence(
         ctx(profile, 'major', 2, seed),
@@ -110,14 +110,14 @@ describe('cadence slots', () => {
         profile.cadences.end,
         3,
         2,
-      );
+      )!;
       expect(['deceptive', 'backdoor']).toContain(spicy.cadence);
     }
   });
 
   it('samples a weak stop that is not tonic and not V', () => {
     for (let seed = 1; seed <= 100; seed++) {
-      const fill = fillCadence(ctx(pop, 'major', 1, seed), split('I V I vi'), ['weak'], 3, 0);
+      const fill = fillCadence(ctx(pop, 'major', 1, seed), split('I V I vi'), ['weak'], 3, 0)!;
       expect(closesOn(fill.chords, 'weak', 3, 'major')).toBe(true);
       expect(fill.chords.slice(0, 3)).toEqual(split('I V I'));
     }
@@ -222,7 +222,8 @@ describe('full candidates (THEORY §8, 1,000 seeds × 8 genres × 2 lengths × 3
 
           // The last chords form one of the profile's end cadences.
           expect(profile.cadences.end).toContain(cand.cadences.end);
-          expect(closesOn(chords, cand.cadences.end, bars - 1, mode)).toBe(true);
+          expect(cand.cadences.end).toBeDefined();
+          expect(closesOn(chords, cand.cadences.end!, bars - 1, mode)).toBe(true);
           // Bar 4 of 8 closes on a mid cadence, unless every one would break the budget.
           if (cand.cadences.mid !== undefined) {
             expect(bars).toBe(8);

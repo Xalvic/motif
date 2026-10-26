@@ -112,8 +112,9 @@ Before shipping, verify each row against a second reference and keep the table u
    - Fill cadence slots from `profile.cadences`: last bar always; bar 4 of an 8-bar idea gets a half cadence or a weak ending.
 3. **Colour** (§3.5): borrowing, then extensions by function.
 4. **Score** each candidate (§3.4).
-5. **Pick** by softmax over scores (temperature 0.5). Not argmax: variety matters.
-6. **Annotate**: function, borrowed flag, detected idiom name, roman, symbol, pitch classes.
+   Before scoring, each candidate gets its final form: power chords (`i5`) where the voicing style is `power`, then inversions (`chooseInversions`, `profile.voicing.inversionRate`). The first and last bars stay in root position; locked bars stay as they are.
+5. **Pick** by softmax over scores (temperature 0.5). Not argmax: variety matters. Candidates with three identical chords in a row are dropped first (unless `allowVamp`), when any other is left.
+6. **Annotate**: function, borrowed flag, detected idiom name, roman, symbol, pitch classes. Idiom detection: the longest idiom of 3+ chords found as consecutive plain triads (any genre's, for the mode), or a 2-chord vamp that fills the whole idea; ties go to the idioms the candidate was built from.
 
 ### 3.3 Cadences
 
@@ -155,6 +156,15 @@ Start at 0, add or subtract. Weights live in the profile so genres can tune them
 | Identical to one of the last 5 ideas | −5 |
 | Voice-leading cost of the voiced result (§4) above threshold | −1 per 6 semitones |
 
+Details (`progression/score.ts`):
+- Chords compare as plain triads: `I → Iadd9` is a repeat.
+- First chord: the +2 also goes to an idiom candidate that starts on the idiom's own first chord.
+- Cadence: the last bar closes on any of the profile's end cadences.
+- Root motion is measured between roots (5 or 7 semitones = 4th/5th, 6 = tritone); bass motion between bass notes (1–2 semitones either way), so inversions count.
+- Budget = §3.5 budget for the colour and length (not the allowance).
+- Variety: +1 for each 4-bar half with 3+ distinct triads.
+- Voice-leading: voice the candidate with the genre's style; sum the upper-voice movement (§4 `movement`) over all changes; −1 per full 6 semitones above 8 per change.
+
 ### 3.5 Colour: extensions and borrowing
 
 Order: borrowing (and secondary dominants) first, then extensions, then the `sevenths` floor, so borrowed chords can take colour too (`progression/colour.ts`).
@@ -167,10 +177,12 @@ Order: borrowing (and secondary dominants) first, then extensions, then the `sev
 
 ### 3.6 Lock-aware regeneration
 
-- Locked chords stay fixed in every candidate.
+- Locked chords stay fixed in every candidate, byte for byte: cadences, borrowing, colour, power chords and inversions skip them. With any lock, the key (tonic and mode) stays.
 - An unlocked slot between fixed neighbours is sampled with weight `P(x | left) × P(right | x)` so the swap fits on both sides.
-- "Swap this chord" (single reroll) uses the same weight and excludes the current chord and identical neighbours.
-- Cadence rules still apply when the last bar is unlocked.
+  - Free bars before the first lock keep the raw chords; a free bar just before a lock uses the bridge weight; free bars after a lock are walked on from it.
+  - When the product leaves nothing, `P(x | left)` alone is used.
+- "Swap this chord" (single reroll) uses the same weight and excludes the current chord and identical neighbours. The borrowed count stays within max(budget, the other bars' count). On the last bar it keeps an end cadence when one can be made. The new chord takes colour like any other.
+- Cadence rules still apply when the last bar is unlocked. A cadence may cover a locked bar only when that bar already has the cadence's chord; when locks block every cadence, the idea has none.
 
 ---
 
@@ -351,7 +363,7 @@ The Hooktheory Trends API is a good manual reference for "what usually follows t
 
 ## 8. Test invariants
 
-Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours {0, 1, 2}.
+Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours {0, 1, 2} on the candidates (`walk.test.ts`, `cadence.test.ts`); the full engine (24 candidates, scoring, voicing) runs 50 seeds per genre/length/colour (`generate.test.ts`) to keep `npm test` fast. Golden seeds: `tests/theory/golden/progression.txt`.
 
 **Roman / chords**
 - `parse(format(t)) == t` for every token in every profile and idiom.
@@ -360,7 +372,7 @@ Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours 
 
 **Progression**
 - Length equals `bars`. Locked chords are byte-identical before and after.
-- First chord has T function unless the chosen idiom is flagged otherwise.
+- First chord has T function, or comes from the genre's `start` row or an idiom's first chord (pop may start on IV). Later steps never change bar 1.
 - The last two chords form one of the profile's cadences.
 - No three identical consecutive chords unless `allowVamp`.
 - Borrowed chords within the colour budget.
