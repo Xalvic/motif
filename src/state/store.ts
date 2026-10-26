@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { GENRE_IDS, type GenreId } from '../theory/genres';
-import { LEGACY_GENRES } from '../theory/progression/legacy';
+import { GENRE_IDS, GENRES as PROFILES, type GenreId } from '../theory/genres';
+import { RECENT_IDEAS } from '../theory/progression/generate';
 import {
   generateIdea,
   newMelody,
@@ -8,13 +8,14 @@ import {
   newSeed,
   rerollChord,
   revoice,
+  romansOf,
   transpose,
   type Idea,
 } from './idea';
 
 export type { GenreId };
 
-export const GENRES = GENRE_IDS.map((id) => ({ id, label: LEGACY_GENRES[id].label }));
+export const GENRES = GENRE_IDS.map((id) => ({ id, label: PROFILES[id].label }));
 
 export interface Settings {
   genre: GenreId;
@@ -44,6 +45,8 @@ interface IdeaState {
   /** The user moved the tempo slider: new ideas keep the tempo. */
   bpmTouched: boolean;
   toast: string | null;
+  /** Chords of the last ideas, newest last: the engine avoids repeating one. */
+  recent: string[][];
 }
 
 interface Actions {
@@ -73,7 +76,7 @@ const START: Settings = {
   colour: 1,
   bpm: 70,
   loop: true,
-  drums: LEGACY_GENRES.cinematic.drums,
+  drums: PROFILES.cinematic.drums,
   melody: false,
 };
 
@@ -84,8 +87,10 @@ export const useStore = create<AppState>()((set, get) => {
   /** A new idea from the current settings; locked chords stay. */
   function regenerate(changes: Partial<Settings> = {}, keepLocks = true): void {
     const state = { ...get(), ...changes };
-    const { idea, bpm } = generateIdea(state, newSeed(), keepLocks ? state.idea : undefined);
-    set({ ...changes, idea, selected: 0, bpm: state.bpmTouched ? state.bpm : bpm });
+    const previous = keepLocks ? state.idea : undefined;
+    const { idea, bpm } = generateIdea(state, newSeed(), previous, state.recent);
+    const recent = [...state.recent, romansOf(idea)].slice(-RECENT_IDEAS);
+    set({ ...changes, idea, recent, selected: 0, bpm: state.bpmTouched ? state.bpm : bpm });
   }
 
   return {
@@ -98,6 +103,7 @@ export const useStore = create<AppState>()((set, get) => {
     selected: 0,
     bpmTouched: false,
     toast: null,
+    recent: [romansOf(first.idea)],
 
     setSettings: (changes) => {
       set(changes);
@@ -108,7 +114,7 @@ export const useStore = create<AppState>()((set, get) => {
     generate: () => regenerate(),
     chooseGenre: (genre) => {
       set({ bpmTouched: false });
-      regenerate({ genre, drums: LEGACY_GENRES[genre].drums }, false);
+      regenerate({ genre, drums: PROFILES[genre].drums }, false);
     },
     chooseBars: (bars) => regenerate({ bars }, false),
     chooseColour: (colour) => regenerate({ colour }),

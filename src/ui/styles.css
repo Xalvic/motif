@@ -415,6 +415,48 @@ select {
   font-size: 12px;
   color: var(--muted);
 }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+.fn,
+.borrowed {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.fn-T {
+  background: var(--sunk);
+  color: var(--ink);
+}
+.fn-PD {
+  background: var(--bass-soft);
+  color: var(--bass);
+  border-color: transparent;
+}
+.fn-D {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border-color: transparent;
+}
+.borrowed {
+  border-style: dashed;
+}
+.idiom {
+  color: var(--ink);
+  font-weight: 600;
+}
+.btn.seed {
+  font-family: var(--mono);
+  font-size: 12px;
+}
 
 /* keyboard */
 .kbd-block {

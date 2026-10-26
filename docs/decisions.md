@@ -3,6 +3,12 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-26 · Legacy progression generator retired; the app runs on `progression/generate.ts`. `legacy-genres.json` deleted; prompts move to `theory/prompts.ts`; melody stays on `melody/legacy.ts` until M4 · M3 engine covers every legacy feature (locks, swap, power chords) · accepted
+- 2026-10-26 · §8 first-chord rule reads "T, or from the start row, or an idiom's first chord" · pop's start row (IV .15) and idioms like `IV I V vi` start off the tonic on purpose; no idiom flag exists in the schema · accepted, owner may want IV starts removed from pop
+- 2026-10-26 · No three identical chords in a row is a hard filter at the pick (unless allowVamp), not only the −6 score · §8 lists it as an invariant; softmax alone cannot promise it · accepted
+- 2026-10-26 · First and last bars are never inverted · an inverted final tonic (`Imaj7/3`) weakens the cadence · accepted
+- 2026-10-26 · Full-engine property tests run 50 seeds (candidate tests keep 1,000) · 24 candidates × voicing per idea ≈ 5 ms; 1,000 seeds would add ~4 min to `npm test` · accepted
+- 2026-10-26 · Card badges show T / PD / D with a tooltip, a dashed "borrowed" tag, the idiom name in the header line, and a "Seed" copy button · SPEC M3 UI, kept thin until the redesign · accepted
 - 2026-10-26 · Borrow allowance = max(colour budget, borrowed chords in the raw idiom/walk); cadences and colour never go past it · otherwise Plain could never play hero-rise or the Mixolydian turn, and the §8 budget invariant could not hold; `minColour` keeps an idiom out of Plain · accepted
 - 2026-10-26 · Mid cadence (bar 4 of 8) is skipped when every option breaks the allowance; the end cadence never is · Malayalam Mixolydian/double harmonic have only "half", and V is borrowed there; §8 requires only the end cadence · accepted
 - 2026-10-26 · Cadence choice weighted 1/(1 + chords changed), × 0.2 for a repeat at its start · keeps idioms and walks mostly intact, avoids V V I · accepted, by-ear check in the M3 listening pass

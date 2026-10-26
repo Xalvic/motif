@@ -3,6 +3,7 @@ import { auditionChord } from '../audio/audition';
 import { startPlayback, stopPlayback } from '../audio/pump';
 import { chordView, ideaText, keyName } from '../state/idea';
 import { GENRES, useStore } from '../state/store';
+import type { HarmonicFunction } from '../theory/functions';
 import { pitchClass } from '../theory/pitch';
 import { Keyboard } from './Keyboard';
 
@@ -30,6 +31,24 @@ const CopyIcon = () => (
     <path d="M5 15V5a2 2 0 0 1 2-2h10" />
   </svg>
 );
+
+/** Card badge text and tooltip per harmonic function (THEORY §2.2). */
+const FUNCTION_LABEL: Record<HarmonicFunction, [string, string]> = {
+  T: ['T', 'Tonic: home'],
+  PD: ['PD', 'Pre-dominant: moves away'],
+  D: ['D', 'Dominant: pulls home'],
+  other: ['·', 'Outside the function table'],
+};
+
+async function copySeed(): Promise<void> {
+  const { idea, showToast } = useStore.getState();
+  try {
+    await navigator.clipboard.writeText(String(idea.seed));
+    showToast(`Copied seed ${idea.seed}`);
+  } catch {
+    showToast('Copy is blocked in this browser.');
+  }
+}
 
 async function copyIdea(): Promise<void> {
   const { idea, genre, bpm, showToast } = useStore.getState();
@@ -100,6 +119,7 @@ export function Stage() {
             {loading
               ? `Loading sounds ${loading.loaded}/${loading.total}…`
               : `${bpm} BPM · ${idea.tokens.length} bars · ${label}`}
+            {idea.idiom && <span className="idiom"> · {idea.idiom}</span>}
           </div>
         </div>
         <div className="transport">
@@ -186,6 +206,19 @@ export function Stage() {
               </div>
               <div className="cname">{v.symbol}</div>
               <div className="roman">{v.roman}</div>
+              <div className="tags">
+                <span
+                  className={`fn fn-${idea.functions[i]}`}
+                  title={FUNCTION_LABEL[idea.functions[i]!][1]}
+                >
+                  {FUNCTION_LABEL[idea.functions[i]!][0]}
+                </span>
+                {idea.borrowed[i] && (
+                  <span className="borrowed" title="Borrowed: has a note outside the key">
+                    borrowed
+                  </span>
+                )}
+              </div>
               <div className="notes">{v.notes.join(' ')}</div>
             </div>
           );
@@ -232,6 +265,10 @@ export function Stage() {
         </button>
         <button className="btn" disabled title="Saved ideas arrive with M5">
           Save idea
+        </button>
+        <button className="btn seed" onClick={() => void copySeed()} title="Copy this idea's seed">
+          <CopyIcon />
+          Seed {idea.seed}
         </button>
       </div>
     </section>

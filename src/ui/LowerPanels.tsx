@@ -1,6 +1,6 @@
 import { keyName, keyNoteName, melodyInBar, scaleNotes } from '../state/idea';
 import { useStore } from '../state/store';
-import { LEGACY_GENRES } from '../theory/progression/legacy';
+import { GENRES as PROFILES } from '../theory/genres';
 import { PianoRoll } from './PianoRoll';
 
 export function LowerPanels() {
@@ -62,7 +62,7 @@ export function LowerPanels() {
         <span className="label">Song map idea</span>
         <div className="structure">
           {/* Parts can repeat ("Loop A 16" twice), so the key is the position. */}
-          {LEGACY_GENRES[genre].structure.map((part, i) => (
+          {PROFILES[genre].structure.map((part, i) => (
             <span key={i}>{part}</span>
           ))}
         </div>
