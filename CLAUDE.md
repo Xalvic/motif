@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M3 Progression engine v2, task 1 done (genre profile JSON + validator). M0–M2 done.
-Last session: 2026-10-26. Profile schema, 8 genre files, 38 idioms, validator; app still on legacy generator.
-Next: 1) idiom fitting + Markov walk (THEORY §3.2)  2) cadences, colour, borrowing (§3.3, §3.5)  3) scorer + lock-aware regen, then retire legacy
-Blockers: none. Owner review of genre JSON numbers welcome.
+Milestone: M3 Progression engine v2, code done; owner listening pass pending. M0–M2 done.
+Last session: 2026-10-26. Walk, idioms, cadences, colour, scorer, locks, swap; app on new engine, legacy progression deleted.
+Next: 1) owner listening pass (20 ideas/genre, ≥15 usable)  2) M4 melody engine v2 (THEORY §5)  3) melody on genre lead instrument
+Blockers: M3 sign-off needs the owner's ears. Open data questions in LOG (pop IV start, Axis loop cadence, metal bVII).
 <!-- status:end -->

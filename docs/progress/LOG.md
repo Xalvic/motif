@@ -4,6 +4,13 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-26 · M3 engine v2 complete, app off legacy
+- Milestone: M3 Progression engine v2 (code done; owner listening pass pending)
+- Done: `progression/walk.ts` (Markov walk, 2nd order, grammar fallback, bridge weight), `idioms.ts` (fit 2/3/4/8 to 4/8 bars), `cadence.ts` (end + mid slots), `colour.ts` (borrowing, secondary dominants, fitted extensions, sevenths), `score.ts` (all §3.4 rules), `generate.ts` (24 candidates, softmax pick, idiom detection, swapChord); locks never change a bar; app switched (`state/idea.ts`, store, `theory/prompts.ts`); UI: T/PD/D badges, borrowed tag, idiom name, seed copy; legacy progression code deleted. 367 tests, golden `tests/theory/golden/progression.txt`.
+- Checked in browser: locks, swap, metal power chords, lo-fi 7ths, 8 bars, playback; no console errors. Not checked by ear.
+- Decisions: borrow allowance = max(budget, raw count); mid cadence skipped when over allowance; cadence weight 1/(1+changes), ×0.2 join repeat; borrowing before extensions; extensions fitted to chord; §8 first chord = T or start row or idiom start; triple filter at pick; no inversion on first/last bar; full-engine tests 50 seeds (all in decisions.md)
+- Open: owner listening pass (20 ideas/genre, ≥15 usable); 4-bar loop idioms (Axis) get a cadence at the end (exempt loops?); pop start row has IV .15 (keep?); metal Phrygian `bVII` counts as borrowed; last-bar swap may leave no cadence when the only cadence chord is the current one; carried over: Wurlitzer `ab6mp.ogg` decode fail, build chunk > 500 kB, timing harness untested since pump change
+- Next: 1) owner listening pass for M3 sign-off  2) M4 melody engine v2 (THEORY §5): rhythm vocabularies + motif operators  3) melody on the genre's lead instrument
 ## 2026-10-26 · M3 genre profiles + validator
 - Milestone: M3 Progression engine v2 (task 1 of 3 done: profile schema + data)
 - Done: `src/theory/profile.ts` (GenreProfile/Idiom types, validateProfile, validateIdioms: one error lists every problem with its field path); `data/genres/*.json` (8 profiles from THEORY 6.2); `data/idioms.json` (38 shared idioms); `genres.ts` loads + validates at startup; `keys.ts` MODES list, `ragaScale()`, familyOf from the scale. 19 new tests, 310 total.
