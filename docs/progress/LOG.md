@@ -4,6 +4,14 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-26 · M3 genre profiles + validator
+- Milestone: M3 Progression engine v2 (task 1 of 3 done: profile schema + data)
+- Done: `src/theory/profile.ts` (GenreProfile/Idiom types, validateProfile, validateIdioms: one error lists every problem with its field path); `data/genres/*.json` (8 profiles from THEORY 6.2); `data/idioms.json` (38 shared idioms); `genres.ts` loads + validates at startup; `keys.ts` MODES list, `ragaScale()`, familyOf from the scale. 19 new tests, 310 total.
+- Validator checks: mode-keyed tables use only the genre's modes; borrowPool chords are borrowed in their mode; idioms exist and fit a mode; transition keys 1st or 2nd order; unknown fields rejected. THEORY 6.1 rewritten to match.
+- Decisions: theory-only profiles (sound stays in src/audio/genres.ts); new modes phrygianDominant + doubleHarmonic; Malayalam gives ragas, modes derived; lo-fi adds Dorian .15; transitions as plain triads + `sevenths` flag; shared idioms.json, 3-chord idioms kept; `ii6` → `ii/3` (all in decisions.md)
+- Open: profiles not used by the app yet (legacy generator still runs); owner has not reviewed the genre JSON numbers; Malayalam film/raga harmony switch not in the schema yet; carried over: Wurlitzer `ab6mp.ogg` decode fail, build chunk > 500 kB, timing harness untested since pump change
+- Next: 1) idiom fitting (2/3/4/8 chords to bar count) + Markov walk with grammar fallback (THEORY 3.2)  2) cadence slots + colour/borrowing (3.3, 3.5)  3) scorer + lock-aware regen, then switch the app from legacy
+
 ## 2026-10-23 · M2 theory core done, app runs on it
 - Milestone: M2 Theory core (done: §8 roman/spelling/voicing invariants pass, owner ear test OK). M1 closed on Chrome only (Firefox/Safari deferred).
 - Done: `src/theory/` roman.ts, keys.ts (10 scales, 17 ragas, melakarta check), chords.ts (spelling, symbols, chooseKeySpelling), functions.ts, voicing.ts (5 styles, chooseInversions), analysis.ts, genres.ts; progression/legacy.ts + melody/legacy.ts (prototype port, seeded); data/legacy-genres.json + prompts.json (validated at load). 291 tests.

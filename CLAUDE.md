@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M2 Theory core done (§8 invariants pass, ear test OK). M0, M1 done (M1 on Chrome only).
-Last session: 2026-10-23. Theory core + legacy generator port; app runs end to end; per-idea G♭/F♯ spelling.
-Next: 1) M3: genre profile JSON + validator (THEORY §6)  2) idioms + Markov (THEORY §3)  3) scorer + lock-aware regen
-Blockers: none.
+Milestone: M3 Progression engine v2, task 1 done (genre profile JSON + validator). M0–M2 done.
+Last session: 2026-10-26. Profile schema, 8 genre files, 38 idioms, validator; app still on legacy generator.
+Next: 1) idiom fitting + Markov walk (THEORY §3.2)  2) cadences, colour, borrowing (§3.3, §3.5)  3) scorer + lock-aware regen, then retire legacy
+Blockers: none. Owner review of genre JSON numbers welcome.
 <!-- status:end -->
