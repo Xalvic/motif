@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { GENRE_IDS, GENRES, IDIOMS } from '../../src/theory/genres';
 import type { Mode } from '../../src/theory/keys';
 import type { ColourLevel, GenreProfile, Idiom } from '../../src/theory/profile';
-import { makeCandidate, resolveKey } from '../../src/theory/progression/candidate';
+import { rawCandidate, resolveKey } from '../../src/theory/progression/candidate';
 import {
   eligibleIdioms,
   fitIdiom,
@@ -222,7 +222,7 @@ describe('candidates (THEORY §8, 1,000 seeds × 8 genres × 2 lengths × 3 colo
           const { mode } = resolveKey(profile, rng);
           expect(profile.modes[mode]).toBeGreaterThan(0);
           const c: WalkContext = { profile, mode, colour, rng };
-          const cand = makeCandidate(c, bars);
+          const cand = rawCandidate(c, bars);
           total++;
 
           expect(cand.chords).toHaveLength(bars);
@@ -254,7 +254,7 @@ describe('candidates (THEORY §8, 1,000 seeds × 8 genres × 2 lengths × 3 colo
           const key = resolveKey(GENRES[id], rng);
           return {
             key,
-            cand: makeCandidate({ profile: GENRES[id], mode: key.mode, colour: 1, rng }, 8),
+            cand: rawCandidate({ profile: GENRES[id], mode: key.mode, colour: 1, rng }, 8),
           };
         };
         expect(run()).toEqual(run());

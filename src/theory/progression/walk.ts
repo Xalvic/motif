@@ -23,7 +23,7 @@ export interface WalkContext {
 export const TEMPERATURE = [0.7, 1, 1.3] as const;
 
 /** borrowRate scale by colour (§3.5), reused for borrowPool chords in the grammar fallback. */
-const BORROW_SCALE = [0.3, 1, 1.8] as const;
+export const BORROW_SCALE = [0.3, 1, 1.8] as const;
 
 /** Function grammar: T → PD|D, PD → D|T, D → T. Chords tagged `other` go home to T. */
 const GRAMMAR: Record<HarmonicFunction, HarmonicFunction[]> = {

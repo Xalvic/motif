@@ -110,7 +110,7 @@ Before shipping, verify each row against a second reference and keep the table u
      - 8 bars from a 4-bar pass: 50% a second compatible idiom (another eligible 4-bar idiom that does not start on the chord the first ends on), else a variation: bars 5–6 repeat bars 1–2, bars 7–8 are walked on from there (up to 4 tries for a second half that differs).
    - Otherwise walk the transition table: start from `profile.start` (mostly tonic; a mode with no row starts on its tonic triad); use second-order transitions where the table has them, else first-order. Lookups use the plain triad (`V7/3` reads as `V`). Temperature by colour: Plain 0.7 (safer), Some 1.0, Spicy 1.3, applied as weight^(1/T).
    - Fill cadence slots from `profile.cadences`: last bar always; bar 4 of an 8-bar idea gets a half cadence or a weak ending.
-3. **Colour** (§3.5): extensions by function, then borrowing.
+3. **Colour** (§3.5): borrowing, then extensions by function.
 4. **Score** each candidate (§3.4).
 5. **Pick** by softmax over scores (temperature 0.5). Not argmax: variety matters.
 6. **Annotate**: function, borrowed flag, detected idiom name, roman, symbol, pitch classes.
@@ -127,6 +127,14 @@ Before shipping, verify each row against a second reference and keep the table u
 | Mixolydian | bVII → I | Irish, rock |
 | Phrygian | bII → i | metal |
 | Backdoor | iv7 → bVII7 → I | lofi Spicy |
+
+Filling a slot (`progression/cadence.ts`):
+- Shapes use the key family's tonic (I or i). Plagal uses the mode's own chord on degree IV (Dorian `IV → i`, Aeolian `iv → i`). Mixolydian and backdoor are major-family only. Aeolian and backdoor write all three chords. Deceptive and backdoor need Spicy.
+- An ending that already closes on an allowed cadence (compared as plain triads) is kept.
+- Otherwise each usable cadence is weighted `1 / (1 + chords changed)`, × 0.2 when its first chord repeats the chord before it. A cadence never writes over bar 1.
+- Cadences that would take the borrowed count past the allowance (§3.5) are skipped. If all would: bar 4 of 8 stays as it is (no mid cadence); the last bar takes the one adding the fewest borrowed chords. If no listed cadence fits the mode, authentic is used.
+- `weak` keeps a bar that is already a weak stop, else samples an in-key, non-tonic, non-V chord from the transition row (or the mode's triads) that differs from the bar before.
+- Order: bar 4 of 8 first, then the last bar. Cadence bars are protected from borrowing.
 
 ### 3.4 Scorer
 
@@ -149,9 +157,13 @@ Start at 0, add or subtract. Weights live in the profile so genres can tune them
 
 ### 3.5 Colour: extensions and borrowing
 
-- **Extensions by function** from `profile.colours[fn]`, applied with probability `profile.colourBias + [0, 0.3, 0.6][colour]`. Example cinematic: T `add9`/`maj7`, PD `add9`/`sus2`, D `sus4`.
-- **Borrowing**: replace a non-locked, non-first chord with one from `profile.borrowPool` with probability `profile.borrowRate × [0.3, 1, 1.8][colour]`. Budget per 4 bars: Plain 0, Some 1, Spicy 2.
-- **Secondary dominants** (V/V, V/vi, V/ii) only at Some/Spicy and only where `profile.secondaryDominants` is true. They must resolve to their target.
+Order: borrowing (and secondary dominants) first, then extensions, then the `sevenths` floor, so borrowed chords can take colour too (`progression/colour.ts`).
+
+- **Borrowing**: replace a non-locked, non-first, non-cadence chord with one from `profile.borrowPool` with probability `profile.borrowRate × [0.3, 1, 1.8][colour]`. The new chord has the same function as the old one in context and differs from its neighbours. Budget per 4 bars: Plain 0, Some 1, Spicy 2.
+- **Allowance**: idioms and tables may bring their own borrowed chords (hero-rise `I bVI bVII I`, Mixolydian turn). Cadences and colour never take the borrowed count past `max(budget, borrowed chords in the raw candidate)`. An idiom author who wants an idiom kept out of Plain sets `minColour`.
+- **Secondary dominants** (V/V, V/vi, V/ii) only at Some/Spicy and only where `profile.secondaryDominants` is true. They must resolve to their target. Written as 7th chords on the slot before the target: major `II7 → V`, `III7 → vi`, `VI7 → ii`; minor `II7 → V`, `I7 → iv`. They are one more option in the borrowing roll, count as borrowed, and protect their target.
+- **Extensions by function** from `profile.colours[fn]`, applied with probability `profile.colourBias + [0, 0.3, 0.6][colour]` to chords that have none yet. Example cinematic: T `add9`/`maj7`, PD `add9`/`sus2`, D `sus4`. Fitted to the chord: on a minor chord `maj7`/`maj9` → `7`/`9`; on a major non-dominant chord `7`/`9` → `maj7`/`maj9`, and the reverse on a dominant; a diminished chord takes only a 7th (`°7` on minor-key vii°, else `ø7`). An extension that is not a valid token, or a sus that adds a note outside the scale (`iiisus2` in major), is skipped.
+- **`sevenths`** (lo-fi): after extensions, every chord without a 7th gets one (`add9` → `9`, anything else → `7`, fitted as above).
 
 ### 3.6 Lock-aware regeneration
 
