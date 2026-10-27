@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generateIdea } from '../../src/state/idea';
 import {
-  IDEAS_PER_GENRE,
-  PASS_MARK,
+  PASSES,
   passPlan,
   settingsOf,
   summarise,
@@ -18,20 +17,29 @@ const rating = (verdict: Rating['verdict'], note = ''): Rating => ({
   chords: 'Am – F – C – G',
 });
 
+const FULL = PASSES.full;
+
 describe('listening pass plan', () => {
-  const plan = passPlan();
+  const plan = passPlan(FULL);
 
   it('has 20 ideas per genre with unique ids and seeds', () => {
-    expect(plan).toHaveLength(GENRE_IDS.length * IDEAS_PER_GENRE);
+    expect(plan).toHaveLength(GENRE_IDS.length * FULL.perGenre);
     for (const genre of GENRE_IDS) {
-      expect(plan.filter((p) => p.genre === genre)).toHaveLength(IDEAS_PER_GENRE);
+      expect(plan.filter((p) => p.genre === genre)).toHaveLength(FULL.perGenre);
     }
     expect(new Set(plan.map((p) => p.id)).size).toBe(plan.length);
     expect(new Set(plan.map((p) => p.seed)).size).toBe(plan.length);
   });
 
   it('is the same on every load', () => {
-    expect(passPlan()).toEqual(plan);
+    expect(passPlan(FULL)).toEqual(plan);
+  });
+
+  it('gives the re-check 3 other ideas per genre', () => {
+    const recheck = passPlan(PASSES.recheck);
+    expect(recheck).toHaveLength(GENRE_IDS.length * 3);
+    const seeds = new Set(plan.map((p) => p.seed));
+    expect(recheck.some((p) => seeds.has(p.seed))).toBe(false);
   });
 
   it('mixes lengths and colour levels in each genre', () => {
@@ -51,26 +59,26 @@ describe('listening pass plan', () => {
 });
 
 describe('listening pass summary', () => {
-  const plan = passPlan();
+  const plan = passPlan(FULL);
   const pop = plan.filter((p) => p.genre === 'pop');
 
   it('counts usable ideas and passes a genre at the mark', () => {
     const ratings = Object.fromEntries(
-      pop.map((p, i) => [p.id, rating(i < PASS_MARK ? 'usable' : 'not')]),
+      pop.map((p, i) => [p.id, rating(i < FULL.mark ? 'usable' : 'not')]),
     );
-    const summary = summarise(plan, ratings).find((s) => s.genre === 'pop')!;
-    expect(summary).toMatchObject({ rated: 20, usable: PASS_MARK, done: true, passed: true });
+    const summary = summarise(FULL, plan, ratings).find((s) => s.genre === 'pop')!;
+    expect(summary).toMatchObject({ rated: 20, usable: FULL.mark, done: true, passed: true });
   });
 
   it('fails a genre one below the mark', () => {
     const ratings = Object.fromEntries(
-      pop.map((p, i) => [p.id, rating(i < PASS_MARK - 1 ? 'usable' : 'not')]),
+      pop.map((p, i) => [p.id, rating(i < FULL.mark - 1 ? 'usable' : 'not')]),
     );
-    expect(summarise(plan, ratings).find((s) => s.genre === 'pop')!.passed).toBe(false);
+    expect(summarise(FULL, plan, ratings).find((s) => s.genre === 'pop')!.passed).toBe(false);
   });
 
   it('lists notes in the summary text', () => {
-    const text = summaryText(plan, { [pop[0]!.id]: rating('not', 'too busy') });
+    const text = summaryText(FULL, plan, { [pop[0]!.id]: rating('not', 'too busy') });
     expect(text).toContain('1/20 rated');
     expect(text).toContain('pop-1 (not, A minor: Am – F – C – G): too busy');
   });

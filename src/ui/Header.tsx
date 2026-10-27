@@ -26,7 +26,7 @@ export function Header({ listening = false }: { listening?: boolean }) {
       ) : (
         <div className="hint">
           <kbd>G</kbd> new chords · <kbd>Space</kbd> play / stop ·{' '}
-          <a href="?listen">Listening pass</a>
+          <a href="?listen">Listening pass</a> · <a href="?listen=recheck">Re-check</a>
         </div>
       )}
     </header>

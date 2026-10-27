@@ -9,7 +9,6 @@ import react from '@vitejs/plugin-react';
  * ratings here, so they land in the repo for the M3 sign-off.
  */
 function listeningFile(): Plugin {
-  const file = resolve('docs/progress/listening/m3.json');
   return {
     name: 'chord-spark-listening-file',
     apply: 'serve',
@@ -17,6 +16,10 @@ function listeningFile(): Plugin {
       server.middlewares.use('/__listening', (req, res) => {
         void (async () => {
           try {
+            // Mounted at /__listening, so req.url is "/?pass=<file>".
+            const pass = new URL(req.url ?? '/', 'http://local').searchParams.get('pass') ?? '';
+            if (!/^[a-z0-9-]+$/.test(pass)) throw new Error('bad pass name');
+            const file = resolve(`docs/progress/listening/${pass}.json`);
             if (req.method === 'GET') {
               // No file yet: an empty object, so the page falls back without a console error.
               const body = await readFile(file, 'utf8').catch(() => '{}');

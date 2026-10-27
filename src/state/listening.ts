@@ -1,23 +1,36 @@
 /**
- * The owner's blind listening pass (SPEC M3 "Done when"): a fixed list of ideas per genre,
+ * The owner's blind listening passes (SPEC M3 "Done when"): a fixed list of ideas per genre,
  * each rated "usable as a starting point" or not. Pure: no store, no storage.
  */
 import { GENRE_IDS, GENRES as PROFILES, type GenreId } from '../theory/genres';
 import { createRng } from '../theory/random';
 import type { IdeaSettings } from './idea';
 
-export const PASS = 'M3';
-/** Fixed, so a reload or another browser gets the same ideas. */
-export const PASS_SEED = 20261027;
-export const IDEAS_PER_GENRE = 20;
-/** SPEC M3: usable ideas per genre for sign-off. */
-export const PASS_MARK = 15;
+export interface PassConfig {
+  label: string;
+  /** Fixed, so a reload or another browser gets the same ideas. */
+  seed: number;
+  perGenre: number;
+  /** Usable ideas per genre to pass. */
+  mark: number;
+  /** Ratings file: docs/progress/listening/<file>.json. */
+  file: string;
+}
+
+export const PASSES = {
+  /** SPEC M3 sign-off: 20 per genre, 15 usable. */
+  full: { label: 'M3', seed: 20261027, perGenre: 20, mark: 15, file: 'm3-full' },
+  /** Quick check after an engine change: 3 new ideas per genre, same 75 % mark. */
+  recheck: { label: 'M3 re-check', seed: 20261028, perGenre: 3, mark: 3, file: 'm3-recheck' },
+} as const satisfies Record<string, PassConfig>;
+
+export type PassId = keyof typeof PASSES;
 
 export interface PassItem {
   /** For example "pop-7". */
   id: string;
   genre: GenreId;
-  /** 1..IDEAS_PER_GENRE within the genre. */
+  /** 1..perGenre within the genre. */
   n: number;
   seed: number;
   bars: 4 | 8;
@@ -27,10 +40,10 @@ export interface PassItem {
 /** Per 4 ideas: Some, Plain, Some, Spicy. Every 4th idea has 8 bars. */
 const COLOURS = [1, 0, 1, 2] as const;
 
-export function passPlan(passSeed: number = PASS_SEED): PassItem[] {
-  const rng = createRng(passSeed);
+export function passPlan(config: PassConfig): PassItem[] {
+  const rng = createRng(config.seed);
   return GENRE_IDS.flatMap((genre) =>
-    Array.from({ length: IDEAS_PER_GENRE }, (_, i): PassItem => {
+    Array.from({ length: config.perGenre }, (_, i): PassItem => {
       const bars: 4 | 8 = i % 4 === 3 ? 8 : 4;
       return {
         id: `${genre}-${i + 1}`,
@@ -61,7 +74,7 @@ export interface Rating {
   chords: string;
 }
 
-/** What docs/progress/listening/m3.json holds. */
+/** What docs/progress/listening/<file>.json holds. */
 export interface PassFile {
   pass: string;
   passSeed: number;
@@ -79,6 +92,7 @@ export interface GenreSummary {
 }
 
 export function summarise(
+  config: PassConfig,
   plan: readonly PassItem[],
   ratings: Readonly<Record<string, Rating>>,
 ): GenreSummary[] {
@@ -91,19 +105,22 @@ export function summarise(
       rated: verdicts.length,
       usable,
       done: verdicts.length === items.length,
-      passed: usable >= PASS_MARK,
+      passed: usable >= config.mark,
     };
   });
 }
 
 /** Markdown for the session log: one line per genre, then the notes. */
 export function summaryText(
+  config: PassConfig,
   plan: readonly PassItem[],
   ratings: Readonly<Record<string, Rating>>,
 ): string {
-  const lines = [`${PASS} listening pass (≥ ${PASS_MARK} of ${IDEAS_PER_GENRE} usable per genre)`];
-  for (const s of summarise(plan, ratings)) {
-    const result = s.done ? (s.passed ? 'pass' : 'FAIL') : `${s.rated}/${IDEAS_PER_GENRE} rated`;
+  const lines = [
+    `${config.label} listening pass (≥ ${config.mark} of ${config.perGenre} usable per genre)`,
+  ];
+  for (const s of summarise(config, plan, ratings)) {
+    const result = s.done ? (s.passed ? 'pass' : 'FAIL') : `${s.rated}/${config.perGenre} rated`;
     lines.push(`- ${PROFILES[s.genre].label}: ${s.usable} usable · ${result}`);
   }
   const notes = plan.filter((item) => ratings[item.id]?.note);

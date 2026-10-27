@@ -1,14 +1,19 @@
 /**
- * Listening pass progress. The dev server writes the ratings to
- * docs/progress/listening/m3.json (vite.config.ts); localStorage is the fallback.
+ * Listening pass progress. `?listen` is the full pass, `?listen=recheck` the short one. The dev
+ * server writes the ratings to docs/progress/listening/<file>.json (vite.config.ts);
+ * localStorage is the fallback.
  */
 import { create } from 'zustand';
-import { PASS, PASS_SEED, passPlan, type PassFile, type Rating } from './listening';
+import { PASSES, passPlan, type PassFile, type PassId, type Rating } from './listening';
 
-export const PLAN = passPlan();
+const passId: PassId =
+  new URLSearchParams(window.location.search).get('listen') === 'recheck' ? 'recheck' : 'full';
+export const CONFIG = PASSES[passId];
+export const PLAN = passPlan(CONFIG);
+export const FILE_PATH = `docs/progress/listening/${CONFIG.file}.json`;
 
-const ENDPOINT = '/__listening';
-const STORAGE_KEY = `chord-spark.listening.${PASS}`;
+const ENDPOINT = `/__listening?pass=${CONFIG.file}`;
+const STORAGE_KEY = `chord-spark.listening.${CONFIG.file}`;
 
 export type SaveStatus = 'loading' | 'idle' | 'saving' | 'file' | 'browser';
 
@@ -42,7 +47,7 @@ async function readFile(): Promise<Record<string, Rating> | null> {
     const response = await fetch(ENDPOINT);
     if (!response.ok) return null;
     const file = (await response.json()) as PassFile;
-    return file.passSeed === PASS_SEED ? file.ratings : null;
+    return file.passSeed === CONFIG.seed ? file.ratings : null;
   } catch {
     return null;
   }
@@ -51,8 +56,8 @@ async function readFile(): Promise<Record<string, Rating> | null> {
 /** true when the dev server wrote the file. */
 async function write(ratings: Record<string, Rating>): Promise<boolean> {
   const file: PassFile = {
-    pass: PASS,
-    passSeed: PASS_SEED,
+    pass: CONFIG.label,
+    passSeed: CONFIG.seed,
     updated: new Date().toISOString(),
     ratings,
   };

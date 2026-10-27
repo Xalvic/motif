@@ -2,22 +2,20 @@ import { useEffect, useRef, useState } from 'react';
 import { startPlayback, stopPlayback } from '../audio/pump';
 import { chordView, keyName } from '../state/idea';
 import {
-  IDEAS_PER_GENRE,
-  PASS,
   settingsOf,
   summarise,
   summaryText,
   type PassItem,
   type Verdict,
 } from '../state/listening';
-import { PLAN, useListening, type SaveStatus } from '../state/listeningStore';
+import { CONFIG, FILE_PATH, PLAN, useListening, type SaveStatus } from '../state/listeningStore';
 import { GENRES, useStore } from '../state/store';
 
 const STATUS: Record<SaveStatus, string> = {
   loading: 'Loading ratings…',
-  idle: 'Ratings save to docs/progress/listening/m3.json',
+  idle: `Ratings save to ${FILE_PATH}`,
   saving: 'Saving…',
-  file: 'Saved to docs/progress/listening/m3.json',
+  file: `Saved to ${FILE_PATH}`,
   browser: 'Saved in this browser only: run npm run dev to save the file',
 };
 
@@ -29,7 +27,7 @@ const labelOf = (item: PassItem) => GENRES.find((g) => g.id === item.genre)!.lab
 async function copySummary(): Promise<void> {
   const { showToast } = useStore.getState();
   try {
-    await navigator.clipboard.writeText(summaryText(PLAN, useListening.getState().ratings));
+    await navigator.clipboard.writeText(summaryText(CONFIG, PLAN, useListening.getState().ratings));
     showToast('Copied the summary');
   } catch {
     showToast('Copy is blocked in this browser.');
@@ -79,7 +77,7 @@ function Rater({ item, index }: { item: PassItem; index: number }) {
           ← Back
         </button>
         <span>
-          <b>{labelOf(item)}</b> · idea {item.n} of {IDEAS_PER_GENRE}
+          <b>{labelOf(item)}</b> · idea {item.n} of {CONFIG.perGenre}
         </span>
         <button className="btn" onClick={() => go(index + 1)} disabled={index === PLAN.length - 1}>
           Next →
@@ -122,7 +120,7 @@ export function ListeningPass() {
   const { index, ratings, status, load, go } = useListening();
   const item = PLAN[index]!;
   const loaded = status !== 'loading';
-  const summary = summarise(PLAN, ratings);
+  const summary = summarise(CONFIG, PLAN, ratings);
   const rated = summary.reduce((sum, s) => sum + s.rated, 0);
 
   useEffect(() => {
@@ -146,10 +144,10 @@ export function ListeningPass() {
   }
 
   return (
-    <section className="controls listening" aria-label={`Listening pass ${PASS}`}>
+    <section className="controls listening" aria-label={`Listening pass ${CONFIG.label}`}>
       <div className="lp-head">
         <div>
-          <span className="label">Listening pass · {PASS}</span>
+          <span className="label">Listening pass · {CONFIG.label}</span>
           <p className="lp-sub">
             Play each idea. Is it usable as a starting point for a song? Labels are hidden.
           </p>
@@ -169,7 +167,7 @@ export function ListeningPass() {
               aria-pressed={s.genre === item.genre}
               onClick={() => openGenre(s.genre)}
             >
-              {label} · {s.done ? `${s.usable} usable` : `${s.rated}/${IDEAS_PER_GENRE}`}
+              {label} · {s.done ? `${s.usable} usable` : `${s.rated}/${CONFIG.perGenre}`}
             </button>
           );
         })}
