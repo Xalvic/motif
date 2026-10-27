@@ -4,6 +4,14 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-27 · M4 and M5 signed off, MIDI export and saved ideas
+- Milestone: M5 Export and persistence (signed off). M4 signed off on the melody pass. M0–M5 done; M6/M7 are stretch.
+- Done: melody pass `?listen=melody` (+ `melody-full`), verdict `worth`, melody shown as piano roll + note names (`ui/MelodyNotes.tsx`); trill rule (≤ 4 notes on two alternating pitches, `check.ts` + `generate.ts`, THEORY §5.2/§8); melody notes spelled by the chord (`melodyNoteName`); MIDI export (`audio/export-midi.ts`, @tonejs/midi + midi-file for the key signature, Export MIDI button); saved ideas (`state/saved.ts`, `savedStore.ts`, idb-keyval, Save/Open/✕, JSON Export all/Import); build split into tone/smplr/react/vendor chunks; `preview` entry in launch.json. 432 tests.
+- Checked by ear: owner: melody pass 23/24 worth reacting to; re-check after the trill fix (17 of 24 melodies changed) all good; lo-fi lazy comp and Block chords good; .mid in FL Studio: right tempo, four named tracks, right notes.
+- Timing: `/timing.html` full run (page visible): 300/300 bars, 0 late, no drift. Owner's short run (88 bars, page hidden/visible): clock exact, but one TR-808 kick detected 888 frames (~18 ms) late; click and probe steady, so probably the detector.
+- Decisions: melody pass design; M4 and M5 sign-offs; trill rule; MIDI export scope (grid, melody and drums always, no pad); per-track/drag-out not built; saved ideas design; Wurlitzer `ab6mp.ogg` gap is harmless (out of lo-fi range); timing re-check (all in decisions.md)
+- Open: not built: §5.4 drone harmony for raga mode, Irish cut/roll graces, pop anticipations over the bar line; metal re-check gave i5 ♭VI5 ♭VII5 i5 three times; TR-808 kick outlier in the owner's run (watch in the next timing run); Firefox/Safari timing never run
+- Next: 1) owner picks the next step: M6 data-driven transitions, M7 WAV export, or the not-built items  2) look at metal progression variety  3) one more timing run with drums on, page visible
 ## 2026-10-27 · M3 signed off, M4 melody engine in the app
 - Milestone: M4 Melody engine v2 (code done; owner listening pass pending). M3 signed off on the 24/24 re-check.
 - Done: blind listening pass `?listen` / `?listen=recheck` (`state/listening.ts`, `listeningStore.ts`, `ui/ListeningPass.tsx`, Vite plugin writes `docs/progress/listening/*.json`); Stop fix (`stopAll` clears smplr's queue); scorer `tonicToFour` −1; lo-fi `lazy` comp calmer + "Block chords" toggle; M4 `theory/melody/` rhythm.ts, generate.ts (form, operators, cadences, appoggiatura, raga mode + gamaka), score.ts, check.ts (§8 as one check); app on it, `melody/legacy.ts` deleted; key change keeps melody in range. 402 tests (~19 s).

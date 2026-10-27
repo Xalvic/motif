@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M4 Melody engine v2, code done; owner listening pass pending. M0–M3 done (M3 signed off on the 24/24 re-check).
-Last session: 2026-10-27. Listening pass, Stop fix, tonic→IV rule, calmer lo-fi + Block chords; M4 melody engine in the app.
-Next: 1) melody listening pass (3 per genre, "worth reacting to")  2) owner ear check of lo-fi comp + Block chords  3) M5 export and persistence
-Blockers: M4 sign-off needs the owner's ears. Not built yet: raga drone harmony, Irish ornaments (see decisions.md).
+Milestone: M0–M5 done (M4 on the 23/24 melody pass, M5 on the owner's FL Studio check). M6/M7 are stretch.
+Last session: 2026-10-27. Melody pass, trill rule, chord spelling of melody notes, MIDI export, saved ideas, build split, timing re-check.
+Next: 1) owner picks: M6 transitions, M7 WAV export, or not-built items  2) metal progression variety  3) timing run with drums, page visible
+Blockers: none. Not built yet: raga drone harmony, Irish ornaments, pop anticipations (see decisions.md).
 <!-- status:end -->
