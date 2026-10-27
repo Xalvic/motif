@@ -7,7 +7,8 @@ import { chooseKeySpelling, chordPcs, chordSymbol, noteName, spellChord } from '
 import { isBorrowed, progressionFunctions, type HarmonicFunction } from '../theory/functions';
 import { GENRES as PROFILES, type GenreId } from '../theory/genres';
 import { familyOf, scaleById, type Key, type Mode, type Scale } from '../theory/keys';
-import { legacyMelody, melodyReference, type NoteEvent } from '../theory/melody/legacy';
+import { generateMelody } from '../theory/melody/generate';
+import type { NoteEvent } from '../theory/melody/note';
 import { pitchClassName } from '../theory/pitch';
 import {
   detectIdiom,
@@ -38,6 +39,8 @@ export interface Idea {
   voicings: Voicing[];
   scale: Scale;
   melody: NoteEvent[];
+  /** Raga mode (THEORY §5.4): the raga the melody uses. */
+  raga?: string;
   prompt: string;
 }
 
@@ -66,8 +69,20 @@ function voice(genre: GenreId, tonic: number, mode: Mode, tokens: ChordToken[]):
   return voiceProgression(tokens, { tonic, mode }, voicingFor(PROFILES[genre]));
 }
 
-function melodyFor(tokens: ChordToken[], tonic: number, scale: Scale, rng: Rng): NoteEvent[] {
-  return legacyMelody(tokens, tonic, scale.steps, rng);
+type MelodySettings = Pick<IdeaSettings, 'genre' | 'colour'>;
+
+/** Melody notes and raga, as Idea fields. */
+function melodyFor(
+  settings: MelodySettings,
+  tokens: ChordToken[],
+  key: Key,
+  rng: Rng,
+): Pick<Idea, 'melody' | 'raga'> {
+  const { notes, raga } = generateMelody(
+    { tokens, key, profile: PROFILES[settings.genre], colour: settings.colour },
+    rng,
+  );
+  return { melody: notes, raga };
 }
 
 /** Everything that follows from the chords: labels, spelling, scale, voicings. */
@@ -122,7 +137,7 @@ export function generateIdea(
     tokens,
     ...derived,
     locks: keep ? [...previous.locks] : tokens.map(() => false),
-    melody: melodyFor(tokens, tonic, derived.scale, rng),
+    ...melodyFor(settings, tokens, { tonic, mode }, rng),
     prompt: pickPrompt(profile, rng, previous?.prompt),
   };
   return { idea, bpm };
@@ -144,28 +159,36 @@ export function rerollChord(idea: Idea, settings: IdeaSettings, index: number, s
     ...idea,
     tokens,
     ...derived,
-    melody: melodyFor(tokens, idea.tonic, derived.scale, rng),
+    ...melodyFor(settings, tokens, keyOf(idea), rng),
   };
 }
 
-export function newMelody(idea: Idea, seed: number): Idea {
-  return { ...idea, melody: melodyFor(idea.tokens, idea.tonic, idea.scale, createRng(seed)) };
+export function newMelody(idea: Idea, settings: MelodySettings, seed: number): Idea {
+  return { ...idea, ...melodyFor(settings, idea.tokens, keyOf(idea), createRng(seed)) };
 }
 
 export function newPrompt(idea: Idea, genre: GenreId, seed: number): Idea {
   return { ...idea, prompt: pickPrompt(PROFILES[genre], createRng(seed), idea.prompt) };
 }
 
-/** Same chords in another key. The melody moves with the reference note, like the prototype. */
-export function transpose(idea: Idea, genre: GenreId, tonic: number): Idea {
-  const shift = melodyReference(tonic) - melodyReference(idea.tonic);
-  return {
+/**
+ * Same chords in another key. The melody moves by the nearer shift that keeps it in the
+ * genre's range (up or down); when neither fits, the idea gets a new melody.
+ */
+export function transpose(idea: Idea, settings: MelodySettings, tonic: number): Idea {
+  const up = (((tonic - idea.tonic) % 12) + 12) % 12;
+  const [lo, hi] = PROFILES[settings.genre].melody.range;
+  const fits = (shift: number) =>
+    idea.melody.every((n) => n.midi + shift >= lo && n.midi + shift <= hi);
+  const shift = [up, up - 12].sort((a, b) => Math.abs(a) - Math.abs(b)).find(fits);
+  const moved: Idea = {
     ...idea,
     tonic,
     flats: chooseKeySpelling(idea.tokens, tonic, familyOf(idea.mode)),
-    voicings: voice(genre, tonic, idea.mode, idea.tokens),
-    melody: idea.melody.map((n) => ({ ...n, midi: n.midi + shift })),
+    voicings: voice(settings.genre, tonic, idea.mode, idea.tokens),
   };
+  if (shift === undefined) return newMelody(moved, settings, idea.seed);
+  return { ...moved, melody: idea.melody.map((n) => ({ ...n, midi: n.midi + shift })) };
 }
 
 /** Re-voices for a genre's voicing style (a genre change without a new idea). */
@@ -244,5 +267,6 @@ export function ideaText(idea: Idea, genre: GenreId, bpm: number): string {
     '',
     `Scale: ${keyName(idea).split(' ')[0]} ${idea.scale.name} (${scaleNotes(idea).join(' ')}) · raga cousin ${idea.scale.raga}`,
   );
+  if (idea.raga) lines.push(`Melody raga: ${idea.raga}`);
   return lines.join('\n');
 }

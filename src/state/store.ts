@@ -137,7 +137,7 @@ export const useStore = create<AppState>()((set, get) => {
     chooseColour: (colour) => regenerate({ colour }),
     chooseKey: (key) => {
       if (key === 'random') set({ key });
-      else set({ key, idea: transpose(get().idea, get().genre, key) });
+      else set({ key, idea: transpose(get().idea, get(), key) });
     },
     chooseBpm: (bpm) => set({ bpm, bpmTouched: true }),
     reroll: (index) => {
@@ -151,7 +151,7 @@ export const useStore = create<AppState>()((set, get) => {
     },
     select: (index) => set({ selected: index }),
     newMelody: () => {
-      set({ idea: newMelody(get().idea, newSeed()) });
+      set({ idea: newMelody(get().idea, get(), newSeed()) });
       if (!get().playing) set({ melody: true });
     },
     newPrompt: () => set({ idea: newPrompt(get().idea, get().genre, newSeed()) }),

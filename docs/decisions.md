@@ -3,6 +3,12 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · M4 melody engine replaces `melody/legacy.ts`: form a1 a2 a′ (+ a1 a2 a″), note-by-note pitches with §5.2 hard rules, every candidate checked against §8 (`melodyFaults`) before scoring; details in THEORY §5.1 · rules that §8 tests must hold are enforced, not only scored; 0 fallbacks in 8,000 test ideas · accepted, owner listening pending
+- 2026-10-27 · Melody range is the profile's absolute `melody.range`, not the prototype's tonic reference; a key change moves the melody up or down (whichever fits), else makes a new one · §8 "all notes in range" must hold in every key · accepted
+- 2026-10-27 · Jig plays two 6/8 cells per 4/4 bar (12/8 feel); cells with < 3 notes get their longest note split; no ties over the bar line (no pop anticipations yet) · the app plays 4/4 only (meters unused); §5.1 needs 3 notes per bar · accepted
+- 2026-10-27 · Raga mode picks a raga per idea from the profile weights × fit; a raga with no note in some chord is out · Hindolam over V in minor had no strong-beat chord tone and fell back to quarter notes · accepted
+- 2026-10-27 · Not in M4 for now: the §5.4 drone harmony switch for raga mode, and Irish cut/roll grace notes · owner likes the current Malayalam chords (M3 re-check); Irish ornaments need their own rule · pending owner
+- 2026-10-27 · Melody 1,000-seed tests use walk chords (no scoring) in their own file; the full engine runs 50 seeds · ~1.5 ms per melody; the full engine at 1,000 seeds would add ~1 min to `npm test` · accepted
 - 2026-10-27 · M3 signed off on the 3-per-genre re-check (24 of 24 usable, `m3-recheck.json`), not the full 20-per-genre pass · owner's call: the full pass takes too long, and the re-check came after the stop fix and the tonic → IV rule; `?listen` (`m3-full.json`) stays for a later full pass · accepted
 - 2026-10-27 · Lo-fi `lazy` comp: chord held from 1, one soft re-hit on 3-and, silent after beat 3.5; a "Block chords" toggle (any genre) plays held chords instead of the pattern · owner: the chords sound good as block chords, the lo-fi hits around the change sounded off; strum / Alberti / arpeggio stay (owner likes them in Irish, classical, Malayalam) · accepted
 - 2026-10-27 · Scorer rule tonic → degree 4 (`I → IV`, `i → iv`), −1, not a ban · owner rated 15 of 17 such ideas "not usable"; −2 would almost ban it (0–8 %) · accepted, owner re-check at `?listen=recheck`
