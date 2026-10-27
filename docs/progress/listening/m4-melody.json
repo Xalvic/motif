@@ -1,0 +1,175 @@
+{
+  "pass": "M4 melody",
+  "passSeed": 20261029,
+  "updated": "2026-10-27T09:16:50.523Z",
+  "ratings": {
+    "cinematic-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "F minor",
+      "chords": "Fm7 – A♭maj7/E♭ – B♭m – Fm(add9)",
+      "melody": "C5 B♭4 A♭4 | C5 B♭4 A♭4 | B♭4 F5 E♭5 | F5 G5 A♭5"
+    },
+    "cinematic-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B minor",
+      "chords": "Bm – A – F♯/A♯ – Bm",
+      "melody": "B4 C♯5 D5 | E5 D5 C♯5 | A♯4 C♯5 C♯5 | F♯5 E5 D5"
+    },
+    "cinematic-3": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B minor",
+      "chords": "Bm – Gsus2 – A – Bm",
+      "melody": "D5 A4 B4 | D5 G5 A5 | A5 B5 A5 | F♯5 C♯5 D5"
+    },
+    "epic-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B♭ minor",
+      "chords": "B♭m – A♭sus4 – F – B♭sus2",
+      "melody": "F4 D♭4 B♭3 | E♭4 D♭4 B♭3 | C4 D♭4 C4 | B♭3 C4 B♭3"
+    },
+    "epic-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B♭ minor",
+      "chords": "B♭m – G♭ – A♭ – B♭m",
+      "melody": "B♭3 E♭4 D♭4 | B♭3 C4 D♭4 | A♭3 E♭4 C4 | B♭3 C4 D♭4"
+    },
+    "epic-3": {
+      "verdict": "worth",
+      "note": "",
+      "key": "C minor",
+      "chords": "Cm – A♭sus2 – G – Cm",
+      "melody": "E♭4 D4 E♭4 | B♭3 C4 B♭3 | G4 E♭4 F4 | E♭4 B♭4 C5"
+    },
+    "lofi-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "F major",
+      "chords": "B♭maj7 – C7 – B♭maj7 – Fmaj7",
+      "melody": "D4 E4 D4 | F4 E4 B♭4 | A4 C5 B♭4 | A4 G4 F4"
+    },
+    "lofi-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "C♯ Dorian",
+      "chords": "C♯m7 – F♯7 – G♯7 – C♯m7",
+      "melody": "F♯4 E4 F♯4 | E4 D♯4 E4 | G♯4 C5 A♯4 | B4 B4 C♯5"
+    },
+    "lofi-3": {
+      "verdict": "worth",
+      "note": "",
+      "key": "G♯ minor",
+      "chords": "G♯m7 – A7 – C♯m7 – G♯m9",
+      "melody": "F♯4 F♯4 A♯4 | A4 A4 B4 | A♯4 G♯4 G♯4 | A♯4 C♯5 B4"
+    },
+    "classical-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B major",
+      "chords": "B – G♯m – F♯ – B",
+      "melody": "F♯4 E4 F♯4 D♯4 | D♯4 C♯4 D♯4 F♯4 G♯4 E4 | F♯4 G♯4 A♯4 F♯4 | D♯4 E4 D♯4"
+    },
+    "classical-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "E♭ minor",
+      "chords": "E♭m – A♭m – B♭ – E♭m",
+      "melody": "G♭5 F5 G♭5 G♭5 E♭5 B♭4 | B4 D♭5 B4 F5 E♭5 D♭5 | D5 F5 G♭5 A♭5 B♭5 A♭5 | B♭5 B5 B♭5 G♭5"
+    },
+    "classical-3": {
+      "verdict": "worth",
+      "note": "",
+      "key": "A♭ major",
+      "chords": "A♭ – B♭m/D♭ – E♭7 – A♭",
+      "melody": "E♭4 G4 A♭4 C5 A♭4 G4 | F4 E♭4 D♭4 G4 F4 D♭4 | G4 B♭4 C5 D♭5 D♭5 B♭4 | E♭5 D♭5 E♭5 D♭5 C5"
+    },
+    "malayalam-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "E♭ major",
+      "chords": "E♭ – Fm – B♭ – E♭add9",
+      "melody": "G5 F5 G5 B♭5 | A♭5 E♭5 D5 E♭5 | D5 C5 B♭4 G5 | F5 A♭5 G5"
+    },
+    "malayalam-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "D♭ double harmonic",
+      "chords": "D♭ – D – G♭m – D♭",
+      "melody": "F4 A♭4 A4 A♭4 | A4 A4 C5 | D♭5 C5 D♭5 | F5 C5 D5 D♭5"
+    },
+    "malayalam-3": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B minor",
+      "chords": "Bm(add9) – D – F♯ – Bm",
+      "melody": "D4 F♯4 E4 D4 | A4 G4 F♯4 | C♯5 A4 B4 A4 | B4 A4 B4"
+    },
+    "irish-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "C major",
+      "chords": "C – F – B♭ – Csus2",
+      "melody": "G4 C5 B4 A4 B4 C5 E5 D5 E5 C5 | A4 G4 A4 G4 A4 B4 A4 D4 E4 F4 | D4 F4 D4 E4 F4 G4 F4 A♯4 C5 D5 | D5 A4 G4 B4 C5"
+    },
+    "irish-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B♭ major",
+      "chords": "B♭ – E♭ – F – B♭",
+      "melody": "B♭4 D5 C5 B♭4 F4 G4 F4 A4 | G4 C5 B♭4 G4 E♭4 F4 E♭4 F4 G4 D5 | C5 B♭4 A4 G4 F4 E♭4 D4 E♭4 | F4 E♭4 D4 E♭4 D4"
+    },
+    "irish-3": {
+      "verdict": "not",
+      "note": "",
+      "key": "G major",
+      "chords": "Gsus2 – C – D – G",
+      "melody": "D4 E4 D4 E4 D4 G4 F♯4 G4 | E4 F♯4 G4 E4 E4 D4 E4 G4 | D4 E4 D4 E4 D4 E4 D4 E4 | D4 E4 F♯4 E4 F♯4 G4 B4"
+    },
+    "metal-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "F minor",
+      "chords": "F5 – D♭5 – E♭5 – F5",
+      "melody": "F3 G3 A♭3 G3 F3 G3 A♭3 B♭3 | A♭3 D♭4 C4 D♭4 C4 D♭4 C4 | B♭3 B♭3 C4 D♭4 E♭4 G4 F4 E♭4 | C4 B♭3 A♭3 G3 F3"
+    },
+    "metal-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "B♭ Phrygian",
+      "chords": "B♭5 – B5 – B5 – B♭5",
+      "melody": "F3 G♭3 F3 G♭3 A♭3 B♭3 D♭4 | B3 D♭4 B3 A♭3 G♭3 B♭3 A♭3 G♭3 | G♭3 B♭3 A♭3 B♭3 B3 B3 G♭4 | F4 D♭4 E♭4 F4 B♭3"
+    },
+    "metal-3": {
+      "verdict": "worth",
+      "note": "",
+      "key": "D♯ minor",
+      "chords": "D♯5 – B5 – C♯5 – D♯5",
+      "melody": "A♯3 F♯3 G♯3 F♯3 G♯3 A♯3 A♯3 | F♯3 A♯3 G♯3 F♯3 F♯3 G♯3 A♯3 B3 | G♯3 F♯3 G♯3 F♯3 G♯3 G♯3 B3 | A♯3 B3 A♯3 B3 C♯4 D♯4"
+    },
+    "pop-1": {
+      "verdict": "worth",
+      "note": "",
+      "key": "A major",
+      "chords": "A – F♯m – G – A",
+      "melody": "C♯4 G♯4 F♯4 E4 D4 | C♯4 D4 E4 F♯4 E4 | D4 E4 D4 G4 D5 | C♯5 F♯4 G♯4 A4"
+    },
+    "pop-2": {
+      "verdict": "worth",
+      "note": "",
+      "key": "C minor",
+      "chords": "Cm – B♭ – Fm – Cm",
+      "melody": "C4 F4 E♭4 E♭4 G4 | F4 A♭4 G4 F4 D4 | C4 F4 E♭4 F4 A♭4 | G4 A♭4 G4 F4 E♭4"
+    },
+    "pop-3": {
+      "verdict": "worth",
+      "note": "",
+      "key": "G major",
+      "chords": "Gsus2 – Csus2 – D – G",
+      "melody": "D4 C4 D4 G4 F♯4 | G4 F♯4 G4 A4 G4 | D4 C4 D4 D4 C4 D4 | D5 C5 B4 G4"
+    }
+  }
+}
