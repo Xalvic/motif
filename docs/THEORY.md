@@ -155,6 +155,7 @@ Start at 0, add or subtract. Weights live in the profile so genres can tune them
 | At least 3 distinct chords in 4 bars | +1 |
 | Identical to one of the last 5 ideas | −5 |
 | Voice-leading cost of the voiced result (§4) above threshold | −1 per 6 semitones |
+| Tonic straight to a chord on degree 4 (`I → IV`, `i → iv`, any extension) | −1 each |
 
 Details (`progression/score.ts`):
 - Chords compare as plain triads: `I → Iadd9` is a repeat.
@@ -164,6 +165,7 @@ Details (`progression/score.ts`):
 - Budget = §3.5 budget for the colour and length (not the allowance).
 - Variety: +1 for each 4-bar half with 3+ distinct triads.
 - Voice-leading: voice the candidate with the genre's style; sum the upper-voice movement (§4 `movement`) over all changes; −1 per full 6 semitones above 8 per change.
+- Tonic → 4: the owner rated it "not usable" in 15 of 17 ideas (M3 listening pass, 2026-10-27). `I7`/`I9` (V/IV) → IV is a resolution and does not count. −1 makes it rarer, not banned: second-bar rate lo-fi 47 → 25 %, classical 51 → 15 %, Malayalam 58 → 22 %, Irish 40 → 15 %.
 
 ### 3.5 Colour: extensions and borrowing
 

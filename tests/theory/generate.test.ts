@@ -13,7 +13,7 @@ import {
   voicingFor,
   type Progression,
 } from '../../src/theory/progression/generate';
-import { scoreCandidate, type ScoreInput } from '../../src/theory/progression/score';
+import { isTonicToFour, scoreCandidate, type ScoreInput } from '../../src/theory/progression/score';
 import { bridgeEntries, triadOf, type Bars } from '../../src/theory/progression/walk';
 import { pitchClass } from '../../src/theory/pitch';
 import { createRng } from '../../src/theory/random';
@@ -49,7 +49,20 @@ describe('scorer (THEORY §3.4)', () => {
       fifthMotion: 0.5, // I→IV and V→I, each 0.5 × 0.5
       stepBass: 0.25, // IV→V
       variety: 1,
+      tonicToFour: -1, // I→IV
     });
+  });
+
+  it('penalises the tonic going straight to a chord on degree 4', () => {
+    expect(score('I IV V I').tonicToFour).toBe(-1);
+    expect(score('Imaj7 IVadd9 V I').tonicToFour).toBe(-1);
+    expect(
+      score('i iv V i', GENRES.classical, { key: { tonic: 0, mode: 'minor' } }).tonicToFour,
+    ).toBe(-1);
+    expect(score('I IV I IV').tonicToFour).toBe(-2);
+    // Not after another chord, and not from a secondary dominant (I7 = V/IV).
+    expect(score('I vi IV V').tonicToFour).toBeUndefined();
+    expect(score('I I7 IV V').tonicToFour).toBeUndefined();
   });
 
   it('lets an idiom start off the tonic', () => {
@@ -157,6 +170,23 @@ describe('swap one chord', () => {
       const ending = [...chords.slice(0, 3), last];
       expect(GENRES.pop.cadences.end.some((c) => closesOn(ending, c, 3, 'major'))).toBe(true);
     }
+  });
+});
+
+describe('tonic → IV is rarer, not banned (THEORY §3.4)', () => {
+  it('starts I → IV in under a third of ideas per genre, and still in some', () => {
+    let total = 0;
+    for (const id of GENRE_IDS) {
+      let count = 0;
+      for (let seed = 1; seed <= 100; seed++) {
+        const p = generateProgression({ profile: GENRES[id], bars: 4, colour: 1 }, createRng(seed));
+        if (isTonicToFour(p.chords[0]!.token, p.chords[1]!.token)) count++;
+      }
+      // Before the rule: lo-fi 47 %, classical 51 %, Malayalam 58 %.
+      expect(count, id).toBeLessThan(34);
+      total += count;
+    }
+    expect(total).toBeGreaterThan(0);
   });
 });
 

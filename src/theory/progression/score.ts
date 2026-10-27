@@ -7,7 +7,7 @@ import { progressionFunctions } from '../functions';
 import { familyOf, type Key } from '../keys';
 import { pitchClass } from '../pitch';
 import type { ColourLevel, GenreProfile } from '../profile';
-import { parseRoman } from '../roman';
+import { parseRoman, type ChordToken } from '../roman';
 import { movement, voiceProgression, type VoicingOptions } from '../voicing';
 import { closesOn, countBorrowed } from './cadence';
 import { borrowBudget } from './colour';
@@ -31,12 +31,29 @@ export const WEIGHTS = {
   repeatIdea: -5,
   /** Per full 6 semitones of upper-voice movement above the threshold. */
   voiceLeading: -1,
+  /** I → IV or i → iv: the owner rated it "not usable" 15 times in 17 (M3 listening pass). */
+  tonicToFour: -1,
 } as const;
 
 /** Upper-voice movement allowed per chord change before the voice-leading penalty starts. */
 export const MOVEMENT_PER_CHANGE = 8;
 
 export type Rule = keyof typeof WEIGHTS;
+
+/**
+ * Tonic chord, any quality or extension, then a chord on degree 4 (IV, iv, IV7, iv9/5 …).
+ * `I7` / `I9` is a secondary dominant (V/IV): its move to IV is a resolution, not counted.
+ */
+export function isTonicToFour(from: ChordToken, to: ChordToken): boolean {
+  const dominant = from.upper && (from.ext === '7' || from.ext === '9');
+  return (
+    from.degree === 0 &&
+    from.accidental === 0 &&
+    !dominant &&
+    to.degree === 3 &&
+    to.accidental === 0
+  );
+}
 
 export interface ScoreInput {
   chords: readonly string[];
@@ -86,6 +103,7 @@ export function scoreCandidate(input: ScoreInput): Score {
     const root = pitchClass(rootPc(tokens[i]!, 0) - rootPc(tokens[i - 1]!, 0));
     if (root === 5 || root === 7) add('fifthMotion', WEIGHTS.fifthMotion * scorer.fifthMotion);
     if (root === 6 && !scorer.allowTritone) add('tritone', WEIGHTS.tritone);
+    if (isTonicToFour(tokens[i - 1]!, tokens[i]!)) add('tonicToFour', WEIGHTS.tonicToFour);
 
     const bass = pitchClass(bassPc(tokens[i]!, 0) - bassPc(tokens[i - 1]!, 0));
     if ([1, 2, 10, 11].includes(bass)) add('stepBass', WEIGHTS.stepBass * scorer.stepBass);
