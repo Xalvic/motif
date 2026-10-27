@@ -1,4 +1,4 @@
-export function Header() {
+export function Header({ listening = false }: { listening?: boolean }) {
   return (
     <header className="top">
       <div>
@@ -18,9 +18,17 @@ export function Header() {
           Pick a genre, roll a progression, and find your melody on the keys. No sheet music needed.
         </p>
       </div>
-      <div className="hint">
-        <kbd>G</kbd> new chords · <kbd>Space</kbd> play / stop
-      </div>
+      {listening ? (
+        <div className="hint">
+          <kbd>Space</kbd> play / stop · <kbd>1</kbd> usable · <kbd>2</kbd> not usable ·{' '}
+          <kbd>←</kbd> <kbd>→</kbd> move · <a href="./">Exit pass</a>
+        </div>
+      ) : (
+        <div className="hint">
+          <kbd>G</kbd> new chords · <kbd>Space</kbd> play / stop ·{' '}
+          <a href="?listen">Listening pass</a>
+        </div>
+      )}
     </header>
   );
 }

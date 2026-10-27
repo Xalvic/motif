@@ -60,7 +60,12 @@ async function copyIdea(): Promise<void> {
   }
 }
 
-export function Stage() {
+interface StageProps {
+  /** Listening pass: no analysis labels, no edits, no new chords. */
+  blind?: boolean;
+}
+
+export function Stage({ blind = false }: StageProps) {
   const {
     idea,
     selected,
@@ -87,13 +92,13 @@ export function Stage() {
       if (e.code === 'Space') {
         e.preventDefault();
         togglePlay();
-      } else if (e.key === 'g' || e.key === 'G') {
+      } else if (!blind && (e.key === 'g' || e.key === 'G')) {
         useStore.getState().generate();
       }
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [blind]);
 
   const views = idea.tokens.map((_, i) => chordView(idea, i));
   // While playing the keyboard follows the sounding bar; stopped, it shows the selected card.
@@ -119,13 +124,15 @@ export function Stage() {
             {loading
               ? `Loading sounds ${loading.loaded}/${loading.total}…`
               : `${bpm} BPM · ${idea.tokens.length} bars · ${label}`}
-            {idea.idiom && <span className="idiom"> · {idea.idiom}</span>}
+            {!blind && idea.idiom && <span className="idiom"> · {idea.idiom}</span>}
           </div>
         </div>
         <div className="transport">
-          <button className="btn primary" onClick={generate}>
-            New chords
-          </button>
+          {!blind && (
+            <button className="btn primary" onClick={generate}>
+              New chords
+            </button>
+          )}
           <button className="btn play" onClick={togglePlay}>
             {playing ? 'Stop' : 'Play'}
           </button>
@@ -178,47 +185,51 @@ export function Stage() {
             >
               <div className="card-top">
                 <span className="bar">BAR {i + 1}</span>
-                <span className="ic">
-                  <button
-                    aria-pressed={locked}
-                    aria-label="Lock chord"
-                    title={locked ? 'Unlock' : 'Keep this chord'}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleLock(i);
-                    }}
-                  >
-                    <LockIcon locked={locked} />
-                  </button>
-                  <button
-                    aria-label="Swap chord"
-                    title="Swap this chord"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      reroll(i);
-                      const next = useStore.getState().idea.voicings[i]!;
-                      void auditionChord(next);
-                    }}
-                  >
-                    <SwapIcon />
-                  </button>
-                </span>
-              </div>
-              <div className="cname">{v.symbol}</div>
-              <div className="roman">{v.roman}</div>
-              <div className="tags">
-                <span
-                  className={`fn fn-${idea.functions[i]}`}
-                  title={FUNCTION_LABEL[idea.functions[i]!][1]}
-                >
-                  {FUNCTION_LABEL[idea.functions[i]!][0]}
-                </span>
-                {idea.borrowed[i] && (
-                  <span className="borrowed" title="Borrowed: has a note outside the key">
-                    borrowed
+                {!blind && (
+                  <span className="ic">
+                    <button
+                      aria-pressed={locked}
+                      aria-label="Lock chord"
+                      title={locked ? 'Unlock' : 'Keep this chord'}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleLock(i);
+                      }}
+                    >
+                      <LockIcon locked={locked} />
+                    </button>
+                    <button
+                      aria-label="Swap chord"
+                      title="Swap this chord"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        reroll(i);
+                        const next = useStore.getState().idea.voicings[i]!;
+                        void auditionChord(next);
+                      }}
+                    >
+                      <SwapIcon />
+                    </button>
                   </span>
                 )}
               </div>
+              <div className="cname">{v.symbol}</div>
+              {!blind && <div className="roman">{v.roman}</div>}
+              {!blind && (
+                <div className="tags">
+                  <span
+                    className={`fn fn-${idea.functions[i]}`}
+                    title={FUNCTION_LABEL[idea.functions[i]!][1]}
+                  >
+                    {FUNCTION_LABEL[idea.functions[i]!][0]}
+                  </span>
+                  {idea.borrowed[i] && (
+                    <span className="borrowed" title="Borrowed: has a note outside the key">
+                      borrowed
+                    </span>
+                  )}
+                </div>
+              )}
               <div className="notes">{v.notes.join(' ')}</div>
             </div>
           );
@@ -258,19 +269,25 @@ export function Stage() {
         </div>
       </div>
 
-      <div className="transport">
-        <button className="btn" onClick={() => void copyIdea()}>
-          <CopyIcon />
-          Copy for FL Studio
-        </button>
-        <button className="btn" disabled title="Saved ideas arrive with M5">
-          Save idea
-        </button>
-        <button className="btn seed" onClick={() => void copySeed()} title="Copy this idea's seed">
-          <CopyIcon />
-          Seed {idea.seed}
-        </button>
-      </div>
+      {!blind && (
+        <div className="transport">
+          <button className="btn" onClick={() => void copyIdea()}>
+            <CopyIcon />
+            Copy for FL Studio
+          </button>
+          <button className="btn" disabled title="Saved ideas arrive with M5">
+            Save idea
+          </button>
+          <button
+            className="btn seed"
+            onClick={() => void copySeed()}
+            title="Copy this idea's seed"
+          >
+            <CopyIcon />
+            Seed {idea.seed}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

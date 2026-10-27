@@ -1,8 +1,56 @@
-import { defineConfig } from 'vitest/config';
+/// <reference types="node" />
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
+import { defineConfig, type Plugin } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
+/**
+ * Dev server only: the listening pass (src/state/listeningStore.ts) reads and writes its
+ * ratings here, so they land in the repo for the M3 sign-off.
+ */
+function listeningFile(): Plugin {
+  const file = resolve('docs/progress/listening/m3.json');
+  return {
+    name: 'chord-spark-listening-file',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/__listening', (req, res) => {
+        void (async () => {
+          try {
+            if (req.method === 'GET') {
+              // No file yet: an empty object, so the page falls back without a console error.
+              const body = await readFile(file, 'utf8').catch(() => '{}');
+              res.setHeader('Content-Type', 'application/json');
+              res.end(body);
+              return;
+            }
+            if (req.method !== 'POST') {
+              res.statusCode = 405;
+              res.end();
+              return;
+            }
+            let body = '';
+            for await (const chunk of req) body += String(chunk);
+            const data: unknown = JSON.parse(body);
+            if (typeof data !== 'object' || data === null || !('ratings' in data)) {
+              throw new Error('not a listening pass file');
+            }
+            await mkdir(dirname(file), { recursive: true });
+            await writeFile(file, JSON.stringify(data, null, 2) + '\n');
+            res.statusCode = 204;
+            res.end();
+          } catch (error) {
+            res.statusCode = 400;
+            res.end(String(error));
+          }
+        })();
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), listeningFile()],
   test: {
     include: ['tests/**/*.test.ts'],
   },

@@ -11,6 +11,7 @@ import {
   romansOf,
   transpose,
   type Idea,
+  type IdeaSettings,
 } from './idea';
 
 export type { GenreId };
@@ -54,6 +55,8 @@ interface Actions {
   setSettings: (changes: Partial<Settings>) => void;
   setPlayback: (changes: Partial<Playback>) => void;
   generate: () => void;
+  /** Shows one fixed idea (the listening pass): genre settings, no locks carried over. */
+  showIdea: (settings: IdeaSettings, seed: number) => void;
   chooseGenre: (genre: GenreId) => void;
   chooseBars: (bars: 4 | 8) => void;
   chooseColour: (colour: 0 | 1 | 2) => void;
@@ -112,6 +115,17 @@ export const useStore = create<AppState>()((set, get) => {
     },
     setPlayback: (changes) => set(changes),
     generate: () => regenerate(),
+    showIdea: (settings, seed) => {
+      const { idea, bpm } = generateIdea(settings, seed);
+      set({
+        ...settings,
+        drums: PROFILES[settings.genre].drums,
+        idea,
+        bpm,
+        bpmTouched: false,
+        selected: 0,
+      });
+    },
     chooseGenre: (genre) => {
       set({ bpmTouched: false });
       regenerate({ genre, drums: PROFILES[genre].drums }, false);

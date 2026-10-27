@@ -3,6 +3,8 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · M3 listening pass at `?listen`: 20 fixed ideas per genre from pass seed 20261027 (every 4th idea 8 bars; colour Some/Plain/Some/Spicy), key random, no recent-idea memory; "blind" = no roman numerals, function badges, borrowed tag, idiom name or seed; no lock, swap or new chords; verdict usable / not + note; dev server writes `docs/progress/listening/m3.json`, localStorage fallback · same 160 ideas on every load, so ratings map to seeds; the file is the sign-off record · accepted
+
 - 2026-10-26 · Legacy progression generator retired; the app runs on `progression/generate.ts`. `legacy-genres.json` deleted; prompts move to `theory/prompts.ts`; melody stays on `melody/legacy.ts` until M4 · M3 engine covers every legacy feature (locks, swap, power chords) · accepted
 - 2026-10-26 · §8 first-chord rule reads "T, or from the start row, or an idiom's first chord" · pop's start row (IV .15) and idioms like `IV I V vi` start off the tonic on purpose; no idiom flag exists in the schema · accepted, owner may want IV starts removed from pop
 - 2026-10-26 · No three identical chords in a row is a hard filter at the pick (unless allowVamp), not only the −6 score · §8 lists it as an invariant; softmax alone cannot promise it · accepted
