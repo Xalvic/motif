@@ -287,6 +287,7 @@ One file per genre, checked at load by `profile.ts` (`validateProfile`). A bad f
   "idioms": [ { "id": "epic-aeolian", "weight": 3 } ],         // ids from data/idioms.json
   "start": { "minor": { "i": 0.85, "bVI": 0.15 }, "major": { "I": 0.8, "vi": 0.2 } },
   "transitions": { "minor": { "i": { "bVI": 0.3, "iv": 0.2, "bVII": 0.2, "bIII": 0.15, "v": 0.15 } } },
+  "dataWeight": 0.6,                        // optional: α for a Chordonomicon table (§7)
   "cadences": { "end": ["aeolian", "plagal-minor", "authentic"], "mid": ["half", "weak"] },
   "colours": { "T": ["add9", "maj7"], "PD": ["add9", "sus2"], "D": ["sus4"] },
   "colourBias": 0.15,
@@ -362,17 +363,22 @@ Chordonomicon is a dataset of about 680k songs' chord progressions with Spotify-
 
 Main genres in the data include pop, rock, pop rock, metal, punk, alternative, electronic, soul, jazz, country and rap. Cinematic, epic, classical, Malayalam and Irish are not covered, so they stay hand-authored.
 
-Steps (`scripts/chordonomicon/`, run with Node or Python, data file gitignored):
-1. Download the CSV from Hugging Face manually. Inspect the `chords` column format first; section tags such as `<verse_1>` are embedded in it.
-2. Parse chord symbols to root pitch class + quality; keep extension separately.
-3. Estimate the key per section: score all 24 keys by matching chord pitch classes against a key profile (Krumhansl–Kessler or Temperley); tie-break with first/last chord as tonic.
-4. Convert chords to roman tokens relative to that key (§2.1 grammar).
-5. Count start chords, end chords, and 1st- and 2nd-order transitions per genre × mode × section group (verse / chorus / other).
-6. Prune (p < 0.01), keep the top 12 successors per state, renormalise, round to 3 decimals.
-7. Write `src/theory/data/transitions/<genre>.json` with `{ source, licence, songs, generatedAt }`.
-8. Print a sanity report: top 20 four-chord n-grams per genre. Pop should show `I V vi IV` near the top; if not, key estimation is broken.
+Built by `npm run tables` (`scripts/chordonomicon/build.ts`, Node 24 runs the TypeScript directly). The CSV (`chordonomicon_v2.csv`, 264 MB, from huggingface.co/datasets/ailsntua/Chordonomicon) goes in `scripts/chordonomicon/data/`, which is gitignored. The script takes about 10 s.
 
-Blend at runtime: `p = α · data + (1 − α) · handAuthored`, with α per profile (default 0.6).
+Genre map: pop ← `pop`; metal ← `metal`, minor only; lo-fi ← `jazz` + `soul`. The other genres have no data and stay hand-authored.
+
+Steps:
+1. Read `chords` and `main_genre` from each row. `chords` is section tags and symbols: `<verse_1> F C E7 Amin`. Sharps are written `s` (`Fs`, but `Csus4` is C), minor `min`, power chords `no3d`.
+2. Parse each symbol to root pitch class + triad quality (maj, min, dim, aug, sus, power). Drop extensions and slash basses: tables hold plain triads (§6.1).
+3. Split the song into sections. A section with the same chords as an earlier one in the song counts once.
+4. Estimate the key per section: correlate a pitch-class histogram (each chord adds 1 per triad note and 1 more on its root) with the Krumhansl–Kessler profiles in all 24 keys. Add the whole song's histogram at half weight, so short sections lean on the song. Add +0.06 when the last chord is the key's tonic triad and +0.03 for the first chord.
+5. Convert to roman tokens (§2.1). Accidentals are against the major scale; semitone 6 is `bV`, or `#iv°` when diminished. Power and sus chords take the key's own triad on that degree (major off the scale). Merge repeated neighbours.
+6. Count start chords, 1st- and 2nd-order transitions and 4-chord n-grams per genre × family. No verse/chorus split: the generator has no section input yet. Sections in a family the genre does not use are skipped.
+7. Prune rows: drop successors with p < 0.01, keep the top 12, renormalise, round to 3 decimals. Keep a state only with ≥ 100 transitions and ≥ 0.4 % of the family's transitions; at most 24 first-order and 40 second-order states per family.
+8. Write `src/theory/data/transitions/<genre>.json` with `{ source, licence, genres, songs, generatedAt, start, transitions }`. Each file must stay under 30 KB.
+9. Print a sanity report: top 20 four-chord n-grams per genre. Pop major must show `I V vi IV` near the top; if not, key estimation is broken.
+
+Blend at load (`blend.ts`, called from `genres.ts`): `p = α · data + (1 − α) · handAuthored`, each row normalised first, with α = the profile's `dataWeight` (default 0.6; 0 turns the data off). A state only one side has uses that side's row alone. A second-order state that one side lacks uses that side's first-order row for the current chord, the row the walk would read. Modes the data does not cover keep the hand-authored table. `validateTransitionData` checks each file at load.
 
 The Hooktheory Trends API is a good manual reference for "what usually follows this chord", but its terms don't clearly allow caching or redistribution and it needs a login, so do not build on it.
 

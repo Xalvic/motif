@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { GENRE_IDS, GENRES, IDIOMS } from '../../src/theory/genres';
 import type { Mode } from '../../src/theory/keys';
-import type { ColourLevel, GenreProfile, Idiom } from '../../src/theory/profile';
+import popJson from '../../src/theory/data/genres/pop.json';
+import {
+  validateProfile,
+  type ColourLevel,
+  type GenreProfile,
+  type Idiom,
+} from '../../src/theory/profile';
 import { rawCandidate, resolveKey } from '../../src/theory/progression/candidate';
 import {
   eligibleIdioms,
@@ -63,7 +69,8 @@ describe('triads', () => {
 });
 
 describe('transition lookup', () => {
-  const pop = GENRES.pop;
+  // The hand-authored table, without the Chordonomicon blend, so the numbers stay readable.
+  const pop = validateProfile(popJson, IDIOMS, 'pop.json');
 
   it('uses the first-order row', () => {
     expect(nextEntries(ctx(pop, 'major'), 'I', undefined)).toEqual([
@@ -110,8 +117,8 @@ describe('transition lookup', () => {
   });
 
   it('starts on the tonic when a mode has no start row', () => {
-    expect(startEntries(GENRES.pop, 'dorian')).toEqual([['i', 1]]);
-    expect(startEntries(GENRES.pop, 'major')).toContainEqual(['IV', 0.15]);
+    expect(startEntries(pop, 'dorian')).toEqual([['i', 1]]);
+    expect(startEntries(pop, 'major')).toContainEqual(['IV', 0.15]);
   });
 
   it('sharpens the choice at low temperature', () => {

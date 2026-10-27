@@ -10,12 +10,12 @@ epic 4 #3 0 minor: i bVI bVII i | aeolian | aeolian-return
 epic 8 #1 0 minor: i bVII bVI bVIIsus4 i bVIadd9 bVII isus2 | aeolian | aeolian-return
 epic 8 #2 3 minor: i bVI bVIIsus4 Vsus4 i bVIadd9 V isus2 | authentic | -
 epic 8 #3 0 minor: i bVI bIII/3 bVII isus2 bVI bVII i | aeolian | epic-aeolian
-lofi 4 #1 0 minor: i7 IV7 V7 i7 | authentic | -
-lofi 4 #2 3 minor: i7 bIIImaj7/5 V9 i7 | authentic | -
-lofi 4 #3 0 minor: i7 bVImaj7 iv7 i9 | plagal | -
-lofi 8 #1 0 minor: i7 IV7 V7 iv7 bVII9 i7 V9 i9 | authentic | -
-lofi 8 #2 3 minor: i7 bVImaj9 bVII7 V7/3 iv9/5 i9 V7/3 i9 | authentic | -
-lofi 8 #3 0 minor: i7 bII7 bVImaj7/3 V7 i7 iv7 V9 i9 | authentic | -
+lofi 4 #1 0 minor: i7 iv7 V7 i9 | authentic | -
+lofi 4 #2 3 minor: i7 bvii7 V7 i9 | authentic | -
+lofi 4 #3 0 minor: i7 bIIImaj9 iv7 i7 | plagal | -
+lofi 8 #1 0 minor: i7 bIIImaj7/5 bVImaj7 iv7 IV7 bVII7 V7 i9 | authentic | -
+lofi 8 #2 3 minor: i7 iv7 IV7 V7 i7 bII7 iv7 i7 | plagal | -
+lofi 8 #3 0 minor: i7 bVImaj7 iv7 bVImaj9 bVII7 bIIImaj7 iv9 i7 | plagal | -
 classical 4 #1 0 minor: i iv V7 i | authentic | -
 classical 4 #2 3 minor: i iv7 V i | authentic | -
 classical 4 #3 0 minor: i ii° V i | authentic | -
@@ -40,9 +40,9 @@ metal 4 #3 0 phrygian: i5 bVII5 bII5 i5 | phrygian | -
 metal 8 #1 0 phrygian: i5 bII5 i5 bVII5 i5 bVI5 bVII5 i5 | aeolian | phrygian-pivot
 metal 8 #2 3 phrygian: i5 bII5 i5 bVII5 i5 bII5 iv5 i5 | plagal | phrygian-pivot
 metal 8 #3 0 phrygian: i5 bII5 i5 bVII5 i5 bVI5 bVII5 i5 | aeolian | phrygian-pivot
-pop 4 #1 0 major: visus2 IV Vsus4 Isus2 | authentic | royal-road-resolved
-pop 4 #2 3 minor: i bVIadd9 Vsus4 i | authentic | -
-pop 4 #3 0 minor: isus2 bVIsus2 ivadd9 i | plagal | -
-pop 8 #1 0 major: IV I V/3 IVadd9 I Vsus4/5 IV Iadd9 | plagal | -
-pop 8 #2 3 minor: isus2 bVII bVI bVII isus2 bIII/5 Vsus4 isus2 | authentic | aeolian-sway
-pop 8 #3 0 minor: i bIII/5 bVI bVII bVIsus2 i V/3 i | authentic | -
+pop 4 #1 0 major: I viadd9 V Iadd9 | authentic | -
+pop 4 #2 3 minor: isus2 bVII ivsus2 isus2 | plagal | -
+pop 4 #3 0 minor: bIIIadd9 bVII ivadd9/3 i | plagal | -
+pop 8 #1 0 major: Iadd9 bVII IVadd9/3 V Iadd9 bVIIsus4 IV I | plagal | mixolydian-rock
+pop 8 #2 3 minor: i bVI bVII Vsus4 bIII ivsus2 V isus2 | authentic | -
+pop 8 #3 0 minor: bIII ivadd9 isus2 bVII bVI Vsus4 ivsus2 iadd9 | plagal | andalusian

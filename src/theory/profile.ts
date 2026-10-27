@@ -79,6 +79,11 @@ export interface GenreProfile {
    * a space (second order: "previous current"). Missing states use the function grammar.
    */
   transitions: Partial<Record<Mode, Record<string, Weights>>>;
+  /**
+   * α in `p = α · data + (1 − α) · hand` when the genre has a data table (THEORY §7).
+   * Default 0.6; 0 turns the data off.
+   */
+  dataWeight?: number;
   cadences: { end: Cadence[]; mid: Cadence[] };
   /** Extensions by harmonic function (THEORY §3.5). */
   colours: Partial<Record<'T' | 'PD' | 'D', Ext[]>>;
@@ -273,6 +278,7 @@ const PROFILE_FIELDS = [
   'idioms',
   'start',
   'transitions',
+  'dataWeight',
   'cadences',
   'colours',
   'colourBias',
@@ -306,6 +312,16 @@ function modesFromRagas(ragas: Json, c: Checker): Partial<Record<Mode, number>> 
     modes[scale as Mode] = (modes[scale as Mode] ?? 0) + w;
   }
   return modes;
+}
+
+/** One mode's transition table: keys of one or two tokens, rows of weights. */
+function transitionTable(c: Checker, path: string, table: unknown): void {
+  if (!c.isObject(path, table)) return;
+  for (const [state, next] of Object.entries(table)) {
+    const n = c.tokens(`${path} key "${state}"`, state);
+    if (n > 2) c.fail(`${path} key "${state}"`, 'one or two tokens only');
+    c.weights(`${path}.${state}`, next);
+  }
 }
 
 /**
@@ -358,14 +374,8 @@ export function validateProfile(
   });
 
   c.byMode('start', p.start, modeIds, (path, v) => c.weights(path, v));
-  c.byMode('transitions', p.transitions, modeIds, (path, table) => {
-    if (!c.isObject(path, table)) return;
-    for (const [state, next] of Object.entries(table)) {
-      const n = c.tokens(`${path} key "${state}"`, state);
-      if (n > 2) c.fail(`${path} key "${state}"`, 'one or two tokens only');
-      c.weights(`${path}.${state}`, next);
-    }
-  });
+  c.byMode('transitions', p.transitions, modeIds, (path, table) => transitionTable(c, path, table));
+  if (p.dataWeight !== undefined) c.number('dataWeight', p.dataWeight, 0, 1);
 
   if (c.isObject('cadences', p.cadences)) {
     known(p.cadences, ['end', 'mid'], c, 'cadences.');
@@ -434,4 +444,49 @@ export function validateProfile(
 
   c.throwIfAny(file);
   return { ...(p as unknown as GenreProfile), modes };
+}
+
+// ---------- data tables ----------
+
+/** A table built from Chordonomicon by scripts/chordonomicon/build.ts (THEORY §7). */
+export interface TransitionData {
+  source: string;
+  licence: string;
+  /** Chordonomicon `main_genre` values counted for this genre. */
+  genres: string[];
+  songs: Partial<Record<Mode, number>>;
+  generatedAt: string;
+  start: Partial<Record<Mode, Weights>>;
+  transitions: Partial<Record<Mode, Record<string, Weights>>>;
+}
+
+const DATA_FIELDS = [
+  'source',
+  'licence',
+  'genres',
+  'songs',
+  'generatedAt',
+  'start',
+  'transitions',
+] as const;
+
+/** Checks data/transitions/<genre>.json. Its modes must be among the genre's `modes`. */
+export function validateTransitionData(
+  raw: unknown,
+  modeIds: readonly string[],
+  file: string,
+): TransitionData {
+  const c = new Checker();
+  if (!c.isObject('table', raw)) c.throwIfAny(file);
+  const d = raw as Json;
+  known(d, DATA_FIELDS, c, '');
+  c.string('source', d.source);
+  c.string('licence', d.licence);
+  c.list('genres', d.genres, 1, (path, v) => c.string(path, v));
+  c.byMode('songs', d.songs, modeIds, (path, v) => c.weight(path, v));
+  c.string('generatedAt', d.generatedAt);
+  c.byMode('start', d.start, modeIds, (path, v) => c.weights(path, v));
+  c.byMode('transitions', d.transitions, modeIds, (path, t) => transitionTable(c, path, t));
+  c.throwIfAny(file);
+  return d as unknown as TransitionData;
 }

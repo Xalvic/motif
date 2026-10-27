@@ -3,7 +3,8 @@ import { chordPcs } from '../../src/theory/chords';
 import { harmonicFunction } from '../../src/theory/functions';
 import { GENRE_IDS, GENRES, IDIOMS } from '../../src/theory/genres';
 import { familyOf, type Key, type Mode } from '../../src/theory/keys';
-import type { ColourLevel, GenreProfile } from '../../src/theory/profile';
+import popJson from '../../src/theory/data/genres/pop.json';
+import { validateProfile, type ColourLevel, type GenreProfile } from '../../src/theory/profile';
 import { closesOn } from '../../src/theory/progression/cadence';
 import { makeCandidate, type Locked } from '../../src/theory/progression/candidate';
 import {
@@ -113,7 +114,8 @@ describe('idiom detection', () => {
 });
 
 describe('locks (THEORY §3.6)', () => {
-  const pop = GENRES.pop;
+  // The hand-authored table, without the Chordonomicon blend, so the numbers stay readable.
+  const pop = validateProfile(popJson, IDIOMS, 'pop.json');
   const ctx = (seed: number, colour: ColourLevel = 1) => ({
     profile: pop,
     mode: 'major' as Mode,
