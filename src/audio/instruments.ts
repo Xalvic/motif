@@ -165,7 +165,12 @@ export function fallbackSynth(layer: Layer): Tone.PolySynth {
 
 /** Silence every instrument and stand-in at `time` (default now). */
 export function stopAll(time?: number): void {
-  for (const entry of entries.values())
+  for (const entry of entries.values()) {
+    // smplr queues notes more than 200 ms ahead in its own scheduler, and stop() only stops
+    // voices already sounding. Without this, the rest of the bar plays after Stop and over the
+    // next idea. The scheduler restarts on the next start().
+    if (time === undefined) entry.instance.scheduler.stop();
     entry.instance.stop(time === undefined ? undefined : { time });
+  }
   for (const synth of fallbacks.values()) synth.releaseAll(time);
 }

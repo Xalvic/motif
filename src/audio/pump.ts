@@ -119,8 +119,11 @@ function melodyNotes(loopBar: number): BarNote[] {
   }));
 }
 
-/** Call from a click or key handler (it starts the AudioContext). */
-export async function startPlayback(): Promise<void> {
+/**
+ * Call from a click or key handler (it starts the AudioContext). `delay` is seconds to bar 1:
+ * a restart right after stopPlayback() waits for the release tails of the old notes.
+ */
+export async function startPlayback(delay = 0.05): Promise<void> {
   await startAudio();
   const transport = Tone.getTransport();
   if (transport.state === 'started') return;
@@ -132,7 +135,7 @@ export async function startPlayback(): Promise<void> {
   transport.position = 0;
   transport.bpm.value = useStore.getState().bpm;
   transport.scheduleRepeat(onBar, '1m');
-  transport.start('+0.05');
+  transport.start(`+${delay}`);
   useStore.getState().setPlayback({ playing: true });
 }
 

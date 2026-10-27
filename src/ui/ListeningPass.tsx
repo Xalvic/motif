@@ -21,6 +21,9 @@ const STATUS: Record<SaveStatus, string> = {
   browser: 'Saved in this browser only: run npm run dev to save the file',
 };
 
+/** Seconds between the old idea's stop and the new idea's bar 1 (piano release ≈ 0.5 s). */
+const RESTART_GAP = 0.6;
+
 const labelOf = (item: PassItem) => GENRES.find((g) => g.id === item.genre)!.label;
 
 async function copySummary(): Promise<void> {
@@ -126,13 +129,14 @@ export function ListeningPass() {
     void load();
   }, [load]);
 
-  // Each idea starts from bar 1: a playing loop restarts on the new idea.
+  // Each idea starts from bar 1: a playing loop restarts on the new idea, after the old
+  // notes have faded (RESTART_GAP), so the first chord is heard alone.
   useEffect(() => {
     if (!loaded) return;
     const wasPlaying = useStore.getState().playing;
     if (wasPlaying) stopPlayback();
     useStore.getState().showIdea(settingsOf(item), item.seed);
-    if (wasPlaying) void startPlayback();
+    if (wasPlaying) void startPlayback(RESTART_GAP);
   }, [item, loaded]);
 
   function openGenre(genre: PassItem['genre']): void {
