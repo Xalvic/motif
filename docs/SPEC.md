@@ -222,6 +222,7 @@ Goal: prove the Tone.js + smplr combination, then replace every prototype synth.
 - Genre profiles as JSON (THEORY §6), idioms, Markov transitions, function grammar, cadences, colour and borrowing, scorer, lock-aware regeneration (THEORY §3).
 - UI: function badges, borrowed marker, idiom name, seed display + "copy seed".
 - **Done when**: 1,000-seed property tests pass for every genre; a blind listening pass by the owner of 20 ideas per genre rates ≥ 15 as "usable as a starting point"; locks never change a locked chord.
+- **Signed off 2026-10-27**: the owner accepted the 3-per-genre re-check (24 of 24 usable, `docs/progress/listening/m3-recheck.json`) in place of the full 20-per-genre pass. See decisions.md.
 
 ### M4 · Melody engine v2 (2–3 days)
 - Rhythm vocabularies, motif + development operators, phrase form, cadence endings, raga mode (THEORY §5).

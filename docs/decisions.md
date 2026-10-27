@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · M3 signed off on the 3-per-genre re-check (24 of 24 usable, `m3-recheck.json`), not the full 20-per-genre pass · owner's call: the full pass takes too long, and the re-check came after the stop fix and the tonic → IV rule; `?listen` (`m3-full.json`) stays for a later full pass · accepted
 - 2026-10-27 · Lo-fi `lazy` comp: chord held from 1, one soft re-hit on 3-and, silent after beat 3.5; a "Block chords" toggle (any genre) plays held chords instead of the pattern · owner: the chords sound good as block chords, the lo-fi hits around the change sounded off; strum / Alberti / arpeggio stay (owner likes them in Irish, classical, Malayalam) · accepted
 - 2026-10-27 · Scorer rule tonic → degree 4 (`I → IV`, `i → iv`), −1, not a ban · owner rated 15 of 17 such ideas "not usable"; −2 would almost ban it (0–8 %) · accepted, owner re-check at `?listen=recheck`
 - 2026-10-27 · Full listening pass restarts in `m3-full.json`; the first 40 ratings move to `m3-v1.json` · they were heard with the stop bug and the old engine, and the same seeds now give other chords · accepted
