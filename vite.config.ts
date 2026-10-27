@@ -54,6 +54,23 @@ function listeningFile(): Plugin {
 
 export default defineConfig({
   plugins: [react(), listeningFile()],
+  build: {
+    rolldownOptions: {
+      output: {
+        // Libraries in their own files: each stays under Vite's 500 kB warning, downloads in
+        // parallel and stays cached when only app code changes. All load at start (samples
+        // start loading at once), so the total is the same.
+        codeSplitting: {
+          groups: [
+            { name: 'tone', test: /node_modules[\\/]tone[\\/]/ },
+            { name: 'smplr', test: /node_modules[\\/]smplr[\\/]/ },
+            { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
+            { name: 'vendor', test: /node_modules[\\/]/ },
+          ],
+        },
+      },
+    },
+  },
   test: {
     include: ['tests/**/*.test.ts'],
   },

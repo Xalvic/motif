@@ -117,6 +117,8 @@ Honest quality note: the piano and electric pianos are genuinely good; GM soundf
 
 Known sample gaps (2026-10-22): `ElectricPiano` `CP80` has 3 of 81 samples that return 404 on smpldsnds.github.io (`057-A3-F`, `065-F4-PP`, `080-G#5-MP`). Prefer `WurlitzerEP200`, or check CP80 by ear before use.
 
+`WurlitzerEP200` `ab6mp.ogg` (A♭6, medium velocity) is served (200, 8 kB) but does not decode (checked 2026-10-27). smplr 1.1.0 counts it as loaded, so loading ends; the note is silent at that velocity. Lo-fi chords never reach it (highest chord note 74 = D5 over 6,000 ideas; A♭6 = 92), so nothing to fix while the lo-fi range stays there.
+
 Guitar strum: stagger chord notes 10–25 ms (down-strums low→high, up-strums high→low, lower velocity on up-strums).
 
 ---
