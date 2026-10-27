@@ -1,0 +1,247 @@
+{
+  "pass": "M3",
+  "passSeed": 20261027,
+  "updated": "2026-10-27T04:56:41.713Z",
+  "ratings": {
+    "cinematic-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "F minor",
+      "chords": "Fm – D♭ – E♭ – Fm"
+    },
+    "cinematic-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "G minor",
+      "chords": "Gm – Fsus4 – D – Gm7"
+    },
+    "cinematic-4": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E♭ minor",
+      "chords": "E♭m(add9) – D♭sus4 – B – B♭sus4 – E♭m7 – D♭sus4 – B♭sus4 – E♭m(add9)"
+    },
+    "cinematic-5": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B minor",
+      "chords": "Bm – A – F♯ – Bm"
+    },
+    "cinematic-6": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B Lydian",
+      "chords": "B – C♯ – F♯ – B"
+    },
+    "cinematic-7": {
+      "verdict": "not",
+      "note": "",
+      "key": "C minor",
+      "chords": "Cm7 – B♭sus4 – Gsus4 – Cm7"
+    },
+    "cinematic-8": {
+      "verdict": "not",
+      "note": "",
+      "key": "A Lydian",
+      "chords": "Amaj7 – F♯m7 – E – B – Esus4 – F♯m – Esus4 – Amaj7"
+    },
+    "cinematic-9": {
+      "verdict": "not",
+      "note": "",
+      "key": "E♭ minor",
+      "chords": "E♭m – G♭/D♭ – B♭/D – E♭m(add9)"
+    },
+    "cinematic-10": {
+      "verdict": "not",
+      "note": "",
+      "key": "B Lydian",
+      "chords": "B – C♯ – F♯ – B"
+    },
+    "cinematic-11": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E♭ major",
+      "chords": "E♭ – A♭ – A♭m(add9) – E♭maj7"
+    },
+    "cinematic-12": {
+      "verdict": "not",
+      "note": "",
+      "key": "A♭ major",
+      "chords": "A♭maj7 – D♭sus2 – Eadd9 – D♭add9 – Cm(add9) – D♭add9 – E♭sus4 – A♭maj7"
+    },
+    "cinematic-13": {
+      "verdict": "usable",
+      "note": "",
+      "key": "A minor",
+      "chords": "Am7 – Fadd9 – Gsus4 – Am"
+    },
+    "cinematic-14": {
+      "verdict": "not",
+      "note": "",
+      "key": "C Lydian",
+      "chords": "C – Am – G – C"
+    },
+    "epic-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E major",
+      "chords": "E – C♯m – Bsus4 – Esus2"
+    },
+    "epic-2": {
+      "verdict": "not",
+      "note": "",
+      "key": "B minor",
+      "chords": "Bm – G – A – Bm"
+    },
+    "epic-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "F♯ minor",
+      "chords": "F♯m – Bm – C♯ – F♯m(add9)"
+    },
+    "epic-4": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E♭ minor",
+      "chords": "E♭sus2 – D♭sus4 – G♭ – Badd9 – D♭ – Bsus2 – D♭ – E♭m(add9)"
+    },
+    "epic-5": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E♭ minor",
+      "chords": "E♭m(add9) – Badd9 – D♭ – E♭m"
+    },
+    "epic-6": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B major",
+      "chords": "B – E – F♯ – B"
+    },
+    "epic-7": {
+      "verdict": "usable",
+      "note": "",
+      "key": "G♯ minor",
+      "chords": "G♯sus2 – E – F♯ – G♯m"
+    },
+    "epic-8": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E♭ minor",
+      "chords": "E♭sus2 – E – G♭sus2 – D♭ – E♭sus2 – Bsus2 – B♭sus4 – E♭m(add9)"
+    },
+    "epic-9": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B♭ minor",
+      "chords": "B♭m(add9) – A♭ – F – B♭m"
+    },
+    "lofi-1": {
+      "verdict": "not",
+      "note": "",
+      "key": "G minor",
+      "chords": "Gm7 – Cm9 – D7 – Gm7"
+    },
+    "lofi-2": {
+      "verdict": "not",
+      "note": "",
+      "key": "A Dorian",
+      "chords": "Am7 – D7 – E7 – Am7"
+    },
+    "lofi-3": {
+      "verdict": "not",
+      "note": "",
+      "key": "F♯ Dorian",
+      "chords": "F♯m9 – C♯m9/E – C♯7/F – F♯m9"
+    },
+    "lofi-4": {
+      "verdict": "not",
+      "note": "",
+      "key": "E Dorian",
+      "chords": "Em7 – A7 – Em7/G – A7 – Em7 – A7 – B7 – Em9"
+    },
+    "lofi-5": {
+      "verdict": "not",
+      "note": "",
+      "key": "E minor",
+      "chords": "Em7 – Am7 – B9 – Em7"
+    },
+    "lofi-6": {
+      "verdict": "not",
+      "note": "",
+      "key": "D minor",
+      "chords": "Dm7 – Gm7 – A9 – Dm7"
+    },
+    "lofi-7": {
+      "verdict": "not",
+      "note": "",
+      "key": "F minor",
+      "chords": "Fm7 – B♭m7 – C7 – Fm7"
+    },
+    "lofi-8": {
+      "verdict": "not",
+      "note": "",
+      "key": "G major",
+      "chords": "Gmaj9 – Cm7 – Gmaj7 – Cmaj7 – F7 – Gmaj9 – D9 – Gmaj9"
+    },
+    "lofi-9": {
+      "verdict": "usable",
+      "note": "",
+      "key": "A minor",
+      "chords": "Am9 – Fmaj7 – E7 – Am7"
+    },
+    "lofi-10": {
+      "verdict": "usable",
+      "note": "",
+      "key": "D major",
+      "chords": "Gmaj7 – F♯m7 – A7/E – Dmaj7"
+    },
+    "lofi-11": {
+      "verdict": "not",
+      "note": "",
+      "key": "G♭ major",
+      "chords": "G♭maj7 – Bmaj9 – D♭7 – G♭maj7"
+    },
+    "lofi-12": {
+      "verdict": "not",
+      "note": "",
+      "key": "A minor",
+      "chords": "Am7 – D7 – Fmaj7 – E7 – Am7 – B♭7 – Dm9/A – Am9"
+    },
+    "classical-1": {
+      "verdict": "not",
+      "note": "",
+      "key": "C major",
+      "chords": "C – F – G – C"
+    },
+    "classical-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E minor",
+      "chords": "Em – F♯dim – B – Em"
+    },
+    "classical-3": {
+      "verdict": "not",
+      "note": "",
+      "key": "E minor",
+      "chords": "Em – Am – B – Em"
+    },
+    "classical-4": {
+      "verdict": "not",
+      "note": "",
+      "key": "D minor",
+      "chords": "Dm – G – Em7♭5 – A – Dm – B♭ – A7 – Dm"
+    },
+    "classical-5": {
+      "verdict": "not",
+      "note": "",
+      "key": "C♯ minor",
+      "chords": "C♯m – F♯m – G♯7 – C♯m"
+    },
+    "classical-6": {
+      "verdict": "not",
+      "note": "",
+      "key": "E♭ minor",
+      "chords": "E♭m – A♭m – B♭ – E♭m"
+    }
+  }
+}
