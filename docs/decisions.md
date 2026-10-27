@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · Saved ideas: one IndexedDB record per idea (idb-keyval store `chord-spark/saved-ideas`, schema `v: 1`) holding the whole idea, so opening needs no generator; no cap; locks not saved; Open sets genre, key, tempo (as the prototype); ✕ deletes at once (as the prototype); import adds by id and keeps ideas already saved · a saved idea must open exactly as heard, even after engine changes · accepted
 - 2026-10-27 · MIDI export: one pass, on the grid; melody and drums always exported when the genre has them, chords/bass follow Block chords; no pad; key signature set with `midi-file` (@tonejs/midi 2.0.28 drops it on write) · FL Studio can swing and mute tracks; a starter melody is the point of the export; the toggles are for listening · accepted, owner check in FL Studio pending
 - 2026-10-27 · Not in M5 for now: per-track .mid download and drag-out (SPEC "optional") · one 4-track file covers FL Studio; drag-out needs a native file in most browsers · accepted
 - 2026-10-27 · M4 signed off on the 3-per-genre melody pass (23 of 24 worth reacting to, `m4-melody.json`), not the full 20-per-genre pass · owner's call, as for M3; `?listen=melody-full` stays for a later full pass · accepted

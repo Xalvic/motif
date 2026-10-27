@@ -13,6 +13,7 @@ import {
   type Idea,
   type IdeaSettings,
 } from './idea';
+import type { SavedIdea } from './saved';
 
 export type { GenreId };
 
@@ -59,6 +60,8 @@ interface Actions {
   generate: () => void;
   /** Shows one fixed idea (the listening pass): genre settings, no locks carried over. */
   showIdea: (settings: IdeaSettings, seed: number) => void;
+  /** Opens a saved idea as it was: its key, tempo and melody. */
+  restoreIdea: (saved: Pick<SavedIdea, 'settings' | 'idea'>) => void;
   chooseGenre: (genre: GenreId) => void;
   chooseBars: (bars: 4 | 8) => void;
   chooseColour: (colour: 0 | 1 | 2) => void;
@@ -127,6 +130,22 @@ export const useStore = create<AppState>()((set, get) => {
         bpm,
         bpmTouched: false,
         selected: 0,
+      });
+    },
+    restoreIdea: ({ settings, idea }) => {
+      const { genre, bars, colour, bpm } = settings;
+      set({
+        genre,
+        bars,
+        colour,
+        bpm,
+        // As in the prototype: the key selector shows the saved key.
+        key: idea.tonic,
+        drums: PROFILES[genre].drums,
+        idea: { ...idea, locks: idea.tokens.map(() => false) },
+        bpmTouched: true,
+        selected: 0,
+        recent: [...get().recent, romansOf(idea)].slice(-RECENT_IDEAS),
       });
     },
     chooseGenre: (genre) => {

@@ -3,9 +3,11 @@ import { auditionChord } from '../audio/audition';
 import { exportMidi, midiFileName } from '../audio/export-midi';
 import { startPlayback, stopPlayback } from '../audio/pump';
 import { chordView, ideaText, keyName } from '../state/idea';
+import { useSaved } from '../state/savedStore';
 import { GENRES, useStore } from '../state/store';
 import type { HarmonicFunction } from '../theory/functions';
 import { pitchClass } from '../theory/pitch';
+import { downloadFile } from './download';
 import { Keyboard } from './Keyboard';
 
 function togglePlay(): void {
@@ -62,14 +64,7 @@ async function copySeed(): Promise<void> {
 function downloadMidi(): void {
   const { idea, genre, bpm, colour, block, showToast } = useStore.getState();
   const name = midiFileName(idea, genre, bpm);
-  const bytes = exportMidi(idea, { genre, bpm, colour, block });
-  const url = URL.createObjectURL(new Blob([bytes], { type: 'audio/midi' }));
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.click();
-  // The click starts the download; the URL can go once it has.
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  downloadFile(name, exportMidi(idea, { genre, bpm, colour, block }), 'audio/midi');
   showToast(`Downloaded ${name}`);
 }
 
@@ -315,7 +310,7 @@ export function Stage({ blind = false }: StageProps) {
             <CopyIcon />
             Copy for FL Studio
           </button>
-          <button className="btn" disabled title="Saved ideas arrive with M5">
+          <button className="btn" onClick={() => void useSaved.getState().save()}>
             Save idea
           </button>
           <button
