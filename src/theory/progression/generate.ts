@@ -6,7 +6,7 @@ import { isBorrowed, progressionFunctions, type HarmonicFunction } from '../func
 import { IDIOMS } from '../genres';
 import { familyOf, type Key, type Mode } from '../keys';
 import type { Cadence, ColourLevel, GenreProfile, Idiom } from '../profile';
-import { weighted, type Rng } from '../random';
+import { softmaxPick, type Rng } from '../random';
 import { formatRoman, parseRoman, type ChordToken } from '../roman';
 import { chooseInversions, STYLE_DEFAULTS, type VoicingOptions } from '../voicing';
 import { closesOn, countBorrowed } from './cadence';
@@ -128,15 +128,6 @@ function annotate(chords: readonly string[], key: Key): ProgressionChord[] {
   }));
 }
 
-/** Softmax over scores: p ∝ exp(score / T). */
-function softmaxPick<T>(rng: Rng, items: readonly T[], scores: readonly number[]): T {
-  const top = Math.max(...scores);
-  return weighted(
-    rng,
-    items.map((item, i) => [item, Math.exp((scores[i]! - top) / PICK_TEMPERATURE)] as const),
-  );
-}
-
 /** THEORY §3.2: resolve key, make 24 candidates, score them, pick one, annotate it. */
 export function generateProgression(request: ProgressionRequest, rng: Rng): Progression {
   const { profile, bars, colour } = request;
@@ -169,6 +160,7 @@ export function generateProgression(request: ProgressionRequest, rng: Rng): Prog
     rng,
     pool,
     pool.map((s) => s.score.total),
+    PICK_TEMPERATURE,
   );
   const idiom = detectIdiom(chosen.chords, key.mode, chosen.candidate.idioms);
   return {

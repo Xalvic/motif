@@ -227,6 +227,17 @@ Built from the rules that recur across songwriting guides and rule-based melody 
 6. **Cadence**: final note lengthened (≥ 1.5 beats), approached by step, landing on 1 or 3 (5 at a half cadence).
 7. **Score 16 candidates and sample**: strong-beat chord-tone ratio, step ratio (target ≥ 60%), leap recovery, range, climax position, motif similarity between bar 1 and bar 3 (target 0.5–0.9), rhythmic variety.
 
+Details (`melody/generate.ts`, `rhythm.ts`, `score.ts`, `check.ts`):
+- Form: 4 bars = a1 a2 a′ cadence. 8 bars = a1 a2 a′ half-cadence · a1 a2 (repeat 0.6, new pitches on its rhythm 0.4) a″ cadence. a′ and a″ develop bar 1 with a different operator each: repeat .2, sequence ±1–2 steps .3, rhythm-only .2, fragmentation .1 (only when no note crosses beat 3), extension (first half kept, rest new) .1, inversion .1 (Spicy only).
+- A developed note aims at its source pitch (moved by the operator) and takes the nearest pitch the rules allow, so strong beats re-fit to the new chord.
+- Cadence bar: a vocabulary cell cut so the final note starts between beat 2 and beat 3-and and lasts to the bar end (≥ 1.5 beats), with a weak-beat note just before it (split off when needed); fallback rhythm `1 1 2`. 30 %: augmentation instead, the first half of bar 1 at double length, when it has that shape.
+- Pitches note by note. Hard rules (no pitch left = candidate dropped): interval ≤ 12, one interval > 7 per phrase, a weak-beat non-chord tone only when the next note can be a step away, and then it is. Soft rules (kept when something passes): phrase span ≤ 14, first half of a phrase ≤ its first note + 9, raga direction, the cadence note approached by step. Free notes are weighted by step size (the prototype's weights), × 4 / × 0.3 for leap recovery after 5+ semitones, × 2 for the 3rd or 5th on beat 1, × 1.5 for a new high in a phrase's second half.
+- Weak-beat notes come from the scale, where a borrowed chord's note replaces the scale note a semitone away (♭VI in major: A♭, not A).
+- Final note: degree 1 or 3 on the final chord, else 5, else any chord tone. Antecedent end (bar 4 of 8): degree 2, 5 or 7 on that chord, else a chord tone.
+- Spicy appoggiatura: 25 % per strong beat (not the first note, not a cadence note) while the phrase has none; a non-chord tone whose next note in the bar is a chord tone 1–2 semitones below.
+- Every candidate is checked against §8 (`melodyFaults`); up to 64 tries for 16 valid ones, softmax temperature 0.5. If none is valid: quarter-note chord tones, each nearest the last.
+- Scorer: strong-beat chord tones 2 × (ratio − 0.7); steps −4 × shortfall below 0.6, + up to 0.2 above; −0.5 per unrecovered leap of 5+; −0.5 per three equal notes in a row; per phrase: −1 per semitone of span above 14, −0.5 below 7, climax +0.5 (single, second half) / −0.5 (first half) / −0.25 (shared); motif +1 in 0.5–0.9, else −2 × distance; −1 when every bar has the same rhythm, +0.3 for 3+ note lengths. Similarity = mean of shared onsets (Jaccard) and matching interval directions.
+
 ### 5.2 Interval rules
 
 - Steps (1–2 semitones) are the default; leaps up to 7 semitones; one leap up to an octave per phrase, as the climax.
@@ -235,7 +246,7 @@ Built from the rules that recur across songwriting guides and rule-based melody 
 
 ### 5.3 Rhythm vocabularies (`rhythm.ts`)
 
-Each vocabulary is a list of one-bar cells in beats, weighted. Examples:
+Each vocabulary is a list of one-bar cells in beats, weighted (all weight 1 for now). A cell with fewer than 3 notes (`3 1`, `2 2`, raga cells) gets its longest note split on the half-beat grid in every bar but the last: `2 2` → `1 1 2`. The app plays 4/4 only, so the jig plays two 6/8 cells per bar as 12/8 (an eighth = 1/3 beat). Melody notes stay inside their bar: no ties over the bar line, so `pop` has no anticipations yet.
 
 | Vocabulary | Character | Cells (4/4, beats) |
 |---|---|---|
@@ -252,6 +263,8 @@ Each vocabulary is a list of one-bar cells in beats, weighted. Examples:
 
 - Pitches come only from the raga. Ascending moves use the arohana set; descending moves use the avarohana set.
 - **Gamaka hint**: before a note of 1.5 beats or more, optionally insert a 1/16-beat grace note from the raga neighbour above or below. In MIDI export it is a separate short note so it can be edited in FL Studio.
+- Raga choice: among the profile's ragas whose melakarta scale is the idea's mode, weighted by profile weight × fit (share of chords with 2+ raga notes). A raga with no note in some chord is out (Hindolam has no note of V in minor). None left: the mode's own melakarta raga.
+- Gamaka details: 50 % per long note; the neighbour is 1–2 semitones away and not the pitch of the note before; it takes its 1/16 beat from the end of the note before (or from a rest). A gamaka that would break a §8 rule is dropped. Grace notes do not count as strong-beat notes or toward a bar's 3 notes.
 - Harmony switches to the `drone` voicing with sparse chords built only from raga tones, weighted towards sus, fifth and add9 shapes. Plain triads that clash with a raga's characteristic phrases are a known problem when harmonising ragas, so default to drone + colour shapes and let Colour add fuller chords.
 
 ---
@@ -365,7 +378,7 @@ The Hooktheory Trends API is a good manual reference for "what usually follows t
 
 ## 8. Test invariants
 
-Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours {0, 1, 2} on the candidates (`walk.test.ts`, `cadence.test.ts`); the full engine (24 candidates, scoring, voicing) runs 50 seeds per genre/length/colour (`generate.test.ts`) to keep `npm test` fast. Golden seeds: `tests/theory/golden/progression.txt`.
+Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours {0, 1, 2} on the candidates (`walk.test.ts`, `cadence.test.ts`); the full engine (24 candidates, scoring, voicing) runs 50 seeds per genre/length/colour (`generate.test.ts`) to keep `npm test` fast. Melody: 1,000 seeds per genre on walk chords, length and colour cycling with the seed (`melody-invariants.test.ts`), and 50 seeds per genre/length/colour on the full engine (`melody.test.ts`). Golden seeds: `tests/theory/golden/progression.txt`.
 
 **Roman / chords**
 - `parse(format(t)) == t` for every token in every profile and idiom.

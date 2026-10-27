@@ -46,3 +46,17 @@ export function shuffle<T>(rng: Rng, items: readonly T[]): T[] {
   }
   return result;
 }
+
+/** Softmax pick over scores: p ∝ exp((score − best) / temperature). */
+export function softmaxPick<T>(
+  rng: Rng,
+  items: readonly T[],
+  scores: readonly number[],
+  temperature: number,
+): T {
+  const top = Math.max(...scores);
+  return weighted(
+    rng,
+    items.map((item, i) => [item, Math.exp((scores[i]! - top) / temperature)] as const),
+  );
+}
