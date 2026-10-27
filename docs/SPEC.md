@@ -235,6 +235,7 @@ Goal: prove the Tone.js + smplr combination, then replace every prototype synth.
 - Optional: per-track MIDI download; drag-out of the .mid file where the browser supports it.
 - Saved ideas in IndexedDB with JSON export/import.
 - **Done when**: exported file opens in FL Studio with correct tempo, four named tracks, notes matching the keyboard view.
+- **Signed off 2026-10-27**: the owner opened an exported .mid in FL Studio: right tempo, four named tracks, right notes. Per-track download and drag-out not built (optional; see decisions.md).
 
 ### M6 · Data-driven transitions (stretch, 1–2 days)
 - Offline pipeline over Chordonomicon (THEORY §7) to produce transition tables for pop, rock, metal, electronic, rap, jazz, soul.
