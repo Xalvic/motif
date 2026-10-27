@@ -6,7 +6,7 @@ import * as Tone from 'tone';
 import { useStore, type GenreId } from '../state/store';
 import { createRng, type Rng } from '../theory/random';
 import { melodyInBar } from '../state/idea';
-import { compBar, padBar, type BarNote } from './comping';
+import { blockBar, compBar, padBar, type BarNote } from './comping';
 import { drumBar } from './drums';
 import { LAYERS, setFx, startAudio, type Layer } from './engine';
 import { applySwing, humanize } from './feel';
@@ -71,7 +71,8 @@ function onBar(time: number): void {
   // Edits (new chords, a reroll) reach the next bar: the pump reads the idea every bar.
   const loopBar = bar % bars;
   const voicing = state.idea.voicings[loopBar]!;
-  let notes = [...compBar(profile.comp, voicing), ...padBar(voicing)];
+  const comp = state.block ? blockBar(voicing) : compBar(profile.comp, voicing);
+  let notes = [...comp, ...padBar(voicing)];
   if (state.melody) notes.push(...melodyNotes(loopBar));
   if (state.drums && profile.drums) {
     notes.push(...drumBar(profile.drums, { bar: loopBar, bars, colour: state.colour }));

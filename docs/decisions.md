@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · Lo-fi `lazy` comp: chord held from 1, one soft re-hit on 3-and, silent after beat 3.5; a "Block chords" toggle (any genre) plays held chords instead of the pattern · owner: the chords sound good as block chords, the lo-fi hits around the change sounded off; strum / Alberti / arpeggio stay (owner likes them in Irish, classical, Malayalam) · accepted
 - 2026-10-27 · Scorer rule tonic → degree 4 (`I → IV`, `i → iv`), −1, not a ban · owner rated 15 of 17 such ideas "not usable"; −2 would almost ban it (0–8 %) · accepted, owner re-check at `?listen=recheck`
 - 2026-10-27 · Full listening pass restarts in `m3-full.json`; the first 40 ratings move to `m3-v1.json` · they were heard with the stop bug and the old engine, and the same seeds now give other chords · accepted
 - 2026-10-27 · M3 listening pass at `?listen`: 20 fixed ideas per genre from pass seed 20261027 (every 4th idea 8 bars; colour Some/Plain/Some/Spicy), key random, no recent-idea memory; "blind" = no roman numerals, function badges, borrowed tag, idiom name or seed; no lock, swap or new chords; verdict usable / not + note; dev server writes `docs/progress/listening/<pass>.json`, localStorage fallback · same 160 ideas on every load, so ratings map to seeds; the file is the sign-off record · accepted

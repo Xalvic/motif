@@ -29,6 +29,8 @@ export interface Settings {
   loop: boolean;
   drums: boolean;
   melody: boolean;
+  /** Play held block chords instead of the genre's comping pattern. */
+  block: boolean;
 }
 
 export interface Playback {
@@ -81,6 +83,7 @@ const START: Settings = {
   loop: true,
   drums: PROFILES.cinematic.drums,
   melody: false,
+  block: false,
 };
 
 const first = generateIdea(START, newSeed());

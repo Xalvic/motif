@@ -132,11 +132,12 @@ Patterns produce events in beats from a voicing `{ bass, upper[] }`. Carry over 
 | `arp8-pedal` | cinematic, Malayalam | bass on 1 held; up-down arpeggio in 8ths over upper + octave; pedal to bar end |
 | `alberti` | classical | low–high–mid–high in 8ths; bass held |
 | `pulse8` | pop | chord on every 8th, accent 1 and 3; bass on 1 and 3 |
-| `lazy` | lo-fi | chord on 1, anticipation on 2-and, light hit on 4; bass 1 and 3-and |
+| `lazy` | lo-fi | chord on 1 held to beat 3, one soft re-hit on 3-and; bass with it; nothing sounds in the last half beat (owner: the old 2-and / 4 hits were busy at the chord change, 2026-10-27) |
 | `ostinato` | epic | strings held; 8th-note bass/low-string ostinato alternating root and octave |
 | `strum` | Irish | down-up bounce: bass on 1 and 3 (root, then 5th), strums on 2 and 4 |
 | `chug` | metal | palm-muted 8ths/16ths on root–5th–octave; open accents on chosen hits |
 | `drone` | raga mode | Sa+Pa held all phrase; sparse RH shapes on 1 |
+| `blockBar` | "Block chords" toggle, any genre | bass and chord struck on 1, held for the bar |
 
 ### 6.2 Drum patterns (`drums.ts`)
 

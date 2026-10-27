@@ -77,6 +77,7 @@ export function Stage({ blind = false }: StageProps) {
     loop,
     drums,
     melody,
+    block,
     setSettings,
     generate,
     reroll,
@@ -156,6 +157,14 @@ export function Stage({ blind = false }: StageProps) {
             onClick={() => setSettings({ melody: !melody })}
           >
             Melody
+          </button>
+          <button
+            className="btn toggle"
+            aria-pressed={block}
+            title="Held chords instead of the genre's pattern"
+            onClick={() => setSettings({ block: !block })}
+          >
+            Block chords
           </button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compBar, padBar, type CompPattern, type Voicing } from '../../src/audio/comping';
+import { blockBar, compBar, padBar, type CompPattern, type Voicing } from '../../src/audio/comping';
 
 const C: Voicing = { bass: 36, upper: [60, 64, 67] }; // C2 | C4 E4 G4
 const ALL: CompPattern[] = ['arp8-pedal', 'alberti', 'pulse8', 'lazy', 'ostinato', 'strum', 'chug'];
@@ -40,12 +40,14 @@ describe('compBar', () => {
     expect(accented.map((n) => n.beat)).toEqual([0, 2]);
   });
 
-  it('lazy anticipates on 2-and and puts bass on 1 and 3-and', () => {
+  it('lazy holds the chord from 1, re-hits softly on 3-and, and is quiet before the bar line', () => {
     const notes = compBar('lazy', C);
     expect(notes.filter((n) => n.layer === 'bass').map((n) => n.beat)).toEqual([0, 2.5]);
-    expect(new Set(notes.filter((n) => n.layer === 'chords').map((n) => n.beat))).toEqual(
-      new Set([0, 1.5, 3]),
-    );
+    const chords = notes.filter((n) => n.layer === 'chords');
+    expect(new Set(chords.map((n) => n.beat))).toEqual(new Set([0, 2.5]));
+    const rehit = chords.filter((n) => n.beat === 2.5);
+    expect(Math.max(...rehit.map((n) => n.velocity))).toBeLessThan(chords[0]!.velocity);
+    for (const n of notes) expect(n.beat + n.beats).toBeLessThanOrEqual(3.5);
   });
 
   it('strum goes low→high on down-strums and high→low on up-strums', () => {
@@ -68,6 +70,17 @@ describe('compBar', () => {
   it('ostinato alternates root and octave in the bass', () => {
     const bass = compBar('ostinato', C).filter((n) => n.layer === 'bass');
     expect(bass.map((n) => n.note)).toEqual([36, 48, 36, 48, 36, 48, 36, 48]);
+  });
+});
+
+describe('blockBar', () => {
+  it('strikes bass and chord on 1 and holds them for the bar', () => {
+    expect(blockBar(C).map((n) => [n.layer, n.note, n.beat, n.beats])).toEqual([
+      ['bass', 36, 0, 4],
+      ['chords', 60, 0, 4],
+      ['chords', 64, 0, 4],
+      ['chords', 67, 0, 4],
+    ]);
   });
 });
 

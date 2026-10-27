@@ -67,13 +67,18 @@ function pulse8(v: Voicing): BarNote[] {
   return notes;
 }
 
-/** Lo-fi: chord on 1, anticipation on 2-and, light hit on 4; bass on 1 and 3-and. */
+/** Last beat a lazy note may sound to: the change to the next chord stays clear. */
+const LAZY_END = 3.5;
+
+/**
+ * Lo-fi: chord held from 1, one soft re-hit on 3-and; bass with it. Nothing sounds in the last
+ * half beat (the owner heard the old 2-and / 4 hits as busy at the chord change).
+ */
 function lazy(v: Voicing): BarNote[] {
-  const notes = [note('bass', v.bass, 0, 1.6, 96), note('bass', v.bass, 2.5, 1.2, 84)];
+  const notes = [note('bass', v.bass, 0, 2.25, 96), note('bass', v.bass, 2.5, LAZY_END - 2.5, 80)];
   for (const midi of v.upper) {
-    notes.push(note('chords', midi, 0, 1.6, 72));
-    notes.push(note('chords', midi, 1.5, 0.9, 58));
-    notes.push(note('chords', midi, 3, 0.9, 62));
+    notes.push(note('chords', midi, 0, 2.25, 72));
+    notes.push(note('chords', midi, 2.5, LAZY_END - 2.5, 52));
   }
   return notes;
 }
@@ -129,6 +134,11 @@ const PATTERNS: Record<CompPattern, (v: Voicing) => BarNote[]> = {
 
 export function compBar(pattern: CompPattern, voicing: Voicing): BarNote[] {
   return PATTERNS[pattern](voicing);
+}
+
+/** "Block chords" toggle, any genre: bass and chord struck on 1 and held for the bar. */
+export function blockBar(voicing: Voicing): BarNote[] {
+  return [heldBass(voicing), ...voicing.upper.map((midi) => note('chords', midi, 0, BAR, 70))];
 }
 
 /** Pad layer: the upper voicing held for the whole bar, quietly. */
