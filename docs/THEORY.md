@@ -126,11 +126,12 @@ Before shipping, verify each row against a second reference and keep the table u
 | Deceptive | V → vi / V → bVI | Spicy only |
 | Aeolian | bVI → bVII → i | epic, metal, cinematic |
 | Mixolydian | bVII → I | Irish, rock |
+| Subtonic | bVII → i | metal |
 | Phrygian | bII → i | metal |
 | Backdoor | iv7 → bVII7 → I | lofi Spicy |
 
 Filling a slot (`progression/cadence.ts`):
-- Shapes use the key family's tonic (I or i). Plagal uses the mode's own chord on degree IV (Dorian `IV → i`, Aeolian `iv → i`). Mixolydian and backdoor are major-family only. Aeolian and backdoor write all three chords. Deceptive and backdoor need Spicy.
+- Shapes use the key family's tonic (I or i). Plagal uses the mode's own chord on degree IV (Dorian `IV → i`, Aeolian `iv → i`). Mixolydian and backdoor are major-family only; subtonic is minor-family only. Aeolian and backdoor write all three chords. Deceptive and backdoor need Spicy.
 - An ending that already closes on an allowed cadence (compared as plain triads) is kept.
 - Otherwise each usable cadence is weighted `1 / (1 + chords changed)`, × 0.2 when its first chord repeats the chord before it. A cadence never writes over bar 1.
 - Cadences that would take the borrowed count past the allowance (§3.5) are skipped. If all would: bar 4 of 8 stays as it is (no mid cadence); the last bar takes the one adding the fewest borrowed chords. If no listed cadence fits the mode, authentic is used.
@@ -345,7 +346,7 @@ Idioms are written in our roman grammar. Names appear in the UI.
 - Chords change once per bar or half bar; `allowVamp: true`.
 - Melody `jig` or stepwise eighths; ornament hints (cuts/rolls) as grace notes. Lead fiddle or tin whistle.
 
-**Metal** · Aeolian .5 / Phrygian .3 / Phrygian dominant .2 · 110–180 BPM · power chords, low register · 8th/16th palm-muted chug with accents · double-kick drums
+**Metal** · Aeolian .5 / Phrygian .3 / Phrygian dominant .2 · 110–180 BPM · ends on Phrygian, Aeolian, subtonic or plagal · power chords, low register · 8th/16th palm-muted chug with accents · double-kick drums
 - `i bVI bVII i` · Phrygian `i bII i bVII` · `i bVI bIII bVII` · `i iv bVI V` (harmonic minor) · Tritone `i bV` (allowTritone)
 - `allowVamp: true`, no inversions, no extensions. Melody `riff`: half-steps, the ♭2 is a feature.
 

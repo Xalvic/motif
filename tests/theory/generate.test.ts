@@ -190,6 +190,27 @@ describe('tonic → IV is rarer, not banned (THEORY §3.4)', () => {
   });
 });
 
+describe('metal variety (THEORY §3.3)', () => {
+  it('does not fall back on i bVI bVII i in a run of 4-bar Plain ideas', () => {
+    const rng = createRng(11);
+    const recent: string[][] = [];
+    const counts = new Map<string, number>();
+    for (let n = 0; n < 200; n++) {
+      const p = generateProgression(
+        { profile: GENRES.metal, bars: 4, colour: 0, prev: recent },
+        rng,
+      );
+      recent.push(romans(p));
+      if (recent.length > 5) recent.shift();
+      const key = romans(p).join(' ');
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    // Before the subtonic and plagal endings: 7 distinct, i5 bVI5 bVII5 i5 in 48 %.
+    expect(counts.size).toBeGreaterThanOrEqual(12);
+    expect(Math.max(...counts.values())).toBeLessThan(50);
+  });
+});
+
 describe('full engine (THEORY §8: 50 seeds × 8 genres × 2 lengths × 3 colours)', () => {
   const BARS: Bars[] = [4, 8];
   const COLOURS: ColourLevel[] = [0, 1, 2];

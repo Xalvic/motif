@@ -34,12 +34,12 @@ irish 4 #3 0 mixolydian: I iisus2 bVII I | mixolydian | -
 irish 8 #1 0 dorian: isus2 bVIIsus4 IVsus2 Vsus4 bVIIsus4 isus2 IV i | plagal | -
 irish 8 #2 3 mixolydian: I bVII I V Isus4 bVII IVsus2 Isus4 | plagal | mixolydian-turn
 irish 8 #3 0 mixolydian: Isus4 iisus2 IV iisus2 Isus2 IVsus2 V I | authentic | -
-metal 4 #1 0 phrygian: i5 bV5 bII5 i5 | phrygian | -
-metal 4 #2 3 phrygian: i5 bVI5 bVII5 i5 | aeolian | -
+metal 4 #1 0 phrygian: i5 bII5 iv5 i5 | plagal | -
+metal 4 #2 3 phrygian: i5 bII5 bVII5 i5 | subtonic | -
 metal 4 #3 0 phrygian: i5 bVII5 bII5 i5 | phrygian | -
-metal 8 #1 0 phrygian: i5 bVII5 i5 bII5 i5 bVI5 bVII5 i5 | aeolian | -
-metal 8 #2 3 phrygian: i5 bVII5 i5 bII5 bVII5 i5 bII5 i5 | phrygian | -
-metal 8 #3 0 phrygian: i5 bII5 i5 bVI5 bVII5 bVI5 bVII5 i5 | aeolian | -
+metal 8 #1 0 phrygian: i5 bII5 i5 bVII5 i5 bVI5 bVII5 i5 | aeolian | phrygian-pivot
+metal 8 #2 3 phrygian: i5 bII5 i5 bVII5 i5 bII5 iv5 i5 | plagal | phrygian-pivot
+metal 8 #3 0 phrygian: i5 bII5 i5 bVII5 i5 bVI5 bVII5 i5 | aeolian | phrygian-pivot
 pop 4 #1 0 major: visus2 IV Vsus4 Isus2 | authentic | royal-road-resolved
 pop 4 #2 3 minor: i bVIadd9 Vsus4 i | authentic | -
 pop 4 #3 0 minor: isus2 bVIsus2 ivadd9 i | plagal | -

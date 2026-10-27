@@ -53,6 +53,8 @@ export function cadenceShape(cadence: Cadence, mode: Mode): string[] | null {
       return ['bVI', 'bVII', home];
     case 'mixolydian':
       return family === 'major' ? ['bVII', 'I'] : null;
+    case 'subtonic':
+      return family === 'minor' ? ['bVII', 'i'] : null;
     case 'phrygian':
       return ['bII', home];
     case 'backdoor':

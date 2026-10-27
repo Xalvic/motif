@@ -111,7 +111,7 @@
     }
   },
   "cadences": {
-    "end": ["phrygian", "aeolian"],
+    "end": ["phrygian", "aeolian", "subtonic", "plagal"],
     "mid": ["weak"]
   },
   "colours": {},

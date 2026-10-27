@@ -18,6 +18,7 @@ export const CADENCES = [
   'deceptive',
   'aeolian',
   'mixolydian',
+  'subtonic',
   'phrygian',
   'backdoor',
   'weak',

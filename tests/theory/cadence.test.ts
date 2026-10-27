@@ -36,6 +36,9 @@ describe('cadence shapes', () => {
     expect(cadenceShape('phrygian', 'phrygianDominant')).toEqual(['bII', 'I']);
     expect(cadenceShape('mixolydian', 'major')).toEqual(['bVII', 'I']);
     expect(cadenceShape('mixolydian', 'minor')).toBeNull();
+    expect(cadenceShape('subtonic', 'minor')).toEqual(['bVII', 'i']);
+    expect(cadenceShape('subtonic', 'phrygian')).toEqual(['bVII', 'i']);
+    expect(cadenceShape('subtonic', 'major')).toBeNull();
     expect(cadenceShape('backdoor', 'major')).toEqual(['iv7', 'bVII7', 'I']);
   });
 
@@ -43,6 +46,7 @@ describe('cadence shapes', () => {
     expect(closesOn(split('I IV V7 Imaj7'), 'authentic', 3, 'major')).toBe(true);
     expect(closesOn(split('i bVI bVII i'), 'aeolian', 3, 'minor')).toBe(true);
     expect(closesOn(split('i bIII bVII i'), 'aeolian', 3, 'minor')).toBe(false);
+    expect(closesOn(split('i bIII bVII i'), 'subtonic', 3, 'minor')).toBe(true);
     expect(closesOn(split('I V vi IV'), 'weak', 3, 'major')).toBe(true);
     expect(closesOn(split('I IV vi V'), 'weak', 3, 'major')).toBe(false);
     expect(closesOn(split('I IV ii vi'), 'weak', 3, 'major')).toBe(false);
