@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · M7 WAV export dropped; v1 ends at M6 · the owner does not need audio export: MIDI into FL Studio covers the workflow · accepted by the owner
 - 2026-10-27 · M6 data tables: pop ← `pop`, metal ← `metal` (minor only), lo-fi ← `jazz` + `soul` (not `rap`); other genres stay hand-authored · the dataset has no cinematic, epic, classical, Malayalam or Irish; rap is mostly 1–2 chord loops · accepted by the owner
 - 2026-10-27 · M6 tables have no verse/chorus split; one table per genre × family · the generator has no section input; add it when the UI gets one · accepted by the owner
 - 2026-10-27 · M6 blend at load in `genres.ts`, α = `dataWeight` (default 0.6, 0 = off); a second-order state one side lacks blends with that side's first-order row; modes the data lacks (Phrygian, Dorian, …) stay hand-authored · keeps α true for every row the walk reads · accepted, owner checked pop, metal and lo-fi by ear

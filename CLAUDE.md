@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M0–M6 done (M6 data tables for pop, metal, lo-fi; owner checked by ear). M7 is stretch.
+Milestone: v1 done (M0–M6; M6 data tables for pop, metal, lo-fi; owner checked by ear). M7 WAV export dropped (decisions.md).
 Last session: 2026-10-27. M6: Chordonomicon pipeline (`npm run tables`) and data blend at load (`dataWeight` 0.6).
-Next: 1) owner picks: M7 WAV export, or not-built items  2) optional: section-aware tables, more Phrygian dominant chords
+Next: 1) owner picks: a not-built item, or SPEC §8 backlog (1st: USB keyboard play-along)  2) optional: section-aware tables, more Phrygian dominant chords
 Blockers: none. Not built yet: raga drone harmony, Irish ornaments, pop anticipations (see decisions.md).
 <!-- status:end -->
