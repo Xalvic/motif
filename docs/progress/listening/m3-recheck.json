@@ -1,0 +1,151 @@
+{
+  "pass": "M3 re-check",
+  "passSeed": 20261028,
+  "updated": "2026-10-27T05:25:37.316Z",
+  "ratings": {
+    "cinematic-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "G Lydian",
+      "chords": "G – A – D – G"
+    },
+    "cinematic-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "D major",
+      "chords": "D – Bm – A – D"
+    },
+    "cinematic-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B♭ major",
+      "chords": "Gm – E♭ – F – B♭"
+    },
+    "epic-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "A minor",
+      "chords": "Asus2 – Fsus2 – G – Am"
+    },
+    "epic-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "F major",
+      "chords": "F – Dm – C – F"
+    },
+    "epic-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "D minor",
+      "chords": "Dm(add9) – B♭sus2 – Csus4 – Dm"
+    },
+    "lofi-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E♭ major",
+      "chords": "A♭maj7 – B♭7 – A♭maj7 – E♭maj7"
+    },
+    "lofi-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "F minor",
+      "chords": "Fm7 – D♭maj9 – C7 – Fm7"
+    },
+    "lofi-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "D major",
+      "chords": "Dmaj7 – Em7 – A7 – Dmaj9"
+    },
+    "classical-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "C♯ minor",
+      "chords": "C♯m – D♯dim – G♯ – C♯m"
+    },
+    "classical-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B♭ major",
+      "chords": "B♭ – Cm – F – B♭"
+    },
+    "classical-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E major",
+      "chords": "E – Am – B – E"
+    },
+    "malayalam-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B♭ harmonic minor",
+      "chords": "B♭m – G♭ – F7 – B♭m(add9)"
+    },
+    "malayalam-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "A major",
+      "chords": "A – E – D – A"
+    },
+    "malayalam-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "G Dorian",
+      "chords": "Gm(add9) – Csus2 – Dsus4 – Gm(add9)"
+    },
+    "irish-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E Dorian",
+      "chords": "Em – Dsus4 – Bsus4 – Em"
+    },
+    "irish-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "E Mixolydian",
+      "chords": "E – D – A – E"
+    },
+    "irish-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "C♯ minor",
+      "chords": "C♯m – B – F♯m – C♯m"
+    },
+    "metal-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "D Phrygian",
+      "chords": "D5 – B♭5 – C5 – D5"
+    },
+    "metal-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "A minor",
+      "chords": "A5 – F5 – G5 – A5"
+    },
+    "metal-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "G♯ Phrygian",
+      "chords": "G♯5 – E5 – F♯5 – G♯5"
+    },
+    "pop-1": {
+      "verdict": "usable",
+      "note": "",
+      "key": "B♭ major",
+      "chords": "B♭add9 – Gm – A♭ – B♭"
+    },
+    "pop-2": {
+      "verdict": "usable",
+      "note": "",
+      "key": "F♯ major",
+      "chords": "F♯ – D♯m – B – F♯"
+    },
+    "pop-3": {
+      "verdict": "usable",
+      "note": "",
+      "key": "D major",
+      "chords": "Dsus2 – Asus4/E – C – D"
+    }
+  }
+}
