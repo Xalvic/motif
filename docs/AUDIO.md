@@ -90,7 +90,7 @@ Spike (keep it under half a day; record the result in `docs/decisions.md`):
 
 **Result (2026-10-22, Chrome):** steps 1–4 pass with option A. Details in `docs/decisions.md`. Harness: `/spike.html` (dev only, `src/audio/spike/m1-spike.ts`), params `ctx=A|B`, `minutes`, `pump=beat|bar`. It measures onset lag per beat with an AudioWorklet tap. Firefox and Safari are not checked yet.
 
-**Full engine (2026-10-22, Chrome):** 10 min with 4 genres switching every 8 bars: 0 late bars, constant onset lag, no drift. Harness: `/timing.html` (dev only, `src/audio/dev/timing-test.ts`), params `minutes`, `genres`, `switchBars`, `bpm`, `colour`. Details in `docs/decisions.md`.
+**Full engine (2026-10-22, Chrome):** 10 min with 4 genres switching every 8 bars: 0 late bars, constant onset lag, no drift. **Re-run 2026-10-27** after the pump changes (Stop fix, lazy comp, Block chords), page visible the whole run: same result (300/300 bars, 0 late, min margin 41 ms, bar starts exact, 0 stand-in notes, no drift). Harness: `/timing.html` (dev only, `src/audio/dev/timing-test.ts`), params `minutes`, `genres`, `switchBars`, `bpm`, `colour`. Details in `docs/decisions.md`.
 
 Fallback if the bridge fails: keep Tone for transport and Draw, but route smplr straight to the context destination and use smplr's own `Reverb` (Dattorro) plus native nodes for filters. If timing integration itself fails, use smplr's `Sequencer`/`Scheduler` as the clock and drop Tone to effects only.
 
