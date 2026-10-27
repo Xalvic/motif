@@ -1,7 +1,7 @@
-import { keyName, keyNoteName, melodyInBar, scaleNotes } from '../state/idea';
+import { keyName, scaleNotes } from '../state/idea';
 import { useStore } from '../state/store';
 import { GENRES as PROFILES } from '../theory/genres';
-import { PianoRoll } from './PianoRoll';
+import { MelodyNotes } from './MelodyNotes';
 
 export function LowerPanels() {
   const { idea, genre, playhead, newMelody, newPrompt } = useStore();
@@ -20,17 +20,7 @@ export function LowerPanels() {
           A rough idea to react to, drawn like FL Studio's piano roll. Change notes, steal the
           rhythm, or ignore it. Turn on <b>Melody</b> above to hear it with the chords.
         </p>
-        <PianoRoll idea={idea} playhead={playhead} />
-        <div className="mel-text">
-          {idea.tokens.map((_, bar) => {
-            const notes = melodyInBar(idea, bar).map((n) => keyNoteName(idea, n.midi));
-            return (
-              <div key={bar}>
-                <span>Bar {bar + 1}</span> {notes.join(' ') || 'rest'}
-              </div>
-            );
-          })}
-        </div>
+        <MelodyNotes idea={idea} playhead={playhead} />
       </div>
 
       <div className="panel">

@@ -1,14 +1,15 @@
 /**
- * Listening pass progress. `?listen` is the full pass, `?listen=recheck` the short one. The dev
+ * Listening pass progress. `?listen` is the full chord pass, `?listen=<id>` another pass
+ * (PASSES: recheck, melody, melody-full). The dev
  * server writes the ratings to docs/progress/listening/<file>.json (vite.config.ts);
  * localStorage is the fallback.
  */
 import { create } from 'zustand';
-import { PASSES, passPlan, type PassFile, type PassId, type Rating } from './listening';
+import { PASSES, passIdOf, passPlan, QUESTIONS, type PassFile, type Rating } from './listening';
 
-const passId: PassId =
-  new URLSearchParams(window.location.search).get('listen') === 'recheck' ? 'recheck' : 'full';
+const passId = passIdOf(new URLSearchParams(window.location.search).get('listen'));
 export const CONFIG = PASSES[passId];
+export const QUESTION = QUESTIONS[CONFIG.kind];
 export const PLAN = passPlan(CONFIG);
 export const FILE_PATH = `docs/progress/listening/${CONFIG.file}.json`;
 

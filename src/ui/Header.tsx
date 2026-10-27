@@ -1,4 +1,8 @@
-export function Header({ listening = false }: { listening?: boolean }) {
+import { QUESTIONS, type PassConfig } from '../state/listening';
+
+/** `pass`: the listening pass shown, for its key hints. */
+export function Header({ pass }: { pass?: PassConfig }) {
+  const question = pass && QUESTIONS[pass.kind];
   return (
     <header className="top">
       <div>
@@ -18,15 +22,17 @@ export function Header({ listening = false }: { listening?: boolean }) {
           Pick a genre, roll a progression, and find your melody on the keys. No sheet music needed.
         </p>
       </div>
-      {listening ? (
+      {question ? (
         <div className="hint">
-          <kbd>Space</kbd> play / stop · <kbd>1</kbd> usable · <kbd>2</kbd> not usable ·{' '}
-          <kbd>←</kbd> <kbd>→</kbd> move · <a href="./">Exit pass</a>
+          <kbd>Space</kbd> play / stop · <kbd>1</kbd> {question.yesLabel.toLowerCase()} ·{' '}
+          <kbd>2</kbd> {question.noLabel.toLowerCase()} · <kbd>←</kbd> <kbd>→</kbd> move ·{' '}
+          <a href="./">Exit pass</a>
         </div>
       ) : (
         <div className="hint">
           <kbd>G</kbd> new chords · <kbd>Space</kbd> play / stop ·{' '}
-          <a href="?listen">Listening pass</a> · <a href="?listen=recheck">Re-check</a>
+          <a href="?listen">Listening pass</a> · <a href="?listen=recheck">Re-check</a> ·{' '}
+          <a href="?listen=melody">Melody pass</a>
         </div>
       )}
     </header>

@@ -1,6 +1,7 @@
 import { Controls } from './Controls';
 import { Header } from './Header';
-import { ListeningPass } from './ListeningPass';
+import { CONFIG } from '../state/listeningStore';
+import { ListeningMelody, ListeningPass } from './ListeningPass';
 import { LowerPanels } from './LowerPanels';
 import { SavedIdeas } from './SavedIdeas';
 import { Stage } from './Stage';
@@ -13,9 +14,10 @@ export function App() {
   if (listening) {
     return (
       <div className="wrap">
-        <Header listening />
+        <Header pass={CONFIG} />
         <ListeningPass />
         <Stage blind />
+        {CONFIG.kind === 'melody' && <ListeningMelody />}
         <Toast />
       </div>
     );

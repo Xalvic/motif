@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { startPlayback, stopPlayback } from '../audio/pump';
-import { chordView, keyName } from '../state/idea';
+import { chordView, keyName, melodyText } from '../state/idea';
 import {
   settingsOf,
   summarise,
@@ -8,8 +8,16 @@ import {
   type PassItem,
   type Verdict,
 } from '../state/listening';
-import { CONFIG, FILE_PATH, PLAN, useListening, type SaveStatus } from '../state/listeningStore';
+import {
+  CONFIG,
+  FILE_PATH,
+  PLAN,
+  QUESTION,
+  useListening,
+  type SaveStatus,
+} from '../state/listeningStore';
 import { GENRES, useStore } from '../state/store';
+import { MelodyNotes } from './MelodyNotes';
 
 const STATUS: Record<SaveStatus, string> = {
   loading: 'Loading ratings…',
@@ -44,14 +52,15 @@ function Rater({ item, index }: { item: PassItem; index: number }) {
   function rateShown(verdict: Verdict): void {
     const { idea } = useStore.getState();
     const chords = idea.tokens.map((_, i) => chordView(idea, i).symbol).join(' – ');
-    rate(item.id, { verdict, note: note.trim(), key: keyName(idea), chords });
+    const rating = { verdict, note: note.trim(), key: keyName(idea), chords };
+    rate(item.id, CONFIG.kind === 'melody' ? { ...rating, melody: melodyText(idea) } : rating);
     go(index + 1);
   }
 
   function onKey(e: KeyboardEvent): void {
     if ((e.target as HTMLElement).closest('input, select, textarea')) return;
     if (e.metaKey || e.ctrlKey || e.altKey || !ready) return;
-    if (e.key === '1') rateShown('usable');
+    if (e.key === '1') rateShown(QUESTION.yes);
     else if (e.key === '2') rateShown('not');
     else if (e.key === 'ArrowLeft') go(index - 1);
     else if (e.key === 'ArrowRight') go(index + 1);
@@ -83,14 +92,14 @@ function Rater({ item, index }: { item: PassItem; index: number }) {
           Next →
         </button>
       </div>
-      <div className="lp-verdict" role="group" aria-label="Usable as a starting point?">
+      <div className="lp-verdict" role="group" aria-label={QUESTION.ask}>
         <button
           className="btn toggle"
-          aria-pressed={current?.verdict === 'usable'}
+          aria-pressed={current?.verdict === QUESTION.yes}
           disabled={!ready}
-          onClick={() => rateShown('usable')}
+          onClick={() => rateShown(QUESTION.yes)}
         >
-          Usable <kbd>1</kbd>
+          {QUESTION.yesLabel} <kbd>1</kbd>
         </button>
         <button
           className="btn toggle lp-not"
@@ -98,7 +107,7 @@ function Rater({ item, index }: { item: PassItem; index: number }) {
           disabled={!ready}
           onClick={() => rateShown('not')}
         >
-          Not usable <kbd>2</kbd>
+          {QUESTION.noLabel} <kbd>2</kbd>
         </button>
       </div>
       <input
@@ -125,6 +134,8 @@ export function ListeningPass() {
 
   useEffect(() => {
     void load();
+    // A melody pass is heard with the melody on (the Melody toggle can still turn it off).
+    if (CONFIG.kind === 'melody') useStore.getState().setSettings({ melody: true });
   }, [load]);
 
   // Each idea starts from bar 1: a playing loop restarts on the new idea, after the old
@@ -148,9 +159,7 @@ export function ListeningPass() {
       <div className="lp-head">
         <div>
           <span className="label">Listening pass · {CONFIG.label}</span>
-          <p className="lp-sub">
-            Play each idea. Is it usable as a starting point for a song? Labels are hidden.
-          </p>
+          <p className="lp-sub">{QUESTION.ask} Labels are hidden.</p>
         </div>
         <div className="lp-status">
           {rated} of {PLAN.length} rated · {STATUS[status]}
@@ -167,7 +176,7 @@ export function ListeningPass() {
               aria-pressed={s.genre === item.genre}
               onClick={() => openGenre(s.genre)}
             >
-              {label} · {s.done ? `${s.usable} usable` : `${s.rated}/${CONFIG.perGenre}`}
+              {label} · {s.done ? `${s.yes} ${QUESTION.yesText}` : `${s.rated}/${CONFIG.perGenre}`}
             </button>
           );
         })}
@@ -179,6 +188,19 @@ export function ListeningPass() {
         <button className="btn" onClick={() => void copySummary()}>
           Copy summary
         </button>
+      </div>
+    </section>
+  );
+}
+
+/** Melody pass: the melody as keys and note names, without the raga or a New melody button. */
+export function ListeningMelody() {
+  const { idea, playhead } = useStore();
+  return (
+    <section className="lower lp-melody">
+      <div className="panel">
+        <span className="label">Melody</span>
+        <MelodyNotes idea={idea} playhead={playhead} />
       </div>
     </section>
   );

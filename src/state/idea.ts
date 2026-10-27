@@ -240,6 +240,18 @@ export function melodyInBar(idea: Idea, bar: number): NoteEvent[] {
   return idea.melody.filter((n) => n.start >= bar * 4 && n.start < bar * 4 + 4);
 }
 
+/** Melody note names per bar, for example "E4 G4 A4 | C5 B4 | rest | A4". */
+export function melodyText(idea: Idea): string {
+  return idea.tokens
+    .map(
+      (_, bar) =>
+        melodyInBar(idea, bar)
+          .map((n) => keyNoteName(idea, n.midi))
+          .join(' ') || 'rest',
+    )
+    .join(' | ');
+}
+
 /** The prototype's "Copy for FL Studio" text. */
 export function ideaText(idea: Idea, genre: GenreId, bpm: number): string {
   const views = idea.tokens.map((_, i) => chordView(idea, i));
