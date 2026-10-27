@@ -231,7 +231,7 @@ Details (`melody/generate.ts`, `rhythm.ts`, `score.ts`, `check.ts`):
 - Form: 4 bars = a1 a2 a′ cadence. 8 bars = a1 a2 a′ half-cadence · a1 a2 (repeat 0.6, new pitches on its rhythm 0.4) a″ cadence. a′ and a″ develop bar 1 with a different operator each: repeat .2, sequence ±1–2 steps .3, rhythm-only .2, fragmentation .1 (only when no note crosses beat 3), extension (first half kept, rest new) .1, inversion .1 (Spicy only).
 - A developed note aims at its source pitch (moved by the operator) and takes the nearest pitch the rules allow, so strong beats re-fit to the new chord.
 - Cadence bar: a vocabulary cell cut so the final note starts between beat 2 and beat 3-and and lasts to the bar end (≥ 1.5 beats), with a weak-beat note just before it (split off when needed); fallback rhythm `1 1 2`. 30 %: augmentation instead, the first half of bar 1 at double length, when it has that shape.
-- Pitches note by note. Hard rules (no pitch left = candidate dropped): interval ≤ 12, one interval > 7 per phrase, a weak-beat non-chord tone only when the next note can be a step away, and then it is. Soft rules (kept when something passes): phrase span ≤ 14, first half of a phrase ≤ its first note + 9, raga direction, the cadence note approached by step. Free notes are weighted by step size (the prototype's weights), × 4 / × 0.3 for leap recovery after 5+ semitones, × 2 for the 3rd or 5th on beat 1, × 1.5 for a new high in a phrase's second half.
+- Pitches note by note. Hard rules (no pitch left = candidate dropped): interval ≤ 12, one interval > 7 per phrase, at most 4 notes alternating between two pitches, a weak-beat non-chord tone only when the next note can be a step away, and then it is. Soft rules (kept when something passes): phrase span ≤ 14, first half of a phrase ≤ its first note + 9, raga direction, the cadence note approached by step. Free notes are weighted by step size (the prototype's weights), × 4 / × 0.3 for leap recovery after 5+ semitones, × 2 for the 3rd or 5th on beat 1, × 1.5 for a new high in a phrase's second half.
 - Weak-beat notes come from the scale, where a borrowed chord's note replaces the scale note a semitone away (♭VI in major: A♭, not A).
 - Final note: degree 1 or 3 on the final chord, else 5, else any chord tone. Antecedent end (bar 4 of 8): degree 2, 5 or 7 on that chord, else a chord tone.
 - Spicy appoggiatura: 25 % per strong beat (not the first note, not a cadence note) while the phrase has none; a non-chord tone whose next note in the bar is a chord tone 1–2 semitones below.
@@ -243,6 +243,7 @@ Details (`melody/generate.ts`, `rhythm.ts`, `score.ts`, `check.ts`):
 - Steps (1–2 semitones) are the default; leaps up to 7 semitones; one leap up to an octave per phrase, as the climax.
 - After a leap of 5+ semitones, the next move is a step in the opposite direction.
 - Non-chord tones never sit on a strong beat except the Spicy appoggiatura, and always resolve by step.
+- At most 4 notes in a row alternate between two pitches (D E D E is fine, D E D E D is a trill). Grace notes do not count.
 
 ### 5.3 Rhythm vocabularies (`rhythm.ts`)
 
@@ -404,5 +405,6 @@ Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours 
 - ≥ 70% of strong-beat notes are chord tones (≥ 60% in raga mode).
 - Every weak-beat non-chord tone resolves by step.
 - No interval > 12; intervals > 7 at most once per phrase.
+- No more than 4 main notes in a row alternate between two pitches.
 - Final note is a chord tone of the final chord and lasts ≥ 1 beat.
 - No overlapping notes; each bar except the last has ≥ 3 notes; rest per bar ≤ 2 beats.

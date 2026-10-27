@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GENRE_IDS, GENRES } from '../../src/theory/genres';
-import { melodyFaults } from '../../src/theory/melody/check';
+import { alternatesTooLong, melodyFaults } from '../../src/theory/melody/check';
 import { generateMelody } from '../../src/theory/melody/generate';
 import {
   augment,
@@ -123,5 +123,28 @@ describe('melody engine', () => {
       if (s >= 0.5 && s <= 0.9) similar++;
     }
     expect(similar / runs).toBeGreaterThan(0.6);
+  });
+});
+
+describe('trill rule (THEORY §5.2)', () => {
+  it('allows 4 alternating notes and stops the 5th', () => {
+    expect(alternatesTooLong([62, 64, 62], 64)).toBe(false);
+    expect(alternatesTooLong([62, 64, 62, 64], 62)).toBe(true);
+    expect(alternatesTooLong([62, 64, 62, 64], 67)).toBe(false);
+    expect(alternatesTooLong([60, 62, 64, 62], 64)).toBe(false);
+    expect(alternatesTooLong([62, 62, 62, 62], 62)).toBe(false);
+  });
+
+  it('is a fault in the check, but not for grace notes', () => {
+    const ctx = checkOf(walkRequest('irish', 1));
+    const trill = [62, 64, 62, 64, 62].map((midi, i) => ({
+      midi,
+      start: i * 0.5,
+      dur: 0.5,
+      vel: 80,
+    }));
+    expect(melodyFaults(trill, ctx).some((f) => f.includes('alternating'))).toBe(true);
+    const graced = trill.map((n, i) => (i === 1 || i === 3 ? { ...n, grace: true as const } : n));
+    expect(melodyFaults(graced, ctx).some((f) => f.includes('alternating'))).toBe(false);
   });
 });

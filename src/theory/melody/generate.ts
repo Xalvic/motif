@@ -9,7 +9,7 @@ import { pitchClass } from '../pitch';
 import type { ColourLevel, GenreProfile, MelodyVocab } from '../profile';
 import { pick, softmaxPick, weighted, type Rng } from '../random';
 import type { ChordToken } from '../roman';
-import { melodyFaults, type CheckContext } from './check';
+import { alternatesTooLong, melodyFaults, type CheckContext } from './check';
 import { PHRASE_BARS, type NoteEvent } from './note';
 import {
   augment,
@@ -383,6 +383,8 @@ function pitches(ctx: Context, form: readonly BarPlan[], rng: Rng): NoteEvent[] 
   const isChordTone = (pos: Position, m: number) => ctx.chord[pos.bar]!.has(pitchClass(m));
 
   const pitched: number[][] = form.map(() => []);
+  /** Every pitch so far, for the trill rule. */
+  const played: number[] = [];
   const out: NoteEvent[] = [];
   let prev: number | undefined;
   let lastMove = 0;
@@ -401,6 +403,7 @@ function pitches(ctx: Context, form: readonly BarPlan[], rng: Rng): NoteEvent[] 
     const hardOk = (m: number) => {
       if (prev === undefined) return true;
       if (Math.abs(m - prev) > 12 || !leapOk(m)) return false;
+      if (alternatesTooLong(played, m)) return false;
       if (needStep === 'any' && !isStep(m, prev)) return false;
       if (needStep === 'down' && !(prev - m >= 1 && prev - m <= 2 && isChordTone(pos, m))) {
         return false;
@@ -496,6 +499,7 @@ function pitches(ctx: Context, form: readonly BarPlan[], rng: Rng): NoteEvent[] 
     if (appoggiatura) phrase.appoggiatura = true;
     needStep = appoggiatura ? 'down' : !pos.strong && !isChordTone(pos, midi) ? 'any' : false;
     prev = midi;
+    played.push(midi);
     pitched[pos.bar]!.push(midi);
     out.push({
       midi,

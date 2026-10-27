@@ -20,7 +20,20 @@ const EPS = 1e-6;
 export const STRONG_CHORD_RATIO = 0.7;
 export const STRONG_CHORD_RATIO_RAGA = 0.6;
 
+/** THEORY §5.2: A B A B is fine, A B A B A is a trill. */
+export const MAX_ALTERNATION = 4;
+
 const barOf = (n: NoteEvent) => Math.floor(n.start / 4 + EPS);
+
+/**
+ * True when `m` after `prev` (oldest first) makes more than MAX_ALTERNATION notes swing
+ * between two pitches.
+ */
+export function alternatesTooLong(prev: readonly number[], m: number): boolean {
+  const run = [...prev.slice(-MAX_ALTERNATION), m];
+  if (run.length <= MAX_ALTERNATION) return false;
+  return run.every((p, i) => p === run[i % 2]) && run[0] !== run[1];
+}
 const isStep = (a: number, b: number) => Math.abs(a - b) >= 1 && Math.abs(a - b) <= 2;
 
 export function melodyFaults(notes: readonly NoteEvent[], ctx: CheckContext): string[] {
@@ -34,6 +47,8 @@ export function melodyFaults(notes: readonly NoteEvent[], ctx: CheckContext): st
   let strongChord = 0;
   const bigLeaps = new Map<number, number>();
   const perBar = Array.from({ length: bars }, () => ({ count: 0, sounding: 0 }));
+  // Grace notes (gamakas) swing by nature: the trill rule reads the main notes only.
+  const main: number[] = [];
   notes.forEach((n, i) => {
     const at = () => `note ${i} (beat ${n.start})`;
     const bar = barOf(n);
@@ -58,6 +73,12 @@ export function melodyFaults(notes: readonly NoteEvent[], ctx: CheckContext): st
     if (next && next.start < n.start + n.dur - EPS) faults.push(`${at()}: overlaps the next note`);
     if (!strongBeat && !isChordTone(n) && !(next && isStep(n.midi, next.midi))) {
       faults.push(`${at()}: weak-beat non-chord tone does not resolve by step`);
+    }
+    if (!n.grace) {
+      if (alternatesTooLong(main, n.midi)) {
+        faults.push(`${at()}: more than ${MAX_ALTERNATION} notes on two alternating pitches`);
+      }
+      main.push(n.midi);
     }
     const prev = notes[i - 1];
     if (prev) {

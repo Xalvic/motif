@@ -9,7 +9,7 @@ import { GENRES as PROFILES, type GenreId } from '../theory/genres';
 import { familyOf, scaleById, type Key, type Mode, type Scale } from '../theory/keys';
 import { generateMelody } from '../theory/melody/generate';
 import type { NoteEvent } from '../theory/melody/note';
-import { pitchClassName } from '../theory/pitch';
+import { pitchClass, pitchClassName } from '../theory/pitch';
 import {
   detectIdiom,
   generateProgression,
@@ -225,9 +225,22 @@ export function keyName(idea: Spelled): string {
   return `${pitchClassName(idea.tonic, idea.flats)} ${mode}`;
 }
 
-/** Note name with octave, spelled by the key signature (melody, scale). */
+/** Note name with octave, spelled by the key signature (scale, piano roll rows). */
 export function keyNoteName(idea: Spelled, midi: number): string {
   return pitchClassName(midi, idea.flats) + (Math.floor(midi / 12) - 1);
+}
+
+/**
+ * A melody note's name with octave. A chord tone takes the chord's spelling (B♭4 over B♭ in
+ * C major, not A♯4), another scale note the key's, any other note the chord's flats or sharps.
+ */
+export function melodyNoteName(idea: Idea, note: NoteEvent): string {
+  const bar = Math.min(Math.floor(note.start / 4), idea.tokens.length - 1);
+  const spelling = spellChord(idea.tokens[bar]!, keyOf(idea));
+  const pc = pitchClass(note.midi);
+  const inScale = idea.scale.steps.some((step) => pitchClass(idea.tonic + step) === pc);
+  if (spelling.names[pc] === undefined && inScale) return keyNoteName(idea, note.midi);
+  return noteName(note.midi, spelling);
 }
 
 /** Scale note names from the tonic, for example ["A", "B", "C", …]. */
@@ -246,7 +259,7 @@ export function melodyText(idea: Idea): string {
     .map(
       (_, bar) =>
         melodyInBar(idea, bar)
-          .map((n) => keyNoteName(idea, n.midi))
+          .map((n) => melodyNoteName(idea, n))
           .join(' ') || 'rest',
     )
     .join(' | ');
@@ -272,7 +285,7 @@ export function ideaText(idea: Idea, genre: GenreId, bpm: number): string {
   });
   lines.push('', 'Melody starter:');
   idea.tokens.forEach((_, bar) => {
-    const notes = melodyInBar(idea, bar).map((n) => `${keyNoteName(idea, n.midi)}(${n.dur})`);
+    const notes = melodyInBar(idea, bar).map((n) => `${melodyNoteName(idea, n)}(${n.dur})`);
     lines.push(`Bar ${bar + 1}: ${notes.join(' ') || 'rest'}`);
   });
   lines.push(

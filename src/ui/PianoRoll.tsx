@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { chordView, keyNoteName, type Idea } from '../state/idea';
+import { chordView, keyNoteName, melodyNoteName, type Idea } from '../state/idea';
 import { isBlackKey, pitchClass } from '../theory/pitch';
 
 const PAD_LEFT = 34;
@@ -119,7 +119,7 @@ export function PianoRoll({ idea, playhead }: PianoRollProps) {
             fontWeight={600}
             style={{ fill: 'var(--on-accent)', fontFamily: 'var(--mono)' }}
           >
-            {keyNoteName(idea, n.midi).replace(/-?\d+$/, '')}
+            {melodyNoteName(idea, n).replace(/-?\d+$/, '')}
           </text>
         )}
       </g>
