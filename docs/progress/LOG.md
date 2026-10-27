@@ -4,6 +4,13 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-27 · Metal progression variety
+- Milestone: M0–M5 done; M6/M7 stretch, not started. This session: metal variety fix.
+- Done: new minor-family cadence `subtonic` (`bVII → i`, `profile.ts`, `progression/cadence.ts`); metal ends on Phrygian, Aeolian, subtonic or plagal (`metal.json`). Cause: the 3-chord Aeolian cadence fixed bars 2–4 of every 4-bar idea, and `bII` is over budget in minor at Plain. 4-bar Plain run of 1200 ideas: 7 → 19 distinct, top share 48 → 15 %, worst repeats in 10 ideas 10 → 3. Tests: subtonic shapes, metal variety test (fails on the old code). Golden: 6 metal lines changed. THEORY §3.3 and metal profile line updated. 433 tests.
+- Checked by ear: owner: new metal endings good.
+- Decisions: subtonic cadence and metal endings; timing re-run dropped from Next (both in decisions.md)
+- Open: not built: §5.4 drone harmony for raga mode, Irish cut/roll graces, pop anticipations over the bar line; Phrygian dominant table has only I, bII, iv (8-bar ideas still lean on `I bII I bII`); Firefox/Safari timing never run
+- Next: 1) owner picks: M6 data-driven transitions, M7 WAV export, or the not-built items
 ## 2026-10-27 · M4 and M5 signed off, MIDI export and saved ideas
 - Milestone: M5 Export and persistence (signed off). M4 signed off on the melody pass. M0–M5 done; M6/M7 are stretch.
 - Done: melody pass `?listen=melody` (+ `melody-full`), verdict `worth`, melody shown as piano roll + note names (`ui/MelodyNotes.tsx`); trill rule (≤ 4 notes on two alternating pitches, `check.ts` + `generate.ts`, THEORY §5.2/§8); melody notes spelled by the chord (`melodyNoteName`); MIDI export (`audio/export-midi.ts`, @tonejs/midi + midi-file for the key signature, Export MIDI button); saved ideas (`state/saved.ts`, `savedStore.ts`, idb-keyval, Save/Open/✕, JSON Export all/Import); build split into tone/smplr/react/vendor chunks; `preview` entry in launch.json. 432 tests.
