@@ -3,6 +3,7 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · M4 signed off on the 3-per-genre melody pass (23 of 24 worth reacting to, `m4-melody.json`), not the full 20-per-genre pass · owner's call, as for M3; `?listen=melody-full` stays for a later full pass · accepted
 - 2026-10-27 · M4 melody pass at `?listen=melody`: 3 per genre (pass seed 20261029), 2 to pass, verdict `worth` / `not` + note, melody on, melody shown as piano roll + note names (no raga, no New melody); `?listen=melody-full` (20 per genre, 12 to pass) is the SPEC sign-off · same pattern as M3: the quick pass first, the full pass if the owner wants it; the file records the melody as heard · accepted
 - 2026-10-27 · M4 melody engine replaces `melody/legacy.ts`: form a1 a2 a′ (+ a1 a2 a″), note-by-note pitches with §5.2 hard rules, every candidate checked against §8 (`melodyFaults`) before scoring; details in THEORY §5.1 · rules that §8 tests must hold are enforced, not only scored; 0 fallbacks in 8,000 test ideas · accepted, owner listening pending
 - 2026-10-27 · Melody range is the profile's absolute `melody.range`, not the prototype's tonic reference; a key change moves the melody up or down (whichever fits), else makes a new one · §8 "all notes in range" must hold in every key · accepted

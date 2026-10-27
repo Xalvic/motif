@@ -228,6 +228,7 @@ Goal: prove the Tone.js + smplr combination, then replace every prototype synth.
 - Rhythm vocabularies, motif + development operators, phrase form, cadence endings, raga mode (THEORY §5).
 - Melody plays on the genre's lead instrument.
 - **Done when**: THEORY §8 melody invariants pass across 1,000 seeds; owner rates ≥ 12 of 20 melodies per genre as "worth reacting to".
+- **Signed off 2026-10-27**: the owner accepted the 3-per-genre melody pass (23 of 24 worth reacting to, every genre ≥ 2 of 3, `docs/progress/listening/m4-melody.json`) in place of the full 20-per-genre pass. See decisions.md.
 
 ### M5 · Export and persistence (1 day)
 - MIDI export: separate tracks for Chords (RH), Bass (LH), Melody, Drums (channel 10), tempo + key signature meta, track names, GM program numbers (AUDIO.md §7). File name `chordspark_<genre>_<key>_<bpm>bpm_<seed>.mid`.
