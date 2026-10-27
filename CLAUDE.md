@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M3 Progression engine v2, code done; owner listening pass pending. M0–M2 done.
-Last session: 2026-10-26. Walk, idioms, cadences, colour, scorer, locks, swap; app on new engine, legacy progression deleted.
-Next: 1) owner listening pass (20 ideas/genre, ≥15 usable)  2) M4 melody engine v2 (THEORY §5)  3) melody on genre lead instrument
-Blockers: M3 sign-off needs the owner's ears. Open data questions in LOG (pop IV start, Axis loop cadence, metal bVII).
+Milestone: M4 Melody engine v2, code done; owner listening pass pending. M0–M3 done (M3 signed off on the 24/24 re-check).
+Last session: 2026-10-27. Listening pass, Stop fix, tonic→IV rule, calmer lo-fi + Block chords; M4 melody engine in the app.
+Next: 1) melody listening pass (3 per genre, "worth reacting to")  2) owner ear check of lo-fi comp + Block chords  3) M5 export and persistence
+Blockers: M4 sign-off needs the owner's ears. Not built yet: raga drone harmony, Irish ornaments (see decisions.md).
 <!-- status:end -->

@@ -4,6 +4,13 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-27 · M3 signed off, M4 melody engine in the app
+- Milestone: M4 Melody engine v2 (code done; owner listening pass pending). M3 signed off on the 24/24 re-check.
+- Done: blind listening pass `?listen` / `?listen=recheck` (`state/listening.ts`, `listeningStore.ts`, `ui/ListeningPass.tsx`, Vite plugin writes `docs/progress/listening/*.json`); Stop fix (`stopAll` clears smplr's queue); scorer `tonicToFour` −1; lo-fi `lazy` comp calmer + "Block chords" toggle; M4 `theory/melody/` rhythm.ts, generate.ts (form, operators, cadences, appoggiatura, raga mode + gamaka), score.ts, check.ts (§8 as one check); app on it, `melody/legacy.ts` deleted; key change keeps melody in range. 402 tests (~19 s).
+- Checked by ear: owner: M3 re-check 24/24 usable; owner found lo-fi comping at the chord change sounded off. Not by ear: Stop fix, lazy comp, Block chords, new melody (probe only: pump plays melody, graces 1/16 beat early).
+- Decisions: listening pass design; tonic → IV −1; full pass restarts in m3-full.json; lazy comp + Block chords; M3 sign-off on re-check; M4 engine, absolute melody range, jig as 12/8, raga fit, melody test split (all in decisions.md)
+- Open: M4 owner pass (≥12/20 "worth reacting to" per genre); not built: §5.4 drone harmony for raga mode, Irish cut/roll graces, pop anticipations over the bar line; metal re-check gave i5 ♭VI5 ♭VII5 i5 three times; carried over: Wurlitzer `ab6mp.ogg` decode fail (load stuck at 569/570), build chunk > 500 kB, timing harness untested since pump change
+- Next: 1) melody listening pass (offer 3 per genre, reuse `?listen` with a melody verdict)  2) owner ear check: lo-fi lazy comp and Block chords  3) M5 export and persistence
 ## 2026-10-26 · M3 engine v2 complete, app off legacy
 - Milestone: M3 Progression engine v2 (code done; owner listening pass pending)
 - Done: `progression/walk.ts` (Markov walk, 2nd order, grammar fallback, bridge weight), `idioms.ts` (fit 2/3/4/8 to 4/8 bars), `cadence.ts` (end + mid slots), `colour.ts` (borrowing, secondary dominants, fitted extensions, sevenths), `score.ts` (all §3.4 rules), `generate.ts` (24 candidates, softmax pick, idiom detection, swapChord); locks never change a bar; app switched (`state/idea.ts`, store, `theory/prompts.ts`); UI: T/PD/D badges, borrowed tag, idiom name, seed copy; legacy progression code deleted. 367 tests, golden `tests/theory/golden/progression.txt`.
