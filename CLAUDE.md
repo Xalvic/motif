@@ -39,8 +39,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: M0–M5 done (M4 on the 23/24 melody pass, M5 on the owner's FL Studio check). M6/M7 are stretch.
-Last session: 2026-10-27. Metal variety: new subtonic cadence, metal also ends on plagal; owner checked by ear.
-Next: 1) owner picks: M6 transitions, M7 WAV export, or not-built items  2) optional: more Phrygian dominant chords for 8-bar metal
+Milestone: M0–M6 done (M6 data tables for pop, metal, lo-fi; owner checked by ear). M7 is stretch.
+Last session: 2026-10-27. M6: Chordonomicon pipeline (`npm run tables`) and data blend at load (`dataWeight` 0.6).
+Next: 1) owner picks: M7 WAV export, or not-built items  2) optional: section-aware tables, more Phrygian dominant chords
 Blockers: none. Not built yet: raga drone harmony, Irish ornaments, pop anticipations (see decisions.md).
 <!-- status:end -->

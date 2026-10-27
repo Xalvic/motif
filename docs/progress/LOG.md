@@ -4,6 +4,13 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-27 · M6 data-driven transitions
+- Milestone: M6 Data-driven transitions (done); M7 stretch, not started
+- Done: `scripts/chordonomicon/` (`npm run tables`, about 10 s): parse symbols, key per section (Krumhansl–Kessler + song prior + tonic bonus), roman triads, count, prune. Tables in `src/theory/data/transitions/`: pop 20 KB, metal 12 KB (minor), lo-fi 25 KB (jazz + soul). `blend.ts` + `validateTransitionData`, wired in `genres.ts`; new profile field `dataWeight` (default 0.6). `tsconfig.scripts.json` in typecheck. 20 new tests, 453 in all. Golden: 6 pop + 6 lo-fi lines. THEORY §7 and §6.1, CREDITS updated.
+- Checked by ear: owner: pop, metal and lo-fi with the data blend good.
+- Decisions: genre map (lo-fi ← jazz + soul, no rap); no verse/chorus split; blend rules and second-order fallback; key estimate rules (all in decisions.md)
+- Open: CSV (264 MB) is local only in `scripts/chordonomicon/data/` (gitignored), re-download for a rebuild; lo-fi data leans on I–IV vamps (lower `dataWeight` if it gets plain); not built: §5.4 raga drone harmony, Irish graces, pop anticipations; Phrygian dominant table has only I, bII, iv; Firefox/Safari timing never run
+- Next: 1) owner picks: M7 WAV export or a not-built item  2) optional: section-aware tables when the UI gets a section choice
 ## 2026-10-27 · Metal progression variety
 - Milestone: M0–M5 done; M6/M7 stretch, not started. This session: metal variety fix.
 - Done: new minor-family cadence `subtonic` (`bVII → i`, `profile.ts`, `progression/cadence.ts`); metal ends on Phrygian, Aeolian, subtonic or plagal (`metal.json`). Cause: the 3-chord Aeolian cadence fixed bars 2–4 of every 4-bar idea, and `bII` is over budget in minor at Plain. 4-bar Plain run of 1200 ideas: 7 → 19 distinct, top share 48 → 15 %, worst repeats in 10 ideas 10 → 3. Tests: subtonic shapes, metal variety test (fails on the old code). Golden: 6 metal lines changed. THEORY §3.3 and metal profile line updated. 433 tests.
