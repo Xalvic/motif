@@ -162,6 +162,7 @@ Patterns produce events in beats from a voicing `{ bass, upper[] }`. Carry over 
 - Export the actual comped notes (what you hear), not block chords. Offer a "block chords" option for people who want to re-voice in FL Studio.
 - Pedal: either extended note lengths (default) or CC64 on/off per bar (option).
 - File name: `chordspark_<genre>_<key>_<bpm>bpm_<seed>.mid`.
+- As built (M5): one pass of the idea, on the grid (no swing, no humanize). Chords and bass follow the Block chords toggle. Melody and drums are always in the file when the genre has them (the Melody and Drums toggles are for listening; mute a track in FL Studio). Pad is not exported. Classical gets an empty `Drums` track. Key signature: the tonic's major or minor key (modes use their family). @tonejs/midi 2.0.28 writes the key signature wrong, so `export-midi.ts` sets it with `midi-file`.
 
 ### 7.2 WAV (stretch)
 

@@ -3,6 +3,8 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-27 · MIDI export: one pass, on the grid; melody and drums always exported when the genre has them, chords/bass follow Block chords; no pad; key signature set with `midi-file` (@tonejs/midi 2.0.28 drops it on write) · FL Studio can swing and mute tracks; a starter melody is the point of the export; the toggles are for listening · accepted, owner check in FL Studio pending
+- 2026-10-27 · Not in M5 for now: per-track .mid download and drag-out (SPEC "optional") · one 4-track file covers FL Studio; drag-out needs a native file in most browsers · accepted
 - 2026-10-27 · M4 signed off on the 3-per-genre melody pass (23 of 24 worth reacting to, `m4-melody.json`), not the full 20-per-genre pass · owner's call, as for M3; `?listen=melody-full` stays for a later full pass · accepted
 - 2026-10-27 · M4 melody pass at `?listen=melody`: 3 per genre (pass seed 20261029), 2 to pass, verdict `worth` / `not` + note, melody on, melody shown as piano roll + note names (no raga, no New melody); `?listen=melody-full` (20 per genre, 12 to pass) is the SPEC sign-off · same pattern as M3: the quick pass first, the full pass if the owner wants it; the file records the melody as heard · accepted
 - 2026-10-27 · M4 melody engine replaces `melody/legacy.ts`: form a1 a2 a′ (+ a1 a2 a″), note-by-note pitches with §5.2 hard rules, every candidate checked against §8 (`melodyFaults`) before scoring; details in THEORY §5.1 · rules that §8 tests must hold are enforced, not only scored; 0 fallbacks in 8,000 test ideas · accepted, owner listening pending

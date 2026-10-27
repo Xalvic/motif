@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { auditionChord } from '../audio/audition';
+import { exportMidi, midiFileName } from '../audio/export-midi';
 import { startPlayback, stopPlayback } from '../audio/pump';
 import { chordView, ideaText, keyName } from '../state/idea';
 import { GENRES, useStore } from '../state/store';
@@ -25,6 +26,13 @@ const SwapIcon = () => (
     <path d="M20 4v7h-7" />
   </svg>
 );
+const DownloadIcon = () => (
+  <svg {...svg}>
+    <path d="M12 4v11" />
+    <path d="M7 10l5 5 5-5" />
+    <path d="M5 20h14" />
+  </svg>
+);
 const CopyIcon = () => (
   <svg {...svg}>
     <rect x="9" y="9" width="12" height="12" rx="2" />
@@ -48,6 +56,21 @@ async function copySeed(): Promise<void> {
   } catch {
     showToast('Copy is blocked in this browser.');
   }
+}
+
+/** Downloads the idea as a .mid file (AUDIO.md §7.1). */
+function downloadMidi(): void {
+  const { idea, genre, bpm, colour, block, showToast } = useStore.getState();
+  const name = midiFileName(idea, genre, bpm);
+  const bytes = exportMidi(idea, { genre, bpm, colour, block });
+  const url = URL.createObjectURL(new Blob([bytes], { type: 'audio/midi' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  link.click();
+  // The click starts the download; the URL can go once it has.
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  showToast(`Downloaded ${name}`);
 }
 
 async function copyIdea(): Promise<void> {
@@ -280,6 +303,14 @@ export function Stage({ blind = false }: StageProps) {
 
       {!blind && (
         <div className="transport">
+          <button
+            className="btn"
+            onClick={downloadMidi}
+            title={block ? 'Block chords, as you hear them' : "The genre's pattern, as you hear it"}
+          >
+            <DownloadIcon />
+            Export MIDI
+          </button>
           <button className="btn" onClick={() => void copyIdea()}>
             <CopyIcon />
             Copy for FL Studio
