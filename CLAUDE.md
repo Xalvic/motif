@@ -45,8 +45,8 @@ npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.
 
 ## Status
 <!-- status:start -->
-Milestone: v1 done (M0–M6). Now: AI producer, spec agreed in `.plans/ai-producer-spec.md` (phases P0–P9); P0 not started.
-Last session: 2026-10-29. Fixed mode setting; AI spec (grill-me); renamed to Motif; public repo github.com/Xalvic/motif; README rewritten.
-Next: 1) P0: propose the npm workspaces move plan, wait for the owner's OK, then move with no behaviour change  2) P1: core additions per the spec
+Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 (npm workspaces) done and pushed; P1 not started.
+Last session: 2026-10-29. P0: `packages/core` + `apps/web`, no behaviour change (456 tests, same build).
+Next: 1) P1: propose the core additions plan (description facts, constraint search, chord by roman, tempo), wait for the owner's OK  2) build P1 with tests
 Blockers: none. Rules: no Claude co-author or PR footer lines; storage keys stay `chord-spark`. Not built yet: raga drone harmony, Irish ornaments, pop anticipations.
 <!-- status:end -->

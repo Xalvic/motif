@@ -4,6 +4,13 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-29 · P0: npm workspaces
+- Milestone: AI producer P0 done (of P0–P9); P1 not started
+- Done: plan `.plans/p0-workspaces-plan.md`, approved. `packages/core` (`@motif/core`: `src/theory`, `src/idea.ts`, `scripts/chordonomicon`, tests) and `apps/web` (`@motif/web`: audio, state, UI, html pages, `vite.config.ts`). Web imports `@motif/core/<path>`. Root: dev tools, `eslint.config.js`, `vitest.config.ts` (projects), `tsconfig.base.json`. Core `src` tsconfig has no DOM or Node types; `tsconfig.node.json` covers core scripts and tests. ESLint bans `Math.random` and app/UI/audio imports in core. `newSeed` moved to the web store. Listening-pass plugin finds `docs/progress/listening` from the repo root. Docs and rule paths updated. Pushed to main.
+- Checked: 456 tests, golden file unchanged, typecheck, lint, build (same chunk sizes), `npm run tables` (same data). Browser: new chords, play, save + reload, listening read/write, spike and timing pages. MIDI export only by tests.
+- Decisions: P0 layout and its changes from the plan (in decisions.md)
+- Open: 3 Prettier warnings on the generated transition tables (were there before); spike/timing pages log sample-host 404s (were there before); backup ref `refs/original/refs/heads/master` still there
+- Next: 1) P1: propose the core additions plan (idea description facts, constraint search, chord by roman, tempo), wait for the owner's OK  2) then build P1 with unit and property tests
 ## 2026-10-29 · AI producer spec, rename to Motif, GitHub repo
 - Milestone: v1 done; AI producer spec agreed (`.plans/ai-producer-spec.md`, phases P0–P9); P0 not started
 - Done: `IdeaSettings.mode` (optional) + `allowedModes()`; `resolveKey` throws on a mode outside the genre's modes and names the allowed ones (3 new tests; walk.test now fixes lo-fi, not pop, to Dorian; 456 tests). Gemini docs checked (generateContent, thought signatures, free-tier models, 429 shape, data use). AI producer spec via grill-me: 32 decisions + 16 defaults. App renamed Chord Spark → Motif (UI, docs, `motif_*` export file names, package name); storage keys stay `chord-spark`. History rewritten to drop the Claude co-author line (69 commits); branch master → main; public repo github.com/Xalvic/motif, Xalvic the only contributor. README rewritten for visitors, screenshot `docs/images/motif.jpg`.
