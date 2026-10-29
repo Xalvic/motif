@@ -15,4 +15,4 @@ Motif is a personal, non-commercial project.
 Tone.js (MIT), smplr (MIT), tonal (MIT), @tonejs/midi (MIT)
 
 ## Data
-- Chordonomicon dataset, CC BY-NC 4.0: Kantarelis et al., "CHORDONOMICON: A Dataset of 666,000 Songs and their Chord Progressions", 2024. huggingface.co/datasets/ailsntua/Chordonomicon. The transition tables in `src/theory/data/transitions/` (pop, metal, lo-fi) are derived from it by `scripts/chordonomicon/build.ts`. Because of the NC licence, the app stays non-commercial.
+- Chordonomicon dataset, CC BY-NC 4.0: Kantarelis et al., "CHORDONOMICON: A Dataset of 666,000 Songs and their Chord Progressions", 2024. huggingface.co/datasets/ailsntua/Chordonomicon. The transition tables in `packages/core/src/theory/data/transitions/` (pop, metal, lo-fi) are derived from it by `packages/core/scripts/chordonomicon/build.ts`. Because of the NC licence, the app stays non-commercial.

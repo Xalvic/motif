@@ -1,6 +1,6 @@
 ---
 paths:
-  - "src/audio/**"
+  - "apps/web/src/audio/**"
 ---
 
 # Audio code rules

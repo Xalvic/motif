@@ -1,6 +1,11 @@
 # P0: move to npm workspaces (proposal)
 
-Status: proposal. Nothing is moved yet. The owner approves before any step starts.
+Status: done 2026-10-29, approved by the owner. Changes from the proposal:
+
+- `tests/state/idea.test.ts` stays in `apps/web`. It uses the listening-pass plan from `apps/web/src/state/listening.ts`.
+- `newSeed` uses `Math.random`, so it moved from `idea.ts` into the web store. Core now has no `Math.random`.
+- `tsconfig.scripts.json` became `packages/core/tsconfig.node.json`. It covers `scripts` and `tests`, which run in Node (`structuredClone`). Core `src` keeps a tsconfig with no DOM and no Node types.
+- The 3 Prettier warnings on the transition tables existed before the move. They are not fixed here.
 
 Goal: the same app in two workspaces. No behaviour change. All tests, typecheck, lint and build pass after each commit.
 

@@ -1,6 +1,6 @@
 # Motif: Music Theory Engine
 
-How the generators think. Everything here lives in `src/theory/` and is pure, seeded TypeScript.
+How the generators think. Everything here lives in `packages/core/src/theory/` and is pure, seeded TypeScript.
 
 Sections: §1 approach · §2 representation · §3 progression engine · §4 voicing · §5 melody · §6 genre profiles · §7 data pipeline · §8 test invariants.
 
@@ -275,7 +275,7 @@ Each vocabulary is a list of one-bar cells in beats, weighted (all weight 1 for 
 
 ### 6.1 Schema
 
-One file per genre, checked at load by `profile.ts` (`validateProfile`). A bad file stops the app with every problem listed, each with its field path. Sound choices (comping pattern, drum kit and pattern, swing, instruments, FX) stay in `src/audio/genres.ts` (AUDIO.md §5, §6), not here.
+One file per genre, checked at load by `profile.ts` (`validateProfile`). A bad file stops the app with every problem listed, each with its field path. Sound choices (comping pattern, drum kit and pattern, swing, instruments, FX) stay in `apps/web/src/audio/genres.ts` (AUDIO.md §5, §6), not here.
 
 ```jsonc
 {
@@ -363,7 +363,7 @@ Chordonomicon is a dataset of about 680k songs' chord progressions with Spotify-
 
 Main genres in the data include pop, rock, pop rock, metal, punk, alternative, electronic, soul, jazz, country and rap. Cinematic, epic, classical, Malayalam and Irish are not covered, so they stay hand-authored.
 
-Built by `npm run tables` (`scripts/chordonomicon/build.ts`, Node 24 runs the TypeScript directly). The CSV (`chordonomicon_v2.csv`, 264 MB, from huggingface.co/datasets/ailsntua/Chordonomicon) goes in `scripts/chordonomicon/data/`, which is gitignored. The script takes about 10 s.
+Built by `npm run tables` (`packages/core/scripts/chordonomicon/build.ts`, Node 24 runs the TypeScript directly). The CSV (`chordonomicon_v2.csv`, 264 MB, from huggingface.co/datasets/ailsntua/Chordonomicon) goes in `packages/core/scripts/chordonomicon/data/`, which is gitignored. The script takes about 10 s.
 
 Genre map: pop ← `pop`; metal ← `metal`, minor only; lo-fi ← `jazz` + `soul`. The other genres have no data and stay hand-authored.
 
@@ -375,7 +375,7 @@ Steps:
 5. Convert to roman tokens (§2.1). Accidentals are against the major scale; semitone 6 is `bV`, or `#iv°` when diminished. Power and sus chords take the key's own triad on that degree (major off the scale). Merge repeated neighbours.
 6. Count start chords, 1st- and 2nd-order transitions and 4-chord n-grams per genre × family. No verse/chorus split: the generator has no section input yet. Sections in a family the genre does not use are skipped.
 7. Prune rows: drop successors with p < 0.01, keep the top 12, renormalise, round to 3 decimals. Keep a state only with ≥ 100 transitions and ≥ 0.4 % of the family's transitions; at most 24 first-order and 40 second-order states per family.
-8. Write `src/theory/data/transitions/<genre>.json` with `{ source, licence, genres, songs, generatedAt, start, transitions }`. Each file must stay under 30 KB.
+8. Write `packages/core/src/theory/data/transitions/<genre>.json` with `{ source, licence, genres, songs, generatedAt, start, transitions }`. Each file must stay under 30 KB.
 9. Print a sanity report: top 20 four-chord n-grams per genre. Pop major must show `I V vi IV` near the top; if not, key estimation is broken.
 
 Blend at load (`blend.ts`, called from `genres.ts`): `p = α · data + (1 − α) · handAuthored`, each row normalised first, with α = the profile's `dataWeight` (default 0.6; 0 turns the data off). A state only one side has uses that side's row alone. A second-order state that one side lacks uses that side's first-order row for the current chord, the row the walk would read. Modes the data does not cover keep the hand-authored table. `validateTransitionData` checks each file at load.
@@ -386,7 +386,7 @@ The Hooktheory Trends API is a good manual reference for "what usually follows t
 
 ## 8. Test invariants
 
-Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours {0, 1, 2} on the candidates (`walk.test.ts`, `cadence.test.ts`); the full engine (24 candidates, scoring, voicing) runs 50 seeds per genre/length/colour (`generate.test.ts`) to keep `npm test` fast. Melody: 1,000 seeds per genre on walk chords, length and colour cycling with the seed (`melody-invariants.test.ts`), and 50 seeds per genre/length/colour on the full engine (`melody.test.ts`). Golden seeds: `tests/theory/golden/progression.txt`.
+Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours {0, 1, 2} on the candidates (`walk.test.ts`, `cadence.test.ts`); the full engine (24 candidates, scoring, voicing) runs 50 seeds per genre/length/colour (`generate.test.ts`) to keep `npm test` fast. Melody: 1,000 seeds per genre on walk chords, length and colour cycling with the seed (`melody-invariants.test.ts`), and 50 seeds per genre/length/colour on the full engine (`melody.test.ts`). Golden seeds: `packages/core/tests/theory/golden/progression.txt`.
 
 **Roman / chords**
 - `parse(format(t)) == t` for every token in every profile and idiom.

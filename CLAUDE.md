@@ -21,14 +21,18 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 - `prototype/chord-spark.html`: the v0 single-file prototype. Reference for behaviour and feel, not for code style.
 
 ## Layout
-- `src/theory/`: pure TS. No DOM, no audio imports. Deterministic given a seeded `rng`. Fully unit-tested.
-- `src/audio/`: the only code that touches AudioContext, Tone or smplr.
-- `src/state/`: Zustand store. `src/ui/`: React components, kept thin (UI redesign comes later).
-- `src/theory/data/`: genre profiles and idioms as JSON.
+npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.ts` (runs every workspace). Dependency direction: web → core; core imports none of our packages.
+- `packages/core/` (`@motif/core`): pure TS, no DOM (its tsconfig has no DOM lib), no audio. Deterministic given a seeded `rng`. Fully unit-tested.
+  - `src/theory/`: generators. `src/theory/data/`: genre profiles, idioms, transition tables as JSON.
+  - `src/idea.ts`: the pure idea model. `scripts/chordonomicon/`: `npm run tables`.
+- `apps/web/` (`@motif/web`): imports core as `@motif/core/theory/...` and `@motif/core/idea`.
+  - `src/audio/`: the only code that touches AudioContext, Tone or smplr.
+  - `src/state/`: Zustand store. `src/ui/`: React components, kept thin (UI redesign comes later).
+- `packages/protocol` and `apps/server` start in P2.
 
 ## Rules
-- Every generator takes an `rng` from `src/theory/random.ts`. No `Math.random()` in `src/theory`.
-- Do not use tonal's `Progression.fromRomanNumerals`: it ignores lowercase-means-minor (`vi` becomes a major chord). Use `src/theory/roman.ts`.
+- Every generator takes an `rng` from `packages/core/src/theory/random.ts`. No `Math.random()` in `packages/core` (ESLint enforces it).
+- Do not use tonal's `Progression.fromRomanNumerals`: it ignores lowercase-means-minor (`vi` becomes a major chord). Use `packages/core/src/theory/roman.ts`.
 - Schedule sound only through Tone transport callbacks and their `time` argument. Never setTimeout/setInterval for audio. UI sync goes through `Tone.getDraw()`.
 - Audio starts only after a user gesture (`Tone.start()`).
 - Any new sample source gets a line in `CREDITS.md` with its licence.

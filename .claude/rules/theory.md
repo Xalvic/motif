@@ -1,7 +1,7 @@
 ---
 paths:
-  - "src/theory/**"
-  - "tests/theory/**"
+  - "packages/core/src/**"
+  - "packages/core/tests/**"
 ---
 
 # Theory code rules
@@ -10,5 +10,5 @@ paths:
 - Rules and numbers come from `docs/THEORY.md`. If you change a rule, update that doc in the same commit.
 - Roman tokens follow THEORY §2.1. Use tonal only for note spelling and intervals.
 - Every new generator rule gets a property test against THEORY §8 invariants.
-- Golden-seed snapshots in `tests/theory/golden/`: if they change, say so in the commit message and why.
-- Genre data lives in `src/theory/data/*.json` and is validated at load (zod or a hand-written validator).
+- Golden-seed snapshots in `packages/core/tests/theory/golden/`: if they change, say so in the commit message and why.
+- Genre data lives in `packages/core/src/theory/data/` and is validated at load (zod or a hand-written validator).

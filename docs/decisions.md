@@ -3,6 +3,8 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-29 · P0 done: npm workspaces `packages/core` (`@motif/core`: theory, `idea.ts`, Chordonomicon scripts, their tests) and `apps/web` (`@motif/web`: audio, state, UI); web imports `@motif/core/<path>` subpaths (no barrel yet); one root `vitest.config.ts` runs all workspaces; core `src` typechecks without the DOM lib; ESLint bans `Math.random` and app/UI/audio imports in core; `newSeed` (uses `Math.random`) moved from `idea.ts` to the web store; `tests/state/idea.test.ts` stays in web because it uses the listening-pass plan; `protocol` and `server` wait for P2 · see `.plans/p0-workspaces-plan.md`; no behaviour change (456 tests, golden file and build size the same) · accepted by the owner
+
 - 2026-10-29 · App renamed Chord Spark → Motif, public repo `Xalvic/motif`; visible names, export file names and the package name change; storage keys stay `chord-spark` (IndexedDB store, saved-file `app`, sample cache, listening localStorage) · keeps saved ideas, old export files and cached samples working · accepted by the owner
 - 2026-10-29 · GitHub repo `Xalvic/motif` is public, default branch `main`, no licence file for now (all rights reserved) · portfolio project; a licence can come later and must keep the Chordonomicon tables under CC BY-NC · accepted by the owner
 - 2026-10-29 · Commits and PRs carry no Claude co-author or "Generated with" lines; history rewritten before the first push to remove them · the owner does not want Claude listed as a contributor · accepted by the owner

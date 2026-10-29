@@ -41,14 +41,16 @@ Tone.js is the clock and smplr plays the samples. Both share one AudioContext. A
 
 ### Layers
 
+npm workspaces: the app in `apps/web`, the music code in `packages/core`.
+
 ```
-src/ui/      React components (thin)
-  │
-src/state/   Zustand store and the pure "idea" model
-  │      ╲
-  │     src/audio/   the only code that touches the AudioContext
-  ▼
-src/theory/  pure, seeded, fully unit-tested
+apps/web     src/ui/      React components (thin)
+               │
+             src/state/   Zustand store
+               │      ╲
+               │     src/audio/   the only code that touches the AudioContext
+               ▼
+packages/core  idea.ts and theory/: pure, seeded, fully unit-tested
 ```
 
 ## Stack
@@ -70,7 +72,7 @@ npm run dev
 |---|---|
 | `npm run dev` | Start the dev server |
 | `npm test` | Run the test suite |
-| `npm run typecheck` | Type-check the app and the scripts |
+| `npm run typecheck` | Type-check every workspace |
 | `npm run lint` | Lint |
 | `npm run build` | Build for production |
 | `npm run tables` | Rebuild the transition tables (needs the Chordonomicon CSV, see `docs/THEORY.md` §7) |
