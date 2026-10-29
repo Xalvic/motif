@@ -1,34 +1,99 @@
 # Motif
 
-Pick a genre, get a theory-aware chord progression, see it on a keyboard, hear it with real instruments, get a melody starter, and export MIDI to FL Studio.
+An idea generator for songwriters who play by ear. Pick a genre, get a chord progression that follows real harmony rules, see it on a keyboard, hear it with sampled instruments, get a melody starter, and export it as MIDI to your DAW.
 
-`prototype/chord-spark.html` is the working v0. Open it in a browser to see where this started.
+![Motif showing a B major progression with chord cards, function badges and a keyboard view](docs/images/motif.jpg)
 
-## Getting started in Claude Code
+## Why
 
-1. Put this folder where you keep projects and run `git init && git add -A && git commit -m "spec bundle"`.
-2. Open the folder in Claude Code (desktop).
-3. First message:
+I play keyboard by ear and produce in FL Studio. The hard part is never the skill. It is the blank page. Motif gives me a musically sensible starting point in one click, shows exactly which keys to press, and gets out of the way.
 
-   > Read CLAUDE.md, then the M0 section of docs/SPEC.md. Set up M0. Before writing code, tell me your plan in a few lines.
+Every musical output is shown as keys and note names (C4, E♭3), not only as notation.
 
-4. When you stop for the day, type `/wrap-up`. Next time, start with `/catch-up` (or just say what you want to do; the Status block in CLAUDE.md already tells Claude where you left off).
+## Features
 
-## How the memory works (and why it's cheap)
+- **8 genres:** cinematic piano, epic orchestral, lo-fi / hip hop, classical, Malayalam melody, Irish folk, metal and pop. Each genre is a JSON profile with its own modes, tempo range, idioms, cadences, voicing style and melody vocabulary.
+- **Progressions that follow harmony rules.** Each chord card shows the chord symbol, the roman numeral, the harmonic function (T, PD or D), the notes, and a marker for borrowed chords. Known idioms, such as the Andalusian cadence, are named.
+- **Colour control:** Plain, Some or Spicy sets how many extensions and borrowed chords appear.
+- **Lock and swap:** lock the chords you like, then regenerate the rest, or swap one chord so that it still fits its neighbours.
+- **Keyboard view:** left hand and right hand in different colours, with the voicing engine choosing smooth voice leading.
+- **Sampled instruments:** piano, electric piano, orchestral instruments and drum machines, with comping patterns and drums for each genre.
+- **Melody starter:** a melody built from a motif and developed over the phrase, shown as a piano roll and as note names. The Malayalam genre writes melodies in a raga (arohana and avarohana) with gamaka grace notes.
+- **Scale panel:** the best-fit scale for the progression and its raga cousin.
+- **Export:** multi-track MIDI (chords, bass, melody, drums, with tempo and key signature) and a "Copy for FL Studio" text summary.
+- **Saved ideas** in IndexedDB, with JSON export and import.
+- **Seeds:** every idea has a seed, so the same seed and settings give the same idea again.
 
-| File | Loaded at session start? | Purpose |
-|---|---|---|
-| `CLAUDE.md` | Yes, always (~1k tokens) | Project rules + a 4–5 line Status block |
-| `.claude/rules/theory.md`, `audio.md` | Only when Claude opens matching files | Folder-specific rules |
-| `.claude/skills/wrap-up`, `catch-up` | Only when you type the command | Session handoff routines |
-| `docs/SPEC.md`, `THEORY.md`, `AUDIO.md` | No, read per milestone | The full spec |
-| `docs/progress/LOG.md` | No, top entry on `/catch-up` | Session history |
-| `docs/decisions.md` | No, on demand | Choices already made |
+## How it works
 
-Claude Code also keeps its own auto memory per project (first 200 lines of its MEMORY.md load each session). It's complementary; the files above are the source of truth you can read and edit.
+### Theory engine
+
+The theory code is pure TypeScript: no DOM, no audio and no `Math.random()`. Every generator takes a seeded random source, so every result can be reproduced and tested.
+
+- **Progressions:** the engine makes 24 candidates, either from a weighted chord-transition walk or from a known idiom. It applies a cadence, adds colour, and scores each candidate against rules such as function order, bass motion and no repeats of recent ideas. A softmax picks one candidate, so the best score usually wins, but not always.
+- **Roman numerals:** an own parser, where lowercase means minor (`vi` is A minor in C major). Off-the-shelf parsers got this wrong.
+- **Melodies:** a 2-bar motif developed over the form. The engine checks 16 candidates against hard rules (strong beats on chord tones, steps that resolve, range) and scores them.
+- **Data:** for pop, metal and lo-fi, the transition weights blend hand-written tables with statistics from the [Chordonomicon](https://huggingface.co/datasets/ailsntua/Chordonomicon) dataset of 666,000 songs. A build script (`npm run tables`) estimates the key of each song section and counts chord transitions.
+
+### Audio
+
+Tone.js is the clock and smplr plays the samples. Both share one AudioContext. All sound is scheduled through transport callbacks, never `setTimeout`. A timing harness checked this in Chrome: 300 of 300 bars played on time over 10 minutes.
+
+### Layers
+
+```
+src/ui/      React components (thin)
+  │
+src/state/   Zustand store and the pure "idea" model
+  │      ╲
+  │     src/audio/   the only code that touches the AudioContext
+  ▼
+src/theory/  pure, seeded, fully unit-tested
+```
+
+## Stack
+
+Vite · React 19 · TypeScript · Zustand · Tone.js · smplr · tonal (note spelling only) · @tonejs/midi · Vitest
+
+There are 456 tests, including property tests for the theory rules and golden-seed snapshots that catch unintended changes in the generated music.
+
+## Run it
+
+You need Node 22.18 or later.
+
+```bash
+npm install
+npm run dev
+```
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm test` | Run the test suite |
+| `npm run typecheck` | Type-check the app and the scripts |
+| `npm run lint` | Lint |
+| `npm run build` | Build for production |
+| `npm run tables` | Rebuild the transition tables (needs the Chordonomicon CSV, see `docs/THEORY.md` §7) |
+
+## Roadmap: an AI producer
+
+The next step is a chat where you describe what you want, for example "sad but hopeful, like a slow Malayalam film song", and an AI producer builds and refines the idea.
+
+The AI does not write the music. The theory engine stays the source of truth. The model reads the request, calls the engine's functions as tools (generate an idea, change a chord, write a new melody), checks the results, and explains its choices. Follow-ups such as "make it darker" change the current idea instead of starting over.
+
+The plan: a Node and Hono backend, an own provider-neutral model layer on the Gemini API, Zod-validated tools, a streaming chat UI, an eval set, then Postgres and deploy. The full spec is in [.plans/ai-producer-spec.md](.plans/ai-producer-spec.md).
 
 ## Docs
-- `docs/SPEC.md`: features, architecture, milestones M0–M7, backlog
-- `docs/THEORY.md`: progression, voicing and melody rules, genre profiles, ragas
-- `docs/AUDIO.md`: Tone.js + smplr engine, instrument map, MIDI export, licences
-- `CREDITS.md`: sample and data licences
+
+- [docs/SPEC.md](docs/SPEC.md): features, architecture, milestones and backlog
+- [docs/THEORY.md](docs/THEORY.md): rules for the progression, voicing and melody engines, genre profiles and ragas
+- [docs/AUDIO.md](docs/AUDIO.md): audio engine, instrument map and MIDI export
+- [docs/decisions.md](docs/decisions.md): each design decision and the reason for it
+- [docs/progress/LOG.md](docs/progress/LOG.md): build log, newest first
+- [prototype/chord-spark.html](prototype/chord-spark.html): the single-file v0 prototype that started the project
+
+## Credits and licence
+
+Sample and data sources, with their licences, are listed in [CREDITS.md](CREDITS.md). Because the Chordonomicon data is licensed CC BY-NC 4.0, Motif is a non-commercial project.
+
+The code is public to read. No open-source licence is granted yet, so all rights are reserved.
