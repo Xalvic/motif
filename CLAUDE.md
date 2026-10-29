@@ -45,8 +45,8 @@ npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.
 
 ## Status
 <!-- status:start -->
-Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 (npm workspaces) done and pushed; P1 not started.
-Last session: 2026-10-29. P0: `packages/core` + `apps/web`, no behaviour change (456 tests, same build).
-Next: 1) P1: propose the core additions plan (description facts, constraint search, chord by roman, tempo), wait for the owner's OK  2) build P1 with tests
+Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 pushed; P1 done and committed (`ea8e091`, `a4c6d6d`), not pushed; P2 not started.
+Last session: 2026-10-29. P1: `describeIdea`, `searchIdea`, `setChord`, `checkTempo` in `packages/core` + THEORY §9 (525 tests, golden unchanged).
+Next: 1) push P1 when the owner says  2) P2: propose the `protocol` + Hono skeleton plan, wait for the owner's OK  3) owner to decide: power-chord endings vs `endsOn` (metal)
 Blockers: none. Rules: no Claude co-author or PR footer lines; storage keys stay `chord-spark`. Not built yet: raga drone harmony, Irish ornaments, pop anticipations.
 <!-- status:end -->

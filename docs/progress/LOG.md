@@ -4,6 +4,14 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-29 · P1: core additions for the AI producer
+- Milestone: AI producer P1 done (of P0–P9); P2 not started
+- Done: plan `.plans/p1-core-additions-plan.md`, approved (D1–D4 = A). `packages/core/src/describe.ts` (`describeIdea` plain JSON facts, `chordQuality`, `isOnTonic`, `modeBrightness`, `detectCadence`), `search.ts` (`searchIdea`, 12 tries, lock warnings), `warnings.ts`; `idea.ts`: `setChord`, `checkTempo`, `IdeaError`, `keepsLocks`. THEORY §9. Commits `ea8e091`, `a4c6d6d`, not pushed.
+- Checked: 525 tests (69 new, property tests per genre), typecheck, lint, build; golden file unchanged. Web does not use the new code yet. No audio change.
+- Decisions: P1 line in decisions.md (brightness = step sum − Aeolian; cadence read from chords; bpm on the search request, not `IdeaSettings`; locked bar in `setChord` = error; sus/power are neither major nor minor)
+- Open: metal endings are power chords, so `endsOn` major/minor never matches there (owner to decide: keep, or count `i5` by numeral case); old test "tonic → IV" got the 30 s `SLOW` limit (load timeout, not a failure); 3 Prettier warnings on transition tables and sample-host 404s still there
+- Next: 1) push the two P1 commits when the owner says  2) P2: propose the plan for the `protocol` package and the Hono skeleton (env config, invite codes, logging, health route), wait for the OK
+
 ## 2026-10-29 · P0: npm workspaces
 - Milestone: AI producer P0 done (of P0–P9); P1 not started
 - Done: plan `.plans/p0-workspaces-plan.md`, approved. `packages/core` (`@motif/core`: `src/theory`, `src/idea.ts`, `scripts/chordonomicon`, tests) and `apps/web` (`@motif/web`: audio, state, UI, html pages, `vite.config.ts`). Web imports `@motif/core/<path>`. Root: dev tools, `eslint.config.js`, `vitest.config.ts` (projects), `tsconfig.base.json`. Core `src` tsconfig has no DOM or Node types; `tsconfig.node.json` covers core scripts and tests. ESLint bans `Math.random` and app/UI/audio imports in core. `newSeed` moved to the web store. Listening-pass plugin finds `docs/progress/listening` from the repo root. Docs and rule paths updated. Pushed to main.
