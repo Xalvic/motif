@@ -1,4 +1,4 @@
-# Chord Spark: Music Theory Engine
+# Motif: Music Theory Engine
 
 How the generators think. Everything here lives in `src/theory/` and is pure, seeded TypeScript.
 

@@ -20,6 +20,7 @@ export interface SavedIdea {
 
 /** What "Export saved ideas" writes. */
 export interface SavedFile {
+  /** The app's old name. It stays, so files exported before the rename still import. */
   app: 'chord-spark';
   v: typeof SAVED_VERSION;
   exported: string;
@@ -90,11 +91,11 @@ export interface ParsedFile {
   skipped: number;
 }
 
-/** Reads an export file. Throws on text that is not a Chord Spark file. */
+/** Reads an export file. Throws on text that is not a Motif file. */
 export function parseSavedFile(text: string): ParsedFile {
   const data: unknown = JSON.parse(text);
   if (!isObject(data) || data.app !== 'chord-spark' || !Array.isArray(data.ideas)) {
-    throw new Error('Not a Chord Spark saved ideas file');
+    throw new Error('Not a Motif saved ideas file');
   }
   const ideas = data.ideas.filter(isSavedIdea);
   return { ideas, skipped: data.ideas.length - ideas.length };

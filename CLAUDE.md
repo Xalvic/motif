@@ -1,4 +1,6 @@
-# Chord Spark
+# Motif
+
+Formerly Chord Spark. Storage keys keep `chord-spark` (IndexedDB store, saved-file `app`, sample cache, listening localStorage). Never rename them.
 
 Idea generator for a songwriter who plays keyboard by ear and produces in FL Studio. Pick a genre, get a theory-aware chord progression, see it on a keyboard, hear it with real sampled instruments, get a melody starter, export MIDI.
 

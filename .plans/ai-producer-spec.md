@@ -1,4 +1,4 @@
-# Chord Spark AI producer
+# Motif AI producer
 
 Status: agreed with the owner on 2026-10-29 (grill-me interview, 32 decisions and 16 defaults). Nothing is built yet, except the fixed-mode setting (see Tools).
 

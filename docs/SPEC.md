@@ -1,4 +1,4 @@
-# Chord Spark: Product and Engineering Spec
+# Motif: Product and Engineering Spec
 
 Version 1.0 · October 2026
 
@@ -10,7 +10,7 @@ Companion docs: `THEORY.md` (generator rules), `AUDIO.md` (sound engine). Read t
 
 The owner plays keyboard by ear, loves many genres (piano, orchestral, epic, hip hop, classical, Malayalam film songs, Irish folk, metal) and has dabbled in FL Studio, but has never finished or released a piece. The blank page is the problem, not skill.
 
-Chord Spark removes the blank page: one click produces a musically sensible progression in a chosen style, plays it with realistic instruments, shows exactly which keys to press, and hands over a melody idea to react to. The output goes into FL Studio as MIDI.
+Motif removes the blank page: one click produces a musically sensible progression in a chosen style, plays it with realistic instruments, shows exactly which keys to press, and hands over a melody idea to react to. The output goes into FL Studio as MIDI.
 
 ### Design principles
 
@@ -231,7 +231,7 @@ Goal: prove the Tone.js + smplr combination, then replace every prototype synth.
 - **Signed off 2026-10-27**: the owner accepted the 3-per-genre melody pass (23 of 24 worth reacting to, every genre ≥ 2 of 3, `docs/progress/listening/m4-melody.json`) in place of the full 20-per-genre pass. See decisions.md.
 
 ### M5 · Export and persistence (1 day)
-- MIDI export: separate tracks for Chords (RH), Bass (LH), Melody, Drums (channel 10), tempo + key signature meta, track names, GM program numbers (AUDIO.md §7). File name `chordspark_<genre>_<key>_<bpm>bpm_<seed>.mid`.
+- MIDI export: separate tracks for Chords (RH), Bass (LH), Melody, Drums (channel 10), tempo + key signature meta, track names, GM program numbers (AUDIO.md §7). File name `motif_<genre>_<key>_<bpm>bpm_<seed>.mid`.
 - Optional: per-track MIDI download; drag-out of the .mid file where the browser supports it.
 - Saved ideas in IndexedDB with JSON export/import.
 - **Done when**: exported file opens in FL Studio with correct tempo, four named tracks, notes matching the keyboard view.

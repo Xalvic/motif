@@ -140,13 +140,13 @@ describe('MIDI export', () => {
     expect(key(3, 'minor', false)).toEqual({ sharps: 6, minor: true });
   });
 
-  it('names the file chordspark_<genre>_<key>_<bpm>bpm_<seed>.mid', () => {
+  it('names the file motif_<genre>_<key>_<bpm>bpm_<seed>.mid', () => {
     const { idea } = make('pop', 5);
     const name = midiFileName(
       { ...idea, tonic: 10, mode: 'minor', flats: true, seed: 42 },
       'pop',
       96,
     );
-    expect(name).toBe('chordspark_pop_Bb-minor_96bpm_42.mid');
+    expect(name).toBe('motif_pop_Bb-minor_96bpm_42.mid');
   });
 });

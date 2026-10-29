@@ -119,7 +119,7 @@ describe('saved ideas store', () => {
     const message = await useSaved.getState().importText(text);
     expect(message).toBe('Imported 2 ideas · 1 already saved');
     expect(storage.map.size).toBe(3);
-    expect(await useSaved.getState().importText('nope')).toMatch(/not a Chord Spark/);
+    expect(await useSaved.getState().importText('nope')).toMatch(/not a Motif/);
   });
 
   it('turns a storage failure into a message', async () => {

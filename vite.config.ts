@@ -10,7 +10,7 @@ import react from '@vitejs/plugin-react';
  */
 function listeningFile(): Plugin {
   return {
-    name: 'chord-spark-listening-file',
+    name: 'motif-listening-file',
     apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/__listening', (req, res) => {

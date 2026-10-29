@@ -90,7 +90,7 @@ export function createSavedStore(storage: SavedStorage) {
         try {
           parsed = parseSavedFile(text);
         } catch {
-          return 'That file is not a Chord Spark saved ideas file.';
+          return 'That file is not a Motif saved ideas file.';
         }
         const known = new Set(get().ideas.map((s) => s.id));
         const fresh = parsed.ideas.filter((s) => !known.has(s.id));

@@ -3,6 +3,9 @@
 One line per decision, newest first. Format: `YYYY-MM-DD · decision · why · status`.
 Status is `accepted`, `pending spike`, or `replaced by <date>`. Check here before reopening a choice.
 
+- 2026-10-29 · App renamed Chord Spark → Motif, public repo `Xalvic/motif`; visible names, export file names and the package name change; storage keys stay `chord-spark` (IndexedDB store, saved-file `app`, sample cache, listening localStorage) · keeps saved ideas, old export files and cached samples working · accepted by the owner
+- 2026-10-29 · Commits and PRs carry no Claude co-author or "Generated with" lines; history rewritten before the first push to remove them · the owner does not want Claude listed as a contributor · accepted by the owner
+- 2026-10-29 · AI producer layer agreed: see `.plans/ai-producer-spec.md` (32 decisions, phases P0–P9) · grill-me interview · accepted by the owner
 - 2026-10-29 · `IdeaSettings.mode` (optional): a fixed mode must be one of the genre's `modes`, else `resolveKey` throws and names the allowed modes; locked chords keep the previous mode, as they keep the key · other modes fall back to the plain function grammar; a clear error lets a caller (the AI tool layer later) correct itself · accepted by the owner
 - 2026-10-27 · M7 WAV export dropped; v1 ends at M6 · the owner does not need audio export: MIDI into FL Studio covers the workflow · accepted by the owner
 - 2026-10-27 · M6 data tables: pop ← `pop`, metal ← `metal` (minor only), lo-fi ← `jazz` + `soul` (not `rap`); other genres stay hand-authored · the dataset has no cinematic, epic, classical, Malayalam or Irish; rap is mostly 1–2 chord loops · accepted by the owner

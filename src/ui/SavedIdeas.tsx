@@ -7,7 +7,7 @@ import { downloadFile } from './download';
 function exportAll(): void {
   const { exportText } = useSaved.getState();
   const date = new Date().toISOString().slice(0, 10);
-  downloadFile(`chordspark_saved_${date}.json`, exportText(), 'application/json');
+  downloadFile(`motif_saved_${date}.json`, exportText(), 'application/json');
 }
 
 export function SavedIdeas() {

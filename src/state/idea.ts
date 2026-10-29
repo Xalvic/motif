@@ -271,7 +271,7 @@ export function melodyText(idea: Idea): string {
 export function ideaText(idea: Idea, genre: GenreId, bpm: number): string {
   const views = idea.tokens.map((_, i) => chordView(idea, i));
   const lines = [
-    `Chord Spark idea: ${PROFILES[genre].label}`,
+    `Motif idea: ${PROFILES[genre].label}`,
     `Key: ${keyName(idea)} · ${bpm} BPM · ${idea.tokens.length} bars`,
     '',
     views.map((v) => v.symbol).join(' – '),

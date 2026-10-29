@@ -16,7 +16,7 @@ export function Header({ pass }: { pass?: PassConfig }) {
             <rect x="10.5" y="10" width="4" height="11" rx="1" fill="var(--ink)" />
             <rect x="24.5" y="10" width="4" height="11" rx="1" fill="var(--ink)" />
           </svg>
-          <h1>Chord Spark</h1>
+          <h1>Motif</h1>
         </div>
         <p className="tag">
           Pick a genre, roll a progression, and find your melody on the keys. No sheet music needed.

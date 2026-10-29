@@ -1,6 +1,6 @@
 # Credits
 
-Chord Spark is a personal, non-commercial project.
+Motif is a personal, non-commercial project.
 
 ## Samples
 - **Splendid Grand Piano** (Steinway), public domain, via [smplr](https://github.com/danigb/smplr)

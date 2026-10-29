@@ -118,7 +118,7 @@ export function exportMidi(idea: Idea, settings: ExportSettings): Uint8Array<Arr
   midi.header.timeSignatures.push({ ticks: 0, timeSignature: [4, 4] });
   // @tonejs/midi 2.0.28 writes the key wrong; the value is set below with midi-file.
   midi.header.keySignatures.push({ ticks: 0, key: 'C', scale: 'major' });
-  midi.header.name = `Chord Spark ${keyName(idea)}`;
+  midi.header.name = `Motif ${keyName(idea)}`;
 
   const programs = [
     gmProgram(profile.layers.chords?.spec),
@@ -153,8 +153,8 @@ export function exportMidi(idea: Idea, settings: ExportSettings): Uint8Array<Arr
   return new Uint8Array(writeMidi(file));
 }
 
-/** `chordspark_<genre>_<key>_<bpm>bpm_<seed>.mid`, for example chordspark_pop_Bb-minor_96bpm_123.mid. */
+/** `motif_<genre>_<key>_<bpm>bpm_<seed>.mid`, for example motif_pop_Bb-minor_96bpm_123.mid. */
 export function midiFileName(idea: Idea, genre: GenreId, bpm: number): string {
   const key = keyName(idea).replace(/♭/g, 'b').replace(/♯/g, '#').replace(/ /g, '-');
-  return `chordspark_${genre}_${key}_${bpm}bpm_${idea.seed}.mid`;
+  return `motif_${genre}_${key}_${bpm}bpm_${idea.seed}.mid`;
 }

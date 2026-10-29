@@ -1,4 +1,4 @@
-# Chord Spark
+# Motif
 
 Pick a genre, get a theory-aware chord progression, see it on a keyboard, hear it with real instruments, get a melody starter, and export MIDI to FL Studio.
 
