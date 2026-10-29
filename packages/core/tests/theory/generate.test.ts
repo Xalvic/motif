@@ -18,6 +18,7 @@ import { isTonicToFour, scoreCandidate, type ScoreInput } from '../../src/theory
 import { bridgeEntries, triadOf, type Bars } from '../../src/theory/progression/walk';
 import { pitchClass } from '../../src/theory/pitch';
 import { createRng } from '../../src/theory/random';
+import { SLOW } from './melody-helpers';
 import { formatRoman, parseRoman } from '../../src/theory/roman';
 import { lowIntervalViolation, voiceProgression } from '../../src/theory/voicing';
 
@@ -176,20 +177,27 @@ describe('swap one chord', () => {
 });
 
 describe('tonic → IV is rarer, not banned (THEORY §3.4)', () => {
-  it('starts I → IV in under a third of ideas per genre, and still in some', () => {
-    let total = 0;
-    for (const id of GENRE_IDS) {
-      let count = 0;
-      for (let seed = 1; seed <= 100; seed++) {
-        const p = generateProgression({ profile: GENRES[id], bars: 4, colour: 1 }, createRng(seed));
-        if (isTonicToFour(p.chords[0]!.token, p.chords[1]!.token)) count++;
+  it(
+    'starts I → IV in under a third of ideas per genre, and still in some',
+    () => {
+      let total = 0;
+      for (const id of GENRE_IDS) {
+        let count = 0;
+        for (let seed = 1; seed <= 100; seed++) {
+          const p = generateProgression(
+            { profile: GENRES[id], bars: 4, colour: 1 },
+            createRng(seed),
+          );
+          if (isTonicToFour(p.chords[0]!.token, p.chords[1]!.token)) count++;
+        }
+        // Before the rule: lo-fi 47 %, classical 51 %, Malayalam 58 %.
+        expect(count, id).toBeLessThan(34);
+        total += count;
       }
-      // Before the rule: lo-fi 47 %, classical 51 %, Malayalam 58 %.
-      expect(count, id).toBeLessThan(34);
-      total += count;
-    }
-    expect(total).toBeGreaterThan(0);
-  });
+      expect(total).toBeGreaterThan(0);
+    },
+    SLOW,
+  );
 });
 
 describe('metal variety (THEORY §3.3)', () => {
