@@ -11,12 +11,25 @@ import { borrow, borrowBudget, extend } from './colour';
 import { eligibleIdioms, fitIdiom } from './idioms';
 import { bridgeEntries, sample, TEMPERATURE, walk, type Bars, type WalkContext } from './walk';
 
-/** Uses the fixed tonic and mode when given, else samples them (mode from `profile.modes`). */
+/** The modes a genre may use: the keys of `profile.modes`. */
+export function allowedModes(profile: GenreProfile): Mode[] {
+  return Object.keys(profile.modes) as Mode[];
+}
+
+/**
+ * Uses the fixed tonic and mode when given, else samples them (mode from `profile.modes`).
+ * A fixed mode must be one of the genre's modes; another mode throws, naming the allowed ones.
+ */
 export function resolveKey(
   profile: GenreProfile,
   rng: Rng,
   fixed: { tonic?: number; mode?: Mode } = {},
 ): Key {
+  if (fixed.mode !== undefined && !allowedModes(profile).includes(fixed.mode)) {
+    throw new Error(
+      `mode "${fixed.mode}" is not a ${profile.id} mode; use one of: ${allowedModes(profile).join(', ')}`,
+    );
+  }
   const mode = fixed.mode ?? weighted(rng, Object.entries(profile.modes) as [Mode, number][]);
   const tonic = fixed.tonic ?? randomInt(rng, 0, 11);
   return { tonic, mode };

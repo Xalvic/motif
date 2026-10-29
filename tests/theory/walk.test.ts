@@ -270,7 +270,7 @@ describe('candidates (THEORY §8, 1,000 seeds × 8 genres × 2 lengths × 3 colo
   });
 
   it('keeps a fixed key', () => {
-    expect(resolveKey(GENRES.pop, createRng(3), { tonic: 2, mode: 'dorian' })).toEqual({
+    expect(resolveKey(GENRES.lofi, createRng(3), { tonic: 2, mode: 'dorian' })).toEqual({
       tonic: 2,
       mode: 'dorian',
     });

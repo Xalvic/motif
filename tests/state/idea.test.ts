@@ -9,6 +9,7 @@ import {
 } from '../../src/state/idea';
 import { PASSES, passPlan, settingsOf } from '../../src/state/listening';
 import { GENRE_IDS, GENRES } from '../../src/theory/genres';
+import { allowedModes } from '../../src/theory/progression/candidate';
 
 const settings = (genre: IdeaSettings['genre']): IdeaSettings => ({
   genre,
@@ -37,6 +38,31 @@ describe('idea melody', () => {
     const { idea } = generateIdea(settings('malayalam'), 9);
     expect(idea.raga).toBeDefined();
     expect(newMelody(idea, settings('pop'), 3).raga).toBeUndefined();
+  });
+});
+
+describe('fixed mode', () => {
+  it("uses each of the genre's modes when asked", () => {
+    for (const genre of GENRE_IDS) {
+      for (const mode of allowedModes(GENRES[genre])) {
+        const { idea } = generateIdea({ ...settings(genre), mode }, 7);
+        expect(idea.mode, `${genre} ${mode}`).toBe(mode);
+      }
+    }
+  });
+
+  it('rejects a mode the genre does not use and names the allowed ones', () => {
+    expect(() => generateIdea({ ...settings('metal'), mode: 'lydian' }, 7)).toThrow(
+      'mode "lydian" is not a metal mode; use one of: minor, phrygian, phrygianDominant',
+    );
+  });
+
+  it('keeps the previous mode when chords are locked, as it keeps the key', () => {
+    const { idea } = generateIdea({ ...settings('pop'), mode: 'major' }, 7);
+    const locked = { ...idea, locks: [true, false, false, false] };
+    const next = generateIdea({ ...settings('pop'), mode: 'minor' }, 8, locked).idea;
+    expect(next.mode).toBe('major');
+    expect(next.tonic).toBe(idea.tonic);
   });
 });
 

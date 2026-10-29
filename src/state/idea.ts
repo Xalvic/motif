@@ -47,6 +47,8 @@ export interface Idea {
 export interface IdeaSettings {
   genre: GenreId;
   key: number | 'random';
+  /** Fixed mode; must be one of the genre's modes. Sampled when missing. */
+  mode?: Mode;
   bars: 4 | 8;
   colour: 0 | 1 | 2;
 }
@@ -120,7 +122,7 @@ export function generateIdea(
       bars: settings.bars,
       colour: settings.colour,
       tonic: keep ? previous.tonic : fixedTonic,
-      mode: keep ? previous.mode : undefined,
+      mode: keep ? previous.mode : settings.mode,
       locked: keep ? romansOf(previous).map((r, i) => (previous.locks[i] ? r : undefined)) : [],
       prev: recent,
     },

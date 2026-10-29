@@ -95,7 +95,7 @@ Before shipping, verify each row against a second reference and keep the table u
 
 `generateProgression({ profile, key?, mode?, bars, colour, locks, prev, rng })`
 
-- `key`/`mode`: user-fixed or sampled from `profile.modes` weights.
+- `key`/`mode`: user-fixed or sampled from `profile.modes` weights. A fixed mode must be one of `profile.modes`; another mode is an error that names the allowed modes.
 - `colour`: 0 Plain, 1 Some, 2 Spicy.
 - `locks`: indices whose chords must not change.
 - `prev`: the last 5 generated ideas, to avoid repeats.
