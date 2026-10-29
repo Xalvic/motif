@@ -6,10 +6,10 @@
 import { Midi } from '@tonejs/midi';
 import { parseMidi, writeMidi } from 'midi-file';
 import { Key } from 'tonal';
-import { keyName, melodyInBar, type Idea } from '../state/idea';
+import { keyName, melodyInBar, type Idea } from '@motif/core/idea';
 import type { GenreId } from '../state/store';
-import { familyOf } from '../theory/keys';
-import { pitchClassName } from '../theory/pitch';
+import { familyOf } from '@motif/core/theory/keys';
+import { pitchClassName } from '@motif/core/theory/pitch';
 import { blockBar, compBar, type BarNote } from './comping';
 import { drumBar, type DrumHit } from './drums';
 import { genreAudio } from './genres';

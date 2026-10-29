@@ -9,8 +9,8 @@ import {
   type ExportSettings,
 } from '../../src/audio/export-midi';
 import { genreAudio } from '../../src/audio/genres';
-import { generateIdea, type Idea } from '../../src/state/idea';
-import { GENRE_IDS, type GenreId } from '../../src/theory/genres';
+import { generateIdea, type Idea } from '@motif/core/idea';
+import { GENRE_IDS, type GenreId } from '@motif/core/theory/genres';
 
 const PPQ = 480;
 

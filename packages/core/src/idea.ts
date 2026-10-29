@@ -1,25 +1,25 @@
 /**
  * An idea = one generated progression and everything derived from it. Built only from
- * src/theory; the store keeps the current one.
+ * the theory code; the web store keeps the current one.
  */
-import { bestFitScale } from '../theory/analysis';
-import { chooseKeySpelling, chordPcs, chordSymbol, noteName, spellChord } from '../theory/chords';
-import { isBorrowed, progressionFunctions, type HarmonicFunction } from '../theory/functions';
-import { GENRES as PROFILES, type GenreId } from '../theory/genres';
-import { familyOf, scaleById, type Key, type Mode, type Scale } from '../theory/keys';
-import { generateMelody } from '../theory/melody/generate';
-import type { NoteEvent } from '../theory/melody/note';
-import { pitchClass, pitchClassName } from '../theory/pitch';
+import { bestFitScale } from './theory/analysis';
+import { chooseKeySpelling, chordPcs, chordSymbol, noteName, spellChord } from './theory/chords';
+import { isBorrowed, progressionFunctions, type HarmonicFunction } from './theory/functions';
+import { GENRES as PROFILES, type GenreId } from './theory/genres';
+import { familyOf, scaleById, type Key, type Mode, type Scale } from './theory/keys';
+import { generateMelody } from './theory/melody/generate';
+import type { NoteEvent } from './theory/melody/note';
+import { pitchClass, pitchClassName } from './theory/pitch';
 import {
   detectIdiom,
   generateProgression,
   swapChord,
   voicingFor,
-} from '../theory/progression/generate';
-import { pickPrompt } from '../theory/prompts';
-import { createRng, randomInt, type Rng } from '../theory/random';
-import { displayRoman, formatRoman, parseRoman, type ChordToken } from '../theory/roman';
-import { voiceProgression, type Voicing } from '../theory/voicing';
+} from './theory/progression/generate';
+import { pickPrompt } from './theory/prompts';
+import { createRng, randomInt, type Rng } from './theory/random';
+import { displayRoman, formatRoman, parseRoman, type ChordToken } from './theory/roman';
+import { voiceProgression, type Voicing } from './theory/voicing';
 
 export interface Idea {
   /** Seed of the last full generation. */
@@ -52,9 +52,6 @@ export interface IdeaSettings {
   bars: 4 | 8;
   colour: 0 | 1 | 2;
 }
-
-/** 32-bit seed. Outside src/theory, so Math.random is fine here. */
-export const newSeed = () => Math.floor(Math.random() * 2 ** 32);
 
 type Spelled = Pick<Idea, 'tonic' | 'mode' | 'flats'>;
 

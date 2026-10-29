@@ -1,6 +1,6 @@
 import { auditionNote } from '../audio/audition';
-import { isBlackKey, midiToName, pitchClass } from '../theory/pitch';
-import type { Voicing } from '../theory/voicing';
+import { isBlackKey, midiToName, pitchClass } from '@motif/core/theory/pitch';
+import type { Voicing } from '@motif/core/theory/voicing';
 
 // Same range as the prototype: C2 (36) to B5 (83).
 const LOW = 36;

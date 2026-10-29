@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { generateIdea, type IdeaSettings } from '../../src/state/idea';
+import { generateIdea, type IdeaSettings } from '@motif/core/idea';
 import {
   isSavedIdea,
   makeSaved,

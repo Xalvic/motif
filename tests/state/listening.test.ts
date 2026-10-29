@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generateIdea, melodyText } from '../../src/state/idea';
+import { generateIdea, melodyText } from '@motif/core/idea';
 import {
   PASSES,
   passIdOf,
@@ -9,7 +9,7 @@ import {
   summaryText,
   type Rating,
 } from '../../src/state/listening';
-import { GENRE_IDS } from '../../src/theory/genres';
+import { GENRE_IDS } from '@motif/core/theory/genres';
 
 const rating = (verdict: Rating['verdict'], note = ''): Rating => ({
   verdict,

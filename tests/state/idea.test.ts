@@ -6,10 +6,10 @@ import {
   newMelody,
   transpose,
   type IdeaSettings,
-} from '../../src/state/idea';
+} from '@motif/core/idea';
 import { PASSES, passPlan, settingsOf } from '../../src/state/listening';
-import { GENRE_IDS, GENRES } from '../../src/theory/genres';
-import { allowedModes } from '../../src/theory/progression/candidate';
+import { GENRE_IDS, GENRES } from '@motif/core/theory/genres';
+import { allowedModes } from '@motif/core/theory/progression/candidate';
 
 const settings = (genre: IdeaSettings['genre']): IdeaSettings => ({
   genre,

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { chordView, keyNoteName, melodyNoteName, type Idea } from '../state/idea';
-import { isBlackKey, pitchClass } from '../theory/pitch';
+import { chordView, keyNoteName, melodyNoteName, type Idea } from '@motif/core/idea';
+import { isBlackKey, pitchClass } from '@motif/core/theory/pitch';
 
 const PAD_LEFT = 34;
 const HEAD = 22;

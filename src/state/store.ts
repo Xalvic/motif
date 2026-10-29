@@ -1,21 +1,23 @@
 import { create } from 'zustand';
-import { GENRE_IDS, GENRES as PROFILES, type GenreId } from '../theory/genres';
-import { RECENT_IDEAS } from '../theory/progression/generate';
+import { GENRE_IDS, GENRES as PROFILES, type GenreId } from '@motif/core/theory/genres';
+import { RECENT_IDEAS } from '@motif/core/theory/progression/generate';
 import {
   generateIdea,
   newMelody,
   newPrompt,
-  newSeed,
   rerollChord,
   revoice,
   romansOf,
   transpose,
   type Idea,
   type IdeaSettings,
-} from './idea';
+} from '@motif/core/idea';
 import type { SavedIdea } from './saved';
 
 export type { GenreId };
+
+/** 32-bit seed. Outside the core package, so Math.random is fine here. */
+const newSeed = () => Math.floor(Math.random() * 2 ** 32);
 
 export const GENRES = GENRE_IDS.map((id) => ({ id, label: PROFILES[id].label }));
 

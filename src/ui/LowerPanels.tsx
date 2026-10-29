@@ -1,6 +1,6 @@
-import { keyName, scaleNotes } from '../state/idea';
+import { keyName, scaleNotes } from '@motif/core/idea';
 import { useStore } from '../state/store';
-import { GENRES as PROFILES } from '../theory/genres';
+import { GENRES as PROFILES } from '@motif/core/theory/genres';
 import { MelodyNotes } from './MelodyNotes';
 
 export function LowerPanels() {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { startPlayback, stopPlayback } from '../audio/pump';
-import { chordView, keyName, melodyText } from '../state/idea';
+import { chordView, keyName, melodyText } from '@motif/core/idea';
 import {
   settingsOf,
   summarise,

@@ -3,9 +3,9 @@
  * genre. A chord pass rates each idea "usable as a starting point" or not; a melody pass rates
  * its melody "worth reacting to" or not. Pure: no store, no storage.
  */
-import { GENRE_IDS, GENRES as PROFILES, type GenreId } from '../theory/genres';
-import { createRng } from '../theory/random';
-import type { IdeaSettings } from './idea';
+import { GENRE_IDS, GENRES as PROFILES, type GenreId } from '@motif/core/theory/genres';
+import { createRng } from '@motif/core/theory/random';
+import type { IdeaSettings } from '@motif/core/idea';
 
 /** What the pass rates: the chords (M3) or the melody over them (M4). */
 export type PassKind = 'chords' | 'melody';

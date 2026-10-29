@@ -2,7 +2,7 @@
  * Comping patterns (AUDIO.md §6.1): one bar of a voicing → note events in beats.
  * Pure: no Tone, no audio context, so it is unit-tested like src/theory.
  */
-import type { Voicing } from '../theory/voicing';
+import type { Voicing } from '@motif/core/theory/voicing';
 import type { Layer } from './engine';
 
 export type { Voicing };

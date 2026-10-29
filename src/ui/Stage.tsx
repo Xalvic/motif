@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { auditionChord } from '../audio/audition';
 import { exportMidi, midiFileName } from '../audio/export-midi';
 import { startPlayback, stopPlayback } from '../audio/pump';
-import { chordView, ideaText, keyName } from '../state/idea';
+import { chordView, ideaText, keyName } from '@motif/core/idea';
 import { useSaved } from '../state/savedStore';
 import { GENRES, useStore } from '../state/store';
-import type { HarmonicFunction } from '../theory/functions';
-import { pitchClass } from '../theory/pitch';
+import type { HarmonicFunction } from '@motif/core/theory/functions';
+import { pitchClass } from '@motif/core/theory/pitch';
 import { downloadFile } from './download';
 import { Keyboard } from './Keyboard';
 

@@ -13,12 +13,24 @@ export default tseslint.config(
     languageOptions: { globals: globals.browser },
   },
   {
-    // Theory code must stay deterministic: use the rng from random.ts.
-    files: ['src/theory/**/*.ts'],
+    // Core code must stay deterministic and pure: use the rng from random.ts, and no
+    // app, UI or audio imports.
+    files: ['packages/core/src/**/*.ts'],
     rules: {
       'no-restricted-properties': [
         'error',
-        { object: 'Math', property: 'random', message: 'Pass an rng from src/theory/random.ts.' },
+        { object: 'Math', property: 'random', message: 'Pass an rng from theory/random.ts.' },
+      ],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@motif/web', '@motif/web/*', 'react', 'react-*', 'tone', 'smplr', 'zustand'],
+              message: 'Core is pure: no app, UI or audio imports.',
+            },
+          ],
+        },
       ],
     },
   },

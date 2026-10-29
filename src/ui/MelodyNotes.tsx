@@ -1,4 +1,4 @@
-import { melodyInBar, melodyNoteName, type Idea } from '../state/idea';
+import { melodyInBar, melodyNoteName, type Idea } from '@motif/core/idea';
 import { PianoRoll } from './PianoRoll';
 
 /** The melody as a piano roll and as note names per bar. */

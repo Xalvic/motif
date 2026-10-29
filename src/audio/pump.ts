@@ -4,8 +4,8 @@
  */
 import * as Tone from 'tone';
 import { useStore, type GenreId } from '../state/store';
-import { createRng, type Rng } from '../theory/random';
-import { melodyInBar } from '../state/idea';
+import { createRng, type Rng } from '@motif/core/theory/random';
+import { melodyInBar } from '@motif/core/idea';
 import { blockBar, compBar, padBar, type BarNote } from './comping';
 import { drumBar } from './drums';
 import { LAYERS, setFx, startAudio, type Layer } from './engine';

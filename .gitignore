@@ -4,4 +4,4 @@ dist/
 *.local
 .env*
 # Large third-party datasets (download manually, see docs/THEORY.md §7)
-scripts/chordonomicon/data/
+packages/core/scripts/chordonomicon/data/

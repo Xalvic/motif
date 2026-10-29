@@ -4,7 +4,7 @@
  */
 import * as Tone from 'tone';
 import { useStore } from '../state/store';
-import type { Voicing } from '../theory/voicing';
+import type { Voicing } from '@motif/core/theory/voicing';
 import { setFx, startAudio, type Layer } from './engine';
 import { genreAudio } from './genres';
 import { fallbackSynth, getInstrument } from './instruments';

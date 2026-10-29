@@ -2,8 +2,8 @@
  * Saved ideas (SPEC F16, M5): the record kept in IndexedDB and the JSON export file. Pure: the
  * storage lives in savedStore.ts.
  */
-import { GENRE_IDS } from '../theory/genres';
-import { chordView, keyName, type Idea, type IdeaSettings } from './idea';
+import { GENRE_IDS } from '@motif/core/theory/genres';
+import { chordView, keyName, type Idea, type IdeaSettings } from '@motif/core/idea';
 
 /** Schema version (SPEC §5 persistence). */
 export const SAVED_VERSION = 1;

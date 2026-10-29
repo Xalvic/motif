@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { compBar, type BarNote } from '../../src/audio/comping';
 import { drumBar } from '../../src/audio/drums';
 import { applySwing, humanize } from '../../src/audio/feel';
-import { createRng } from '../../src/theory/random';
+import { createRng } from '@motif/core/theory/random';
 
 const hat = (beat: number): BarNote => ({
   layer: 'drums',

@@ -3,7 +3,7 @@
  * passed in, so the same seed sounds the same.
  */
 
-import { randomInt, type Rng } from '../theory/random';
+import { randomInt, type Rng } from '@motif/core/theory/random';
 import type { BarNote } from './comping';
 import { isAnchorHit } from './drums';
 
