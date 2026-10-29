@@ -415,3 +415,27 @@ Run as property tests over 1,000 seeds × 8 genres × lengths {4, 8} × colours 
 - No more than 4 main notes in a row alternate between two pitches.
 - Final note is a chord tone of the final chord and lasts ≥ 1 beat.
 - No overlapping notes; each bar except the last has ≥ 3 notes; rest per bar ≤ 2 beats.
+
+## 9. Idea facts and edits (AI producer, P1)
+
+Pure helpers in `packages/core/src/` (`describe.ts`, `search.ts`, `idea.ts`) for the AI producer's tools. They give facts only. The model judges the mood; code never labels one.
+
+**Facts (`describeIdea`)**
+- Chord quality comes from the token: ° = diminished, ø = halfDiminished, + = augmented, ext `5` = power, `sus2`/`sus4` = sus, else the numeral case (upper = major, lower = minor). Sus and power chords are neither major nor minor.
+- On the tonic: the last chord's root is degree I with no accidental (I, i, Imaj7, i5, I/3).
+- Mode brightness: the sum of the scale steps minus the Aeolian sum. Lydian +4, major +3, Mixolydian +2, Dorian +1, harmonic minor +1, double harmonic +1, minor 0, Phrygian dominant 0, Phrygian −1. Ties are allowed.
+- Cadence: the §3.3 shapes (all but `weak`) tested at the last bar as plain triads, longest shape first, then in `CADENCES` order. The first match wins; no match is `null`. Read from the chords each time, so it stays correct after a chord edit.
+- Borrowed count = bars with the §2.2 borrowed flag. Dominant count = bars with function D.
+
+**Constraint search (`searchIdea`)**
+- Constraints: `endsOn` (major or minor, by the quality above) and `endsOnTonic`.
+- Up to 12 tries. Try 1 uses the request seed, so no constraints = `generateIdea(seed)`. Tries 2–12 take seeds from `createRng(seed)`. The first idea that meets every constraint wins; else the one that meets the most, the earliest on a tie, with `constraintsMet: false`.
+- A locked last bar fixes the ending: 1 try. Locks win over a requested key or mode (warning), and drop when the bar count changes (warning).
+- An explicit bpm replaces the sampled one. The rng still samples it, so chords and melody for a seed do not change.
+
+**Set a chord (`setChord`)**
+- Roman text per §2.1. Bad text, a bar out of range and a locked bar are errors.
+- Other bars and the locks do not change. Labels, scale, voicings and a new melody follow, as for §3.6.
+- Warnings: the new chord is borrowed; the last bar closed on one of the profile's end cadences and no longer does; the chord is already there (no change).
+
+**Tempo (`checkTempo`)**: a whole number from 40 to 240 BPM, else an error. Outside the genre's tempo range is a warning.

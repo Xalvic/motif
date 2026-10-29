@@ -10,6 +10,7 @@ import { familyOf, scaleById, type Key, type Mode, type Scale } from './theory/k
 import { generateMelody } from './theory/melody/generate';
 import type { NoteEvent } from './theory/melody/note';
 import { pitchClass, pitchClassName } from './theory/pitch';
+import { closesOn } from './theory/progression/cadence';
 import {
   detectIdiom,
   generateProgression,
@@ -20,6 +21,7 @@ import { pickPrompt } from './theory/prompts';
 import { createRng, randomInt, type Rng } from './theory/random';
 import { displayRoman, formatRoman, parseRoman, type ChordToken } from './theory/roman';
 import { voiceProgression, type Voicing } from './theory/voicing';
+import type { Warning } from './warnings';
 
 export interface Idea {
   /** Seed of the last full generation. */
@@ -98,6 +100,14 @@ function derive(genre: GenreId, tonic: number, mode: Mode, tokens: ChordToken[],
   };
 }
 
+/** Bad input to an idea edit (bar out of range, locked bar, tempo). */
+export class IdeaError extends Error {}
+
+/** Locks carry over only when `previous` has one and the bar count stays the same. */
+export function keepsLocks(settings: Pick<IdeaSettings, 'bars'>, previous: Idea): boolean {
+  return previous.locks.some(Boolean) && previous.tokens.length === settings.bars;
+}
+
 /**
  * A new idea. Locked chords (and the key) carry over from `previous`; `recent` holds the
  * chords of the last ideas so the engine avoids repeating one.
@@ -110,8 +120,7 @@ export function generateIdea(
 ): { idea: Idea; bpm: number } {
   const rng = createRng(seed);
   const profile = PROFILES[settings.genre];
-  const keep =
-    !!previous && previous.locks.some(Boolean) && previous.tokens.length === settings.bars;
+  const keep = !!previous && keepsLocks(settings, previous);
   const fixedTonic = settings.key === 'random' ? undefined : settings.key;
   const progression = generateProgression(
     {
@@ -160,6 +169,72 @@ export function rerollChord(idea: Idea, settings: IdeaSettings, index: number, s
     ...derived,
     ...melodyFor(settings, tokens, keyOf(idea), rng),
   };
+}
+
+/**
+ * Sets bar `index` to a chord given as roman text (THEORY §9). Bad text throws RomanError; a
+ * bar out of range or a locked bar throws IdeaError. Labels, scale, voicings and melody follow.
+ */
+export function setChord(
+  idea: Idea,
+  settings: MelodySettings,
+  index: number,
+  roman: string,
+  seed: number,
+): { idea: Idea; warnings: Warning[] } {
+  const bars = idea.tokens.length;
+  if (!Number.isInteger(index) || index < 0 || index >= bars) {
+    throw new IdeaError(`Bar ${index + 1} does not exist. The idea has bars 1 to ${bars}.`);
+  }
+  if (idea.locks[index]) {
+    throw new IdeaError(`Bar ${index + 1} is locked. Ask the user before you unlock it.`);
+  }
+  const token = parseRoman(roman);
+  const text = displayRoman(token);
+  if (formatRoman(token) === formatRoman(idea.tokens[index]!)) {
+    const message = `Bar ${index + 1} already has ${text}. Nothing changed.`;
+    return { idea, warnings: [{ code: 'same-chord', message }] };
+  }
+
+  const tokens = [...idea.tokens];
+  tokens[index] = token;
+  const derived = derive(settings.genre, idea.tonic, idea.mode, tokens);
+  const next: Idea = {
+    ...idea,
+    tokens,
+    ...derived,
+    ...melodyFor(settings, tokens, keyOf(idea), createRng(seed)),
+  };
+
+  const warnings: Warning[] = [];
+  if (derived.borrowed[index]) {
+    const message = `${text} in bar ${index + 1} has a note outside ${keyName(idea)}.`;
+    warnings.push({ code: 'borrowed-chord', message });
+  }
+  const profile = PROFILES[settings.genre];
+  const closes = (chords: readonly string[]) =>
+    profile.cadences.end.some((c) => closesOn(chords, c, bars - 1, idea.mode));
+  if (closes(romansOf(idea)) && !closes(romansOf(next))) {
+    const message = `Bar ${index + 1} now has ${text}. The idea no longer ends on one of the ${profile.label} end cadences.`;
+    warnings.push({ code: 'cadence-broken', message });
+  }
+  return { idea: next, warnings };
+}
+
+/** Tempo limits, as for the genre profiles' tempo ranges. */
+export const TEMPO_RANGE = [40, 240] as const;
+
+/** Throws IdeaError outside 40–240 BPM or for a fraction; warns outside the genre's range. */
+export function checkTempo(bpm: number, genre: GenreId): Warning[] {
+  const [min, max] = TEMPO_RANGE;
+  if (!Number.isInteger(bpm) || bpm < min || bpm > max) {
+    throw new IdeaError(`Tempo must be a whole number from ${min} to ${max} BPM, not ${bpm}.`);
+  }
+  const profile = PROFILES[genre];
+  const [lo, hi] = profile.tempo;
+  if (bpm >= lo && bpm <= hi) return [];
+  const message = `${bpm} BPM is outside the usual ${profile.label} range (${lo}–${hi} BPM).`;
+  return [{ code: 'tempo-outside-genre', message }];
 }
 
 export function newMelody(idea: Idea, settings: MelodySettings, seed: number): Idea {
