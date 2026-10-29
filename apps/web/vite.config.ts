@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
@@ -8,6 +9,8 @@ import react from '@vitejs/plugin-react';
  * Dev server only: the listening pass (src/state/listeningStore.ts) reads and writes its
  * ratings here, so they land in the repo for the M3 sign-off.
  */
+const listeningDir = fileURLToPath(new URL('../../docs/progress/listening/', import.meta.url));
+
 function listeningFile(): Plugin {
   return {
     name: 'motif-listening-file',
@@ -19,7 +22,7 @@ function listeningFile(): Plugin {
             // Mounted at /__listening, so req.url is "/?pass=<file>".
             const pass = new URL(req.url ?? '/', 'http://local').searchParams.get('pass') ?? '';
             if (!/^[a-z0-9-]+$/.test(pass)) throw new Error('bad pass name');
-            const file = resolve(`docs/progress/listening/${pass}.json`);
+            const file = join(listeningDir, `${pass}.json`);
             if (req.method === 'GET') {
               // No file yet: an empty object, so the page falls back without a console error.
               const body = await readFile(file, 'utf8').catch(() => '{}');
@@ -72,6 +75,6 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['tests/**/*.test.ts', 'packages/*/tests/**/*.test.ts'],
+    include: ['tests/**/*.test.ts'],
   },
 });
