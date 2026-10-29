@@ -41,8 +41,8 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 
 ## Status
 <!-- status:start -->
-Milestone: v1 done (M0–M6; M6 data tables for pop, metal, lo-fi; owner checked by ear). M7 WAV export dropped (decisions.md).
-Last session: 2026-10-27. M6: Chordonomicon pipeline (`npm run tables`) and data blend at load (`dataWeight` 0.6).
-Next: 1) owner picks: a not-built item, or SPEC §8 backlog (1st: USB keyboard play-along)  2) optional: section-aware tables, more Phrygian dominant chords
-Blockers: none. Not built yet: raga drone harmony, Irish ornaments, pop anticipations (see decisions.md).
+Milestone: v1 done (M0–M6). Now: AI producer, spec agreed in `.plans/ai-producer-spec.md` (phases P0–P9); P0 not started.
+Last session: 2026-10-29. Fixed mode setting; AI spec (grill-me); renamed to Motif; public repo github.com/Xalvic/motif; README rewritten.
+Next: 1) P0: propose the npm workspaces move plan, wait for the owner's OK, then move with no behaviour change  2) P1: core additions per the spec
+Blockers: none. Rules: no Claude co-author or PR footer lines; storage keys stay `chord-spark`. Not built yet: raga drone harmony, Irish ornaments, pop anticipations.
 <!-- status:end -->

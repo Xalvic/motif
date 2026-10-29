@@ -4,6 +4,12 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-29 · AI producer spec, rename to Motif, GitHub repo
+- Milestone: v1 done; AI producer spec agreed (`.plans/ai-producer-spec.md`, phases P0–P9); P0 not started
+- Done: `IdeaSettings.mode` (optional) + `allowedModes()`; `resolveKey` throws on a mode outside the genre's modes and names the allowed ones (3 new tests; walk.test now fixes lo-fi, not pop, to Dorian; 456 tests). Gemini docs checked (generateContent, thought signatures, free-tier models, 429 shape, data use). AI producer spec via grill-me: 32 decisions + 16 defaults. App renamed Chord Spark → Motif (UI, docs, `motif_*` export file names, package name); storage keys stay `chord-spark`. History rewritten to drop the Claude co-author line (69 commits); branch master → main; public repo github.com/Xalvic/motif, Xalvic the only contributor. README rewritten for visitors, screenshot `docs/images/motif.jpg`.
+- Decisions: fixed mode = genre modes only; AI layer as in the spec; rename with storage keys kept; no Claude attribution in commits or PRs; repo public, branch main, no licence yet (all in decisions.md)
+- Open: local backup ref `refs/original/refs/heads/master` from the rewrite (delete when sure); free-tier rate limits unknown (AI Studio page needs login), so the caps are starting values; local folder still `chord-spark` (a rename breaks the Claude memory path); owner to check the README "Why" voice; screenshot is only 800×512
+- Next: 1) P0: propose the npm workspaces move plan (packages/core, packages/protocol, apps/web, apps/server), wait for the owner's OK, then move with no behaviour change  2) P1: core additions (idea description facts, constraint search, chord by roman, tempo)
 ## 2026-10-27 · M6 data-driven transitions
 - Milestone: M6 Data-driven transitions (done); M7 stretch, not started
 - Done: `scripts/chordonomicon/` (`npm run tables`, about 10 s): parse symbols, key per section (Krumhansl–Kessler + song prior + tonic bonus), roman triads, count, prune. Tables in `src/theory/data/transitions/`: pop 20 KB, metal 12 KB (minor), lo-fi 25 KB (jazz + soul). `blend.ts` + `validateTransitionData`, wired in `genres.ts`; new profile field `dataWeight` (default 0.6). `tsconfig.scripts.json` in typecheck. 20 new tests, 453 in all. Golden: 6 pop + 6 lo-fi lines. THEORY §7 and §6.1, CREDITS updated.
