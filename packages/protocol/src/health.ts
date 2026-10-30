@@ -1,0 +1,8 @@
+import { z } from 'zod';
+
+/** `GET /api/health`. No invite code needed. */
+export const HealthResponse = z.object({
+  ok: z.literal(true),
+  version: z.string(),
+});
+export type HealthResponse = z.infer<typeof HealthResponse>;

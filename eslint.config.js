@@ -34,5 +34,39 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // The HTTP contract: Zod schemas only, so web and server can both import it.
+    files: ['packages/protocol/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^(?!zod$|vitest$|\\.\\.?/)',
+              message: 'Protocol imports only zod.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['apps/server/**/*.ts'],
+    languageOptions: { globals: globals.node },
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@motif/web', '@motif/web/*', 'react', 'react-*', 'tone', 'smplr', 'zustand'],
+              message: 'The server has no UI or audio code.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   prettier,
 );
