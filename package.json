@@ -8,7 +8,7 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w @motif/web",
+    "dev": "concurrently -n web,server -c cyan,magenta \"npm run dev -w @motif/web\" \"npm run dev -w @motif/server\"",
     "build": "npm run build -w @motif/web",
     "preview": "npm run preview -w @motif/web",
     "test": "vitest run",

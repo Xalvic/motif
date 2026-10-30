@@ -41,7 +41,7 @@ Tone.js is the clock and smplr plays the samples. Both share one AudioContext. A
 
 ### Layers
 
-npm workspaces: the app in `apps/web`, the music code in `packages/core`.
+npm workspaces: the app in `apps/web`, the music code in `packages/core`, the API server (Hono) in `apps/server`, and the API contract (Zod schemas) in `packages/protocol`.
 
 ```
 apps/web     src/ui/      React components (thin)
@@ -57,7 +57,7 @@ packages/core  idea.ts and theory/: pure, seeded, fully unit-tested
 
 Vite · React 19 · TypeScript · Zustand · Tone.js · smplr · tonal (note spelling only) · @tonejs/midi · Vitest
 
-There are 456 tests, including property tests for the theory rules and golden-seed snapshots that catch unintended changes in the generated music.
+There are 580 tests, including property tests for the theory rules and golden-seed snapshots that catch unintended changes in the generated music.
 
 ## Run it
 
@@ -68,9 +68,18 @@ npm install
 npm run dev
 ```
 
+`npm run dev` starts the web app and the API server. The API server needs `apps/server/.env`. Copy `apps/server/.env.example` to that file, then make an invite code:
+
+```bash
+npm run new-code -w @motif/server -- yourname
+```
+
+Put the printed `name:code` line in `INVITE_CODES`. The app works without the API server, but the AI chat (coming soon) needs it.
+
 | Command | What it does |
 |---|---|
-| `npm run dev` | Start the dev server |
+| `npm run dev` | Start the web dev server and the API server |
+| `npm run new-code -w @motif/server -- <name>` | Make an invite code for a person |
 | `npm test` | Run the test suite |
 | `npm run typecheck` | Type-check every workspace |
 | `npm run lint` | Lint |

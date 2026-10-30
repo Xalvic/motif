@@ -57,6 +57,11 @@ function listeningFile(): Plugin {
 
 export default defineConfig({
   plugins: [react(), listeningFile()],
+  server: {
+    // The API server (apps/server) in dev. The browser calls /api on this origin, as in the
+    // one-origin deploy, so no CORS code is needed.
+    proxy: { '/api': 'http://localhost:8787' },
+  },
   build: {
     rolldownOptions: {
       output: {

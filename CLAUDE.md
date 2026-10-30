@@ -7,10 +7,10 @@ Idea generator for a songwriter who plays keyboard by ear and produces in FL Stu
 The owner reads keyboard diagrams and note names easily and staff notation poorly. Every musical output must be shown as keys and note names (C4, E♭3), never only as notation.
 
 ## Stack
-Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects) · smplr 1.x (sampled instruments) · tonal 6 (spelling only) · @tonejs/midi (export) · Vitest
+Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects) · smplr 1.x (sampled instruments) · tonal 6 (spelling only) · @tonejs/midi (export) · Vitest. Server: Hono 4 · Zod 4 · pino · tsx
 
 ## Commands
-`npm run dev` · `npm test` · `npm run typecheck` · `npm run build` · `npm run lint` · `npm run format`
+`npm run dev` (web + server) · `npm run new-code -w @motif/server -- <name>` · `npm test` · `npm run typecheck` · `npm run build` · `npm run lint` · `npm run format`
 
 ## Docs (read on demand, never all at once)
 - `docs/SPEC.md`: features, architecture, milestones. Read only the milestone you are working on.
@@ -21,14 +21,15 @@ Vite · React · TypeScript · Zustand · Tone.js 15 (clock, transport, effects)
 - `prototype/chord-spark.html`: the v0 single-file prototype. Reference for behaviour and feel, not for code style.
 
 ## Layout
-npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.ts` (runs every workspace). Dependency direction: web → core; core imports none of our packages.
+npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.ts` (runs every workspace). Dependency direction: web → core, protocol; server → core, protocol; core and protocol import none of our packages.
 - `packages/core/` (`@motif/core`): pure TS, no DOM (its tsconfig has no DOM lib), no audio. Deterministic given a seeded `rng`. Fully unit-tested.
   - `src/theory/`: generators. `src/theory/data/`: genre profiles, idioms, transition tables as JSON.
   - `src/idea.ts`: the pure idea model. `scripts/chordonomicon/`: `npm run tables`.
 - `apps/web/` (`@motif/web`): imports core as `@motif/core/theory/...` and `@motif/core/idea`.
   - `src/audio/`: the only code that touches AudioContext, Tone or smplr.
   - `src/state/`: Zustand store. `src/ui/`: React components, kept thin (UI redesign comes later).
-- `packages/protocol` and `apps/server` start in P2.
+- `packages/protocol/` (`@motif/protocol`): the HTTP contract as Zod schemas. Imports only `zod`.
+- `apps/server/` (`@motif/server`): Hono on Node. `src/app.ts` `createApp` (tests use `app.request()`), `src/config.ts` env, `src/auth.ts` invite codes, `src/log.ts` pino. Env in `apps/server/.env` (copy `.env.example`). Vite proxies `/api` to it in dev.
 
 ## Rules
 - Every generator takes an `rng` from `packages/core/src/theory/random.ts`. No `Math.random()` in `packages/core` (ESLint enforces it).
@@ -36,6 +37,7 @@ npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.
 - Schedule sound only through Tone transport callbacks and their `time` argument. Never setTimeout/setInterval for audio. UI sync goes through `Tone.getDraw()`.
 - Audio starts only after a user gesture (`Tone.start()`).
 - Any new sample source gets a line in `CREDITS.md` with its licence.
+- Never log, return or put in an error message an invite code or an API key. Log the code's name only.
 - Run `npm test` and `npm run typecheck` before each commit. Small commits.
 - Keep this file under 100 lines. Detail belongs in `docs/`.
 
