@@ -22,6 +22,7 @@ describe('loadConfig', () => {
       logLevel: 'info',
       logPretty: false,
       inviteCodes: [{ name: 'jev', code: A }],
+      gemini: { model: 'gemini-3.8-flash', fallbackModel: 'gemini-3.5-flash-lite' },
     });
   });
 
@@ -68,5 +69,31 @@ describe('loadConfig', () => {
 
   it.each(['0', '65536', '80.5', 'abc'])('rejects API_PORT=%s', (port) => {
     expect(errorFor({ INVITE_CODES: `jev:${A}`, API_PORT: port })).toMatch(/^API_PORT: /);
+  });
+
+  it('reads the Gemini key and model ids', () => {
+    const config = loadConfig({
+      INVITE_CODES: `jev:${A}`,
+      GEMINI_API_KEY: ' test-key ',
+      GEMINI_MODEL: 'gemini-9-pro',
+      GEMINI_FALLBACK_MODEL: 'gemini-9-flash-lite',
+    });
+    expect(config.gemini).toEqual({
+      apiKey: 'test-key',
+      model: 'gemini-9-pro',
+      fallbackModel: 'gemini-9-flash-lite',
+    });
+  });
+
+  it('treats an empty GEMINI_API_KEY as no key', () => {
+    expect(loadConfig({ INVITE_CODES: `jev:${A}`, GEMINI_API_KEY: '' }).gemini.apiKey).toBe(
+      undefined,
+    );
+  });
+
+  it('rejects a model id with spaces or capitals', () => {
+    expect(errorFor({ INVITE_CODES: `jev:${A}`, GEMINI_MODEL: 'Gemini 3' })).toBe(
+      'GEMINI_MODEL: is not a model id',
+    );
   });
 });

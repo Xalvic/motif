@@ -9,6 +9,9 @@ export interface InviteCode {
   code: string;
 }
 
+/** Model ids look like `gemini-3.8-flash`. */
+export const MODEL_ID = /^[a-z0-9][a-z0-9.-]*$/;
+
 export const LOG_LEVELS = ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'] as const;
 
 export interface Config {
@@ -16,6 +19,14 @@ export interface Config {
   logLevel: (typeof LOG_LEVELS)[number];
   logPretty: boolean;
   inviteCodes: InviteCode[];
+  gemini: GeminiConfig;
+}
+
+export interface GeminiConfig {
+  /** Optional until the chat route needs it (P4). Never logged. */
+  apiKey?: string;
+  model: string;
+  fallbackModel: string;
 }
 
 /** A bad env. The message lists each problem and never contains a code. */
@@ -62,6 +73,16 @@ const EnvSchema = z.object({
   API_PORT: z.coerce.number().int().min(1).max(65535).default(8787),
   LOG_LEVEL: z.enum(LOG_LEVELS).default('info'),
   LOG_PRETTY: z.enum(['0', '1']).default('0'),
+  GEMINI_API_KEY: z
+    .string()
+    .trim()
+    .optional()
+    .transform((key) => key || undefined),
+  GEMINI_MODEL: z.string().regex(MODEL_ID, 'is not a model id').default('gemini-3.8-flash'),
+  GEMINI_FALLBACK_MODEL: z
+    .string()
+    .regex(MODEL_ID, 'is not a model id')
+    .default('gemini-3.5-flash-lite'),
   INVITE_CODES: z
     .string({ error: 'is required, as name:code,name:code' })
     .transform((raw, ctx) => parseInviteCodes(raw, (message) => ctx.addIssue(message))),
@@ -74,11 +95,16 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
     const lines = result.error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`);
     throw new ConfigError(lines.join('\n'));
   }
-  const { API_PORT, LOG_LEVEL, LOG_PRETTY, INVITE_CODES } = result.data;
+  const { API_PORT, LOG_LEVEL, LOG_PRETTY, INVITE_CODES, GEMINI_API_KEY } = result.data;
   return {
     port: API_PORT,
     logLevel: LOG_LEVEL,
     logPretty: LOG_PRETTY === '1',
     inviteCodes: INVITE_CODES,
+    gemini: {
+      ...(GEMINI_API_KEY && { apiKey: GEMINI_API_KEY }),
+      model: result.data.GEMINI_MODEL,
+      fallbackModel: result.data.GEMINI_FALLBACK_MODEL,
+    },
   };
 }
