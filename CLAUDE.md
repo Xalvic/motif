@@ -47,8 +47,8 @@ npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.
 
 ## Status
 <!-- status:start -->
-Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 pushed; P1 done and committed (`ea8e091`, `a4c6d6d`), not pushed; P2 not started.
-Last session: 2026-10-29. P1: `describeIdea`, `searchIdea`, `setChord`, `checkTempo` in `packages/core` + THEORY §9 (525 tests, golden unchanged).
-Next: 1) push P1 when the owner says  2) P2: propose the `protocol` + Hono skeleton plan, wait for the owner's OK  3) owner to decide: power-chord endings vs `endsOn` (metal)
+Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 pushed; P1 and P2 done and committed, not pushed (main 8 ahead); P3 not started.
+Last session: 2026-10-30. P2: `@motif/protocol` + `apps/server` (Hono, env config, invite-code auth, pino logs, `/api/health`, `/api/me`); `npm run dev` runs both (580 tests).
+Next: 1) push P1 + P2 when the owner says  2) P3: read current Gemini docs, propose the provider-layer plan, wait for the OK  3) owner to decide: power-chord endings vs `endsOn` (metal)
 Blockers: none. Rules: no Claude co-author or PR footer lines; storage keys stay `chord-spark`. Not built yet: raga drone harmony, Irish ornaments, pop anticipations.
 <!-- status:end -->

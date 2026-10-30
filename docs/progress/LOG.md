@@ -4,6 +4,14 @@ Newest entry first. Each entry ≤ 15 lines. Written by `/wrap-up`. Read only th
 When this file passes ~300 lines, `/wrap-up` moves all but the latest 10 entries to `docs/progress/archive/YYYY-MM.md`.
 
 <!-- entries:start -->
+## 2026-10-30 · P2: protocol package and Hono server skeleton
+- Milestone: AI producer P2 done (of P0–P9); P3 not started
+- Done: plan `.plans/p2-protocol-server-plan.md`, approved (D1–D6 = A). `packages/protocol` (`ApiError`, `HealthResponse`, `MeResponse`). `apps/server`: `config.ts` (env via Zod, `INVITE_CODES` name:code, codes 16+ chars), `auth.ts` (own Bearer middleware, SHA-256 + `timingSafeEqual`, no early exit), `log.ts` (pino, one line per request, redact), `app.ts` (`createApp`; `/api/health`, `/api/me`, JSON 404/500), `index.ts`, `scripts/new-code.ts`, `.env.example`. `npm run dev` = `concurrently` web + server; Vite proxies `/api` → 8787. Commits `a26fc36`..`fbf500b`, not pushed.
+- Checked: 580 tests (55 new: config, auth cases, logs never hold a code), typecheck, lint, build, Prettier. Dev run: health, 401 missing/invalid, 200 with the owner code, 404, all through the Vite proxy. No audio change.
+- Decisions: P2 line in decisions.md (D1–D6 = A; port var `API_PORT`, not `PORT`, because the preview tool sets `PORT=5173` and the server took it)
+- Open: P8 must map the host's `PORT` to the server; `/api` calls give 502 for a moment if Vite is up before the server (nothing calls `/api` yet); metal `endsOn` vs power-chord endings still for the owner; old Prettier warnings on transition tables and sample-host 404s still there
+- Next: 1) push P1 + P2 when the owner says  2) P3: check the current Gemini docs, then propose the provider-layer plan (starts with the Zod → JSON Schema check), wait for the OK
+
 ## 2026-10-29 · P1: core additions for the AI producer
 - Milestone: AI producer P1 done (of P0–P9); P2 not started
 - Done: plan `.plans/p1-core-additions-plan.md`, approved (D1–D4 = A). `packages/core/src/describe.ts` (`describeIdea` plain JSON facts, `chordQuality`, `isOnTonic`, `modeBrightness`, `detectCadence`), `search.ts` (`searchIdea`, 12 tries, lock warnings), `warnings.ts`; `idea.ts`: `setChord`, `checkTempo`, `IdeaError`, `keepsLocks`. THEORY §9. Commits `ea8e091`, `a4c6d6d`, not pushed.
