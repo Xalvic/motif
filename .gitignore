@@ -3,5 +3,6 @@ dist/
 .DS_Store
 *.local
 .env*
+!.env.example
 # Large third-party datasets (download manually, see docs/THEORY.md §7)
 packages/core/scripts/chordonomicon/data/
