@@ -47,8 +47,8 @@ npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.
 
 ## Status
 <!-- status:start -->
-Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 pushed; P1–P3 committed, not pushed (main 13 ahead). P3 checked live (Gemini key in `.env`; the project is Tier 1 paid with a ₹500 monthly spend cap).
+Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0–P3 committed and pushed. P3 checked live (Gemini key in `.env`; the project is Tier 1 paid with a ₹200 monthly spend cap).
 Last session: 2026-10-30. P2: `@motif/protocol` + `apps/server` (Hono, env config, invite-code auth, pino logs, `/api/health`, `/api/me`); `npm run dev` runs both (580 tests).
-Next: 1) push P1–P3 when the owner says  2) P4: tools, agent loop (plan first)  3) owner to decide: power-chord endings vs `endsOn` (metal)  4) P6: the chat's data notice must not say "free tier" (the project is paid now)
+Next: 1) P4: tools, agent loop (plan first)  2) owner to decide: power-chord endings vs `endsOn` (metal)  3) P6: the chat's data notice must not say "free tier" (the project is paid now)
 Blockers: none. Rules: no Claude co-author or PR footer lines; storage keys stay `chord-spark`. Not built yet: raga drone harmony, Irish ornaments, pop anticipations.
 <!-- status:end -->
