@@ -76,10 +76,18 @@ npm run new-code -w @motif/server -- yourname
 
 Put the printed `name:code` line in `INVITE_CODES`. The app works without the API server, but the AI chat (coming soon) needs it.
 
+The AI chat also needs a Gemini API key. Make a free one in [Google AI Studio](https://aistudio.google.com/apikey) and put it in `GEMINI_API_KEY`. Then check it with one real model call:
+
+```bash
+npm run try-model -w @motif/server
+```
+
 | Command | What it does |
 |---|---|
 | `npm run dev` | Start the web dev server and the API server |
 | `npm run new-code -w @motif/server -- <name>` | Make an invite code for a person |
+| `npm run try-model -w @motif/server` | One real Gemini call with one tool (`--record <name>` saves fixtures) |
+| `npm run check-schemas -w @motif/server` | Check which JSON Schema keywords Gemini accepts in tool schemas |
 | `npm test` | Run the test suite |
 | `npm run typecheck` | Type-check every workspace |
 | `npm run lint` | Lint |

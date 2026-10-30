@@ -29,7 +29,7 @@ npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.
   - `src/audio/`: the only code that touches AudioContext, Tone or smplr.
   - `src/state/`: Zustand store. `src/ui/`: React components, kept thin (UI redesign comes later).
 - `packages/protocol/` (`@motif/protocol`): the HTTP contract as Zod schemas. Imports only `zod`.
-- `apps/server/` (`@motif/server`): Hono on Node. `src/app.ts` `createApp` (tests use `app.request()`), `src/config.ts` env, `src/auth.ts` invite codes, `src/log.ts` pino. Env in `apps/server/.env` (copy `.env.example`). Vite proxies `/api` to it in dev.
+- `apps/server/` (`@motif/server`): Hono on Node. `src/app.ts` `createApp` (tests use `app.request()`), `src/config.ts` env, `src/auth.ts` invite codes, `src/log.ts` pino, `src/providers/` model layer (neutral types, fallback policy; only `providers/gemini/` imports the SDK). Env in `apps/server/.env` (copy `.env.example`). Vite proxies `/api` to it in dev.
 
 ## Rules
 - Every generator takes an `rng` from `packages/core/src/theory/random.ts`. No `Math.random()` in `packages/core` (ESLint enforces it).
@@ -47,8 +47,8 @@ npm workspaces. Root holds the dev tools, `eslint.config.js` and `vitest.config.
 
 ## Status
 <!-- status:start -->
-Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 pushed; P1 and P2 done and committed, not pushed (main 8 ahead); P3 not started.
+Milestone: v1 done (M0–M6). Now: AI producer (`.plans/ai-producer-spec.md`, P0–P9). P0 pushed; P1–P3 committed, not pushed (main 13 ahead). P3 checked live (Gemini key in `.env`; the project is Tier 1 paid with a ₹500 monthly spend cap).
 Last session: 2026-10-30. P2: `@motif/protocol` + `apps/server` (Hono, env config, invite-code auth, pino logs, `/api/health`, `/api/me`); `npm run dev` runs both (580 tests).
-Next: 1) push P1 + P2 when the owner says  2) P3: read current Gemini docs, propose the provider-layer plan, wait for the OK  3) owner to decide: power-chord endings vs `endsOn` (metal)
+Next: 1) push P1–P3 when the owner says  2) P4: tools, agent loop (plan first)  3) owner to decide: power-chord endings vs `endsOn` (metal)  4) P6: the chat's data notice must not say "free tier" (the project is paid now)
 Blockers: none. Rules: no Claude co-author or PR footer lines; storage keys stay `chord-spark`. Not built yet: raga drone harmony, Irish ornaments, pop anticipations.
 <!-- status:end -->

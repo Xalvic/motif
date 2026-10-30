@@ -11,6 +11,7 @@
     "start": "tsx --env-file-if-exists=.env src/index.ts",
     "new-code": "node scripts/new-code.ts",
     "typecheck": "tsc --noEmit",
+    "try-model": "tsx --env-file-if-exists=.env scripts/try-model.ts",
     "check-schemas": "tsx --env-file-if-exists=.env scripts/check-schemas.ts"
   },
   "dependencies": {
