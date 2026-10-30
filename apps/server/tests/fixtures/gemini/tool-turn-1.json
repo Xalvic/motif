@@ -1,0 +1,69 @@
+{
+  "model": "gemini-3.8-flash",
+  "chunks": [
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "functionCall": {
+                  "name": "set_tempo",
+                  "args": {
+                    "bpm": 68
+                  },
+                  "id": "call_518341"
+                },
+                "thoughtSignature": "EvoDCvcDAWkUfROp/t3W2vIG/scO9Ji3iUfVsQT5FPs7VxrG+2W9J4ZT/oXQgj7MvjwwFaikS7XpvH8CfxJK1vD5nOfGCpRd+qPxhu726wCk36ZvHFlgzo6OaJ9A7Hc/x++FWR9QUpvtqMWDHJ29uya2g6/U90g2Mge55k+A6Nv7IDi1mQleSSJXYh/zBMoIOOTwd0IkixTIRj7DfKSQlliTVOkQtgltlgUx/mIPZr3sV77/jr9g5WV7JBOADM+95hVKjGsRfTTM5hXZHXdCH4PCOLoGUps/kfjZHh+lQoDTt3y7wkUomtiAMN76FGWW+23jLedSQoaewklY8CNXdygA594a/C0mELDwVBTSd5VC7lcnSqJJOv9V6wh3hXp3kq1mzUjxzyzNaB5KZ2ieOIpb9FymD6c4Jucv3Tfpcu5Vp9uAekjwWT5rHeS/boM08EvIudMYcGRrq1DonSl0ubbfay09XCV9ThNjkc6FWyZxMfxOaGbVJLEvYfpJl4LiTh8syt2VpKuy4rF+jeufV0F3p5Sycx+wGS5u6GBhEzDe0OcH31laOAPSt9qfQcgZxHm4zjBQxTK5pZCo3H4lM+L3LZ8rw/Uwp6/8f+OhIsk20zP53aqIT1moMypOBvU6Sit3uYZYnOQSi1lYglyfekZLUUBcg19enpBm+uc="
+              }
+            ],
+            "role": "model"
+          },
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 113,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 224,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 113
+          }
+        ],
+        "thoughtsTokenCount": 96,
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": ""
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 113,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 224,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 113
+          }
+        ],
+        "thoughtsTokenCount": 96,
+        "serviceTier": "standard"
+      }
+    }
+  ]
+}

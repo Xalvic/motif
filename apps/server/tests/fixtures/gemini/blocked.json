@@ -1,0 +1,7 @@
+{
+  "_note": "Hand-written. A prompt that the safety filter blocks: no candidates, only promptFeedback.",
+  "model": "gemini-3.8-flash",
+  "chunks": [
+    { "promptFeedback": { "blockReason": "SAFETY" }, "usageMetadata": { "promptTokenCount": 40 } }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "_note": "Hand-written from Google's documented error format (google.rpc.RetryInfo, QuotaFailure, ErrorInfo). A 429 cannot be made on demand. Replace a body when a real one shows up in the logs.",
+  "rate-minute": {
+    "status": 429,
+    "body": {
+      "error": {
+        "code": 429,
+        "message": "You exceeded your current quota, please check your plan and billing details.",
+        "status": "RESOURCE_EXHAUSTED",
+        "details": [
+          {
+            "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+            "violations": [
+              {
+                "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+                "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+              }
+            ]
+          },
+          { "@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "7s" }
+        ]
+      }
+    }
+  },
+  "rate-minute-long": {
+    "status": 429,
+    "body": {
+      "error": {
+        "code": 429,
+        "message": "You exceeded your current quota.",
+        "status": "RESOURCE_EXHAUSTED",
+        "details": [
+          {
+            "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+            "violations": [{ "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier" }]
+          },
+          { "@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "41.5s" }
+        ]
+      }
+    }
+  },
+  "rate-day": {
+    "status": 429,
+    "body": {
+      "error": {
+        "code": 429,
+        "message": "You exceeded your current quota.",
+        "status": "RESOURCE_EXHAUSTED",
+        "details": [
+          {
+            "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+            "violations": [{ "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier" }]
+          },
+          { "@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "3s" }
+        ]
+      }
+    }
+  },
+  "overloaded": {
+    "status": 503,
+    "body": {
+      "error": {
+        "code": 503,
+        "message": "The model is overloaded. Please try again later.",
+        "status": "UNAVAILABLE"
+      }
+    }
+  },
+  "bad-request": {
+    "status": 400,
+    "body": {
+      "error": {
+        "code": 400,
+        "message": "Invalid JSON payload received. Unknown name \"const\".",
+        "status": "INVALID_ARGUMENT"
+      }
+    }
+  },
+  "bad-key": {
+    "status": 400,
+    "body": {
+      "error": {
+        "code": 400,
+        "message": "API key not valid. Please pass a valid API key.",
+        "status": "INVALID_ARGUMENT",
+        "details": [
+          {
+            "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+            "reason": "API_KEY_INVALID",
+            "domain": "googleapis.com"
+          }
+        ]
+      }
+    }
+  },
+  "forbidden": {
+    "status": 403,
+    "body": {
+      "error": { "code": 403, "message": "Permission denied.", "status": "PERMISSION_DENIED" }
+    }
+  }
+}

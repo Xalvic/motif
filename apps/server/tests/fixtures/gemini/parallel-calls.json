@@ -1,0 +1,29 @@
+{
+  "_note": "Hand-written from the SDK types (2026-10-30), not recorded. In parallel calls only the first call has a signature.",
+  "model": "gemini-3.8-flash",
+  "chunks": [
+    {
+      "candidates": [
+        {
+          "content": {
+            "role": "model",
+            "parts": [
+              { "text": "Two changes." },
+              {
+                "functionCall": { "id": "fc_b1", "name": "set_key", "args": { "tonic": "A" } },
+                "thoughtSignature": "c2lnLWNhbGwtMg=="
+              },
+              { "functionCall": { "id": "fc_b2", "name": "set_tempo", "args": { "bpm": 72 } } }
+            ]
+          },
+          "finishReason": "STOP"
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 160,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 180
+      }
+    }
+  ]
+}

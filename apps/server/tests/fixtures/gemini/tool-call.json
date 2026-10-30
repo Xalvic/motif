@@ -1,0 +1,28 @@
+{
+  "_note": "Hand-written from the SDK types (2026-10-30). Same shape as the recorded tool-turn and text-turn fixtures; kept for its short, fixed values.",
+  "model": "gemini-3.8-flash",
+  "chunks": [
+    {
+      "candidates": [
+        {
+          "content": {
+            "role": "model",
+            "parts": [
+              {
+                "functionCall": { "id": "fc_a1", "name": "set_tempo", "args": { "bpm": 68 } },
+                "thoughtSignature": "c2lnLWNhbGwtMQ=="
+              }
+            ]
+          },
+          "finishReason": "STOP"
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 150,
+        "candidatesTokenCount": 12,
+        "thoughtsTokenCount": 40,
+        "totalTokenCount": 202
+      }
+    }
+  ]
+}

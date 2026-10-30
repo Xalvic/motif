@@ -68,5 +68,28 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // Only the Gemini adapter imports the Gemini SDK. The rest uses the neutral provider types.
+    files: ['apps/server/src/**/*.ts'],
+    ignores: ['apps/server/src/providers/gemini/**', 'apps/server/src/providers/index.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@motif/web', '@motif/web/*', 'react', 'react-*', 'tone', 'smplr', 'zustand'],
+              message: 'The server has no UI or audio code.',
+            },
+            {
+              group: ['@google/genai', '@google/genai/*'],
+              message:
+                'Only src/providers/gemini/ imports the Gemini SDK. Use src/providers/types.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   prettier,
 );

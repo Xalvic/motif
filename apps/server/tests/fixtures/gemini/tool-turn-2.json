@@ -1,0 +1,119 @@
+{
+  "model": "gemini-3.8-flash",
+  "chunks": [
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": "I've dialed the tempo down to"
+              }
+            ],
+            "role": "model"
+          },
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 145,
+        "candidatesTokenCount": 8,
+        "totalTokenCount": 166,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 145
+          }
+        ],
+        "thoughtsTokenCount": 13,
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": " a gentle 68 bpm for an intimate ballad feel. This gives the progression plenty of breathing room for emotive vocals and expressive"
+              }
+            ],
+            "role": "model"
+          },
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 145,
+        "candidatesTokenCount": 33,
+        "totalTokenCount": 191,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 145
+          }
+        ],
+        "thoughtsTokenCount": 13,
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": " phrasing."
+              }
+            ],
+            "role": "model"
+          },
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 145,
+        "candidatesTokenCount": 35,
+        "totalTokenCount": 193,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 145
+          }
+        ],
+        "thoughtsTokenCount": 13,
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": "",
+                "thoughtSignature": "ErcBCrQBAWkUfROqC6Yn7pfK8I6xE5OFSDaDxrWKQcIVmUM0WJRFgU43qK1GwFPUX69E8uSTEf6DHv0sCsRNFeYMug3iWZvukIsBtRwPDnSKgiNVTxBP/dqeU8FUw+bcJhRDwe7GFqBtKkIQ2eXOH1xC7ENYnZ9wSd5wWjp7QN+ZbHhy2Fbv/7Uh5MrKsrb+SNF8jzQkYCrS2rzDgln6MYtQ693wB4xfBWor3Trp9dF0xMFzhcA4qiqE"
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 241,
+        "candidatesTokenCount": 35,
+        "totalTokenCount": 289,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 241
+          }
+        ],
+        "thoughtsTokenCount": 13,
+        "serviceTier": "standard"
+      }
+    }
+  ]
+}

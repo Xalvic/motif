@@ -1,0 +1,63 @@
+{
+  "model": "gemini-3.8-flash",
+  "chunks": [
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": "The current musical idea is in the key of C major."
+              }
+            ],
+            "role": "model"
+          },
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 118,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 448,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 118
+          }
+        ],
+        "thoughtsTokenCount": 318,
+        "serviceTier": "standard"
+      }
+    },
+    {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": "",
+                "thoughtSignature": "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"
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 118,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 448,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 118
+          }
+        ],
+        "thoughtsTokenCount": 318,
+        "serviceTier": "standard"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "_note": "Hand-written. Older models send function calls with no id.",
+  "model": "gemini-3.5-flash-lite",
+  "chunks": [
+    {
+      "candidates": [
+        {
+          "content": {
+            "role": "model",
+            "parts": [
+              { "functionCall": { "name": "set_tempo", "args": { "bpm": 70 } } },
+              { "functionCall": { "name": "new_melody" } }
+            ]
+          },
+          "finishReason": "STOP"
+        }
+      ]
+    }
+  ]
+}
